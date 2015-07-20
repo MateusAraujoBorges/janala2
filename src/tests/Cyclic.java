@@ -1,4 +1,4 @@
-package tests.db;
+package tests;
 
 import database.table.SymbolicTable;
 import database.table.commands.SelectCommand;
