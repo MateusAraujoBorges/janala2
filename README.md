@@ -45,3 +45,4 @@ optional arguments:
     -v, --verbose   Print commands that are executed.
     -c, --coverage  Compute detailed coverage by rerunning tests.
     -D D            JVM options
+=======
