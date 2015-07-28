@@ -39,10 +39,10 @@ package janala.solvers;
  * Time: 2:28 PM
  */
 public class BranchElement extends Element {
-    boolean branch;
-    boolean done;
-    int pathConstraintIndex; // -1 for no index
-    boolean isForceTruth;
+    public boolean branch;
+    public boolean done;
+    public int pathConstraintIndex; // -1 for no index
+    public boolean isForceTruth;
 
     public BranchElement(boolean branch, boolean done, int pathConstraintIndex, int iid) {
         this.branch = branch;

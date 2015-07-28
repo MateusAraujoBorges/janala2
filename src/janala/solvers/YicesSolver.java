@@ -232,6 +232,11 @@ public class YicesSolver implements Solver {
 
     }
 
+	@Override
+	public void setNegateLast(boolean option) {
+		throw new RuntimeException("Unimplemented!");
+	}
+
 
 
 

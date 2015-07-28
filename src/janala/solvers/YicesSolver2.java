@@ -298,6 +298,11 @@ public class YicesSolver2 implements Solver {
             return false;
         }
     }
+
+	@Override
+	public void setNegateLast(boolean option) {
+		throw new RuntimeException("Unimplemented!");
+	}
 }
 
 class StreamGobbler extends Thread

@@ -36,6 +36,7 @@ package janala.config;
 import janala.logger.Logger;
 import janala.solvers.Solver;
 import janala.solvers.Strategy;
+import janala.solvers.counters.Counter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -68,6 +69,7 @@ public class Config {
     public String[] includeList;
     private String loggerClass;
     private String solver;
+    private String counter;
     private String strategy;
     public int maxStringLength;
     public int pathId;
@@ -80,6 +82,7 @@ public class Config {
     public TestChecker testChecker;
     public String oldStates;
     public boolean printHistory;
+	public String symtreeFile;
 
     public Config() {
         try {
@@ -105,6 +108,7 @@ public class Config {
             loggerClass = System.getProperty("janala.loggerClass", "janala.logger.FileLogger");
             analysisClass = properties.getProperty("catg.analysisClass", "janala.logger.DJVM").replace('.', '/');
             solver = properties.getProperty("catg.solverClass", "janala.solvers.YicesSolver2");
+            counter = properties.getProperty("catg.countingClass", "janala.solvers.PCPCounter");
             strategy = properties.getProperty("catg.strategyClass", "janala.solvers.DFSStrategy");
             excludeList = properties.getProperty("catg.excludeList","").split(",");
             includeList = properties.getProperty("catg.includeList","catg.CATG").split(",");
@@ -112,6 +116,7 @@ public class Config {
             pathId = Integer.parseInt(properties.getProperty("catg.pathId","1"));
             scopeBeginMarker = properties.getProperty("catg.scopeBeginMarker", "begin$$$$");
             scopeEndMarker = properties.getProperty("catg.scopeEndMarker", "end$$$$");
+            symtreeFile = properties.getProperty("catg.symbolicTreeFile","symtree");
 
             oldStates = properties.getProperty("catg.oldStatesFile","oldStates");
             test = System.getProperty("catg.test", properties.getProperty("catg.test",  "test"));
@@ -194,4 +199,22 @@ public class Config {
         }
         return null;
     }
+
+	public Counter getCounter() {
+		try {
+            Class counterClass = Class.forName(counter);
+            Counter ret = (Counter)counterClass.newInstance();
+            return ret;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return null;
+	}
 }

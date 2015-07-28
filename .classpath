@@ -7,6 +7,10 @@
 	<classpathentry kind="lib" path="lib/emma.jar"/>
 	<classpathentry kind="lib" path="lib/iagent.jar"/>
 	<classpathentry kind="lib" path="lib/trove-3.0.3.jar"/>
+	<classpathentry kind="lib" path="lib/guava-18.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="out/production/tests"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PathConditionsProbability"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="out/production/janala"/>
 </classpath>

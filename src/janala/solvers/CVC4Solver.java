@@ -52,6 +52,7 @@ public class CVC4Solver implements Solver {
     LinkedList<InputElement> inputs;
     ArrayList<Constraint> constraints;
     int pathConstraintIndex;
+    boolean negateLast = true;
     private final static Logger logger = MyLogger.getLogger(CVC4Solver.class.getName());
     private final static Logger tester = MyLogger.getTestLogger(Config.mainClass+"."+Config.iteration);
 
@@ -243,6 +244,7 @@ public class CVC4Solver implements Solver {
             Constraint tmp;
             PrintStream out = new PrintStream(new BufferedOutputStream(new FileOutputStream(Config.instance.formulaFile+".tmp")));
             if (quickUnsatCheck(type)) {
+            	out.close();
                 return RESULT_TYPE.FALSE;
             }
 
@@ -265,10 +267,17 @@ public class CVC4Solver implements Solver {
 
             out.print("CHECKSAT ");
 
-
-
             //System.out.println("Constraint "+pathConstraintIndex+": !" + constraints.get(pathConstraintIndex));
-            tmp = constraints.get(pathConstraintIndex).not().substitute(soln);
+
+            // By default, CATG will try to negate the last constraint in all solvers.
+            // This behavior is annoying when we are not following an dfs-like concolic execution,
+            // so I added an option (setNegateLast) to control it.
+            if (negateLast) {
+            	tmp = constraints.get(pathConstraintIndex).not().substitute(soln);	
+            } else {
+            	tmp = constraints.get(pathConstraintIndex).substitute(soln);
+            }
+            
             if (tmp != SymbolicTrueConstraint.instance) {
                 allTrue = false;
             }
@@ -476,5 +485,10 @@ public class CVC4Solver implements Solver {
             return null;
         }
     }
+
+	@Override
+	public void setNegateLast(boolean option) {
+		this.negateLast = option;
+	}
 }
 

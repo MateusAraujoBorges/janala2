@@ -36,15 +36,31 @@ package janala.interpreters;
 import java.util.Map;
 
 /**
- * Author: Koushik Sen (ksen@cs.berkeley.edu)
- * Date: 6/22/12
- * Time: 12:23 PM
+ * Author: Koushik Sen (ksen@cs.berkeley.edu) Date: 6/22/12 Time: 12:23 PM
  */
 public abstract class Constraint {
-    public int iid;
-    public int index;
+	public int iid;
+	public int index;
 
-    public abstract void accept(ConstraintVisitor v);
-    public abstract Constraint not();
-    public abstract Constraint substitute(Map<String, Long> assignments);
+	public abstract void accept(ConstraintVisitor v);
+
+	public abstract Constraint not();
+
+	public abstract Constraint substitute(Map<String, Long> assignments);
+
+	/*
+	 * Mateus: Not 100% sure, but I believe Constraints are "handled" like
+	 * immutable objects. For now I will use toString() for the equals, but this
+	 * may be changed if the previous hypothesis is incorrect.
+	 */
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Constraint) {
+			Constraint cons = (Constraint) obj;
+			return obj.toString().equals(this.toString());
+		}
+		return false;
+	}
+
 }

@@ -233,4 +233,9 @@ public class ChocoSolver implements Solver{
         return false;
     }
 
+	@Override
+	public void setNegateLast(boolean option) {
+		throw new RuntimeException("Unimplemented!");
+	}
+
 }

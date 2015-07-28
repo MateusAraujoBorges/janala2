@@ -554,5 +554,10 @@ public class CVC3Solver implements Solver {
             return null;
         }
     }
+
+	@Override
+	public void setNegateLast(boolean option) {
+		throw new RuntimeException("Unimplemented!");
+	}
 }
 

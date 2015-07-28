@@ -46,6 +46,12 @@ import java.util.LinkedList;
  */
 public interface Solver extends ConstraintVisitor {
     public boolean solve();
+  /**
+   * If the solver should negate the last constraint before solving it.
+   * Default should be true, to avoid compatibility problems with CATG.
+   * @param option
+   */
+    public void setNegateLast(boolean option); 
     public void setInputs(LinkedList<InputElement> inputs);
     public void setPathConstraint(ArrayList<Constraint> pathConstraint);
     public void setPathConstraintIndex(int pathConstraintIndex);

@@ -45,9 +45,13 @@
         <pathelement location="lib/choco-solver-2.1.4.jar"/>
         <pathelement location="lib/automaton.jar"/>
         <pathelement location="lib/trove-3.0.3.jar"/>
+    	<pathelement location="lib/guava-18.0.jar"/>
+    	<pathelement location="../PathConditionsProbability/PathConditionsProbability/target/classes"/>
+    	<!--<pathelement location="../PathConditionsProbability/PathConditionsProbability/target/dependency/*.jar"/>-->
     </path>
 
-    <target name="init" depends="clean">
+	<!--depends="clean"-->
+    <target name="init" >
         <tstamp/>
         <mkdir dir="out/production/janala"/>
         <mkdir dir="out/production/tests"/>
@@ -62,7 +66,7 @@
 
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="out/production/janala"
+        <javac debug="true" debuglevel="${debuglevel}" srcdir="src/" destdir="out/production/janala"
                source="${source}" target="${target}" includeantruntime="false">
             <!--<compilerarg value="-Xlint:deprecated"/>-->
             <src path="src/janala"/>
@@ -74,7 +78,7 @@
 
     <target depends="build-project" name="build-tests">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="out/production/tests"
+        <javac debug="true"  debuglevel="${debuglevel}" srcdir="src/" destdir="out/production/tests"
                source="${source}" target="${target}" includeantruntime="false">
             <!--<compilerarg value="-Xlint:deprecated"/>-->
             <src path="src/tests"/>

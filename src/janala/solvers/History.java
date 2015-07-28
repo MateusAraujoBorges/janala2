@@ -352,7 +352,7 @@ public class History {
         }
     }
 
-    boolean solveAt(int pathConstraintIndex) {
+    public boolean solveAt(int pathConstraintIndex) {
         solver.setInputs(inputs);
         solver.setPathConstraint(pathConstraint);
         solver.setPathConstraintIndex(pathConstraintIndex);
