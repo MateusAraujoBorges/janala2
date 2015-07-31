@@ -42,6 +42,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.google.common.collect.Range;
+
 public class Config {
     public static final String mainClass = System.getProperty("janala.mainClass", null);
     public static final int iteration = Integer.getInteger("janala.iteration", 0);
@@ -83,6 +85,7 @@ public class Config {
     public String oldStates;
     public boolean printHistory;
 	public String symtreeFile;
+	public Range defaultRange;
 
     public Config() {
         try {
@@ -123,6 +126,11 @@ public class Config {
             String testCheckingClass = System.getProperty("catg.testCheckingClass",properties.getProperty("catg.testCheckingClass", "janala.config.DefaultTestCheckerImpl"));
             testChecker = (TestChecker) loadClass(testCheckingClass);
 
+            String rangeStr = properties.getProperty("catg.defaultRange","-1000,1000");
+            long lo = Long.parseLong(rangeStr.split(",")[0]);
+            long hi = Long.parseLong(rangeStr.split(",")[1]);
+            defaultRange = Range.closed(lo, hi);
+            
     	} catch (IOException ex) {
     		ex.printStackTrace();
         }
@@ -216,5 +224,9 @@ public class Config {
             System.exit(1);
         }
         return null;
+	}
+
+	public Range<Long> getDefaultRange() {
+		return defaultRange;
 	}
 }

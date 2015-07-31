@@ -137,4 +137,10 @@ public class SymbolicOrConstraint extends Constraint {
         }
         return sb.toString();
     }
+
+	@Override
+	public String toMathString() {
+		// TODO Auto-generated method stub
+		throw new RuntimeException("Not Implemented");
+	}
 }

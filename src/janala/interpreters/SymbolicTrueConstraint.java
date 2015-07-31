@@ -59,4 +59,9 @@ public class SymbolicTrueConstraint extends Constraint {
     public String toString() {
         return " TRUE ";
     }
+
+	@Override
+	public String toMathString() {
+		return "true";
+	}
 }

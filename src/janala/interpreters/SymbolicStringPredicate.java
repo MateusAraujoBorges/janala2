@@ -292,4 +292,9 @@ public class SymbolicStringPredicate extends Constraint {
         if (s1.equals(s4) && s2.equals(s3)) return true;
         return false;
     }
+
+	@Override
+	public String toMathString() {
+		throw new RuntimeException("Not Implemented");
+	}
 }

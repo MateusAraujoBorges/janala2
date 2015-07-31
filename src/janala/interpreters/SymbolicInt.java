@@ -259,7 +259,17 @@ public class SymbolicInt extends Constraint {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        boolean first = true;
+        toString(sb);
+        sb.append(" at iid ");
+        sb.append(iid);
+        sb.append(" and index ");
+        sb.append(index);
+        return sb.toString();
+    }
+
+
+	private void toString(StringBuilder sb) {
+		boolean first = true;
         for ( TIntLongIterator it = linear.iterator(); it.hasNext(); ) {
             it.advance();
             
@@ -313,12 +323,15 @@ public class SymbolicInt extends Constraint {
             sb.append(">");
             sb.append('0');
         }
-        sb.append(" at iid ");
-        sb.append(iid);
-        sb.append(" and index ");
-        sb.append(index);
-        return sb.toString();
-    }
+	}
+
+
+	@Override
+	public String toMathString() {
+		StringBuilder sb = new StringBuilder();
+		this.toString(sb);
+		return sb.toString();
+	}
 
 //    public void print(PrintStream out) {
 //        out.print("(");

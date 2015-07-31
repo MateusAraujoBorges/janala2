@@ -10,10 +10,12 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import janala.interpreters.Constraint;
 import janala.interpreters.SymbolicTrueConstraint;
+import janala.solvers.InputElement;
 import name.filieri.antonio.jpf.utils.BigRational;
 
 public class ConcolicCountTree implements SymbolicTree {
@@ -24,6 +26,7 @@ public class ConcolicCountTree implements SymbolicTree {
 
 	public ConcolicCountTree() {
 		root = new ConcolicCountNode(SymbolicTrueConstraint.instance);
+		root.setNumberOfSolutions(BigRational.ONE);
 	}
 
 	@Override
@@ -110,9 +113,22 @@ public class ConcolicCountTree implements SymbolicTree {
 	}
 
 	@Override
-	public void count(List<SymbolicCountNode> path, Counter counter) {
-		// TODO Auto-generated method stub
-
+	public void count(List<SymbolicCountNode> path, List<InputElement> inputs, Counter counter) { 
+		List<Constraint> clauses = Lists.newArrayList();
+		
+		for (SymbolicCountNode node : path) {
+//			if (!clauses.equals(SymbolicTrueConstraint.instance)) {
+				clauses.add(node.getConstraint());
+//			}
+			
+			if (node.isCounted()) {
+				//ignore it
+			} else {
+				List<Constraint> pc = ImmutableList.copyOf(clauses);
+				BigRational result = counter.count(pc, inputs);
+				node.setNumberOfSolutions(result);
+			}
+		}
 	}
 
 	@Override
@@ -178,4 +194,5 @@ public class ConcolicCountTree implements SymbolicTree {
 		}
 	}
 
+	
 }

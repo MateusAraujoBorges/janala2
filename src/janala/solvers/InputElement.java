@@ -33,6 +33,9 @@
 
 package janala.solvers;
 
+import com.google.common.collect.Range;
+
+import janala.config.Config;
 import janala.interpreters.Value;
 
 /**
@@ -41,11 +44,19 @@ import janala.interpreters.Value;
  * Time: 2:29 PM
  */
 public class InputElement {
-    Integer symbol;
-    Value value;
-
+    public final Integer symbol;
+    public final Value value;
+    public final Range<Long> range;
+    
     public InputElement(Integer symbol, Value value) {
         this.symbol = symbol;
         this.value = value;
+        this.range = Config.instance.getDefaultRange();
+    }
+    
+    public InputElement(Integer symbol, Value value, Range<Long> range) {
+    	this.symbol = symbol;
+        this.value = value;
+        this.range = range;
     }
 }

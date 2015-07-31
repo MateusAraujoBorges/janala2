@@ -62,5 +62,7 @@ public abstract class Constraint {
 		}
 		return false;
 	}
+	
+	public abstract String toMathString();
 
 }

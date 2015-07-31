@@ -76,4 +76,10 @@ public class SymbolicNotConstraint extends Constraint {
             sb.append(constraint);
             return sb.toString();
         }
+
+	@Override
+	public String toMathString() {
+		// TODO Auto-generated method stub
+		throw new RuntimeException("Not Implemented");
+	}
 }

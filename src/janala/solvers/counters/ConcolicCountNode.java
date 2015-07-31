@@ -85,6 +85,11 @@ public class ConcolicCountNode implements SymbolicCountNode {
 	};
 
 	@Override
+	public String toString() {
+		return "count: " + nsolutions + " cons:" + constraint;
+	}
+	
+	@Override
 	public SymbolicCountNode getLeftChild() {
 		return left;
 	}

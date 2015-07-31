@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import janala.interpreters.Constraint;
+import janala.solvers.InputElement;
 
 public interface SymbolicTree extends Serializable {
 
@@ -32,7 +33,7 @@ public interface SymbolicTree extends Serializable {
 	 * {@code isCounted()} is computed using the {@code counter} object.
 	 */
 
-	public void count(List<SymbolicCountNode> path, Counter counter);
+	public void count(List<SymbolicCountNode> path, List<InputElement> inputs, Counter counter);
 
 	/**
 	 * Update count estimates and remove nodes without remaining unexplored
@@ -65,4 +66,6 @@ public interface SymbolicTree extends Serializable {
 	 * @throws IOException
 	 */
 	public void writeToDisk(File f) throws FileNotFoundException, IOException;
+
+	
 }
