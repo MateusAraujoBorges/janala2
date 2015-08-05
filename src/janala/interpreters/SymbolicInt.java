@@ -41,7 +41,10 @@ import gnu.trove.map.hash.TIntLongHashMap;
 import java.util.Map;
 
 public class SymbolicInt extends Constraint {
-    public enum COMPARISON_OPS {EQ, NE, GT, GE, LT, LE, UN};
+	private static final long serialVersionUID = -2174470330237371648L;
+
+
+	public enum COMPARISON_OPS {EQ, NE, GT, GE, LT, LE, UN};
 
     public COMPARISON_OPS op;
     public TIntLongHashMap linear;

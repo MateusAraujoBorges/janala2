@@ -37,7 +37,8 @@ import java.util.Map;
  * Time: 10:52 PM
  */
 public class SymbolicNotConstraint extends Constraint {
-        public Constraint constraint;
+	private static final long serialVersionUID = 2398673330112957473L;
+		public Constraint constraint;
 
         public SymbolicNotConstraint(Constraint c) {
             constraint = c;

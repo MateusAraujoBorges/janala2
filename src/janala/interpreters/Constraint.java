@@ -33,12 +33,14 @@
 
 package janala.interpreters;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Author: Koushik Sen (ksen@cs.berkeley.edu) Date: 6/22/12 Time: 12:23 PM
  */
-public abstract class Constraint {
+public abstract class Constraint implements Serializable {
+	private static final long serialVersionUID = 2442956915284687102L;
 	public int iid;
 	public int index;
 

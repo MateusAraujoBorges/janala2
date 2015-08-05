@@ -42,7 +42,9 @@ import java.util.Map;
 
 public class SymbolicStringPredicate extends Constraint {
 
-    public enum COMPARISON_OPS {EQ, NE, IN, NOTIN};
+	private static final long serialVersionUID = -2678326958300773540L;
+
+	public enum COMPARISON_OPS {EQ, NE, IN, NOTIN};
 
     COMPARISON_OPS op;
     Object left;

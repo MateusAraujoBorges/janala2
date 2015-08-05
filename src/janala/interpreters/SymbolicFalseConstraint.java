@@ -35,7 +35,8 @@ import java.util.Map;
  * Author: Koushik Sen (ksen@cs.berkeley.edu)
  */
 public class SymbolicFalseConstraint extends Constraint {
-    public static SymbolicFalseConstraint instance = new SymbolicFalseConstraint();
+	private static final long serialVersionUID = 6693836356102081001L;
+	public static SymbolicFalseConstraint instance = new SymbolicFalseConstraint();
 
     public SymbolicFalseConstraint() {
     }

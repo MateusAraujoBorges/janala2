@@ -35,7 +35,8 @@ import java.util.Map;
  * Author: Koushik Sen (ksen@cs.berkeley.edu)
  */
 public class SymbolicTrueConstraint extends Constraint {
-    public static SymbolicTrueConstraint instance = new SymbolicTrueConstraint();
+	private static final long serialVersionUID = 7068252973680685143L;
+	public static SymbolicTrueConstraint instance = new SymbolicTrueConstraint();
 
     public SymbolicTrueConstraint() {
     }

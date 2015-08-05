@@ -42,7 +42,8 @@ import java.util.Map;
  * Time: 1:46 PM
  */
 public class SymbolicOrConstraint extends Constraint {
-    public LinkedList<Constraint> constraints;
+	private static final long serialVersionUID = 1390324367443104174L;
+	public LinkedList<Constraint> constraints;
 
     private SymbolicOrConstraint() {
 

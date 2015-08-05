@@ -69,7 +69,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class SymbolicAndConstraint extends Constraint {
-    public LinkedList<Constraint> constraints;
+	private static final long serialVersionUID = 6330475421255720111L;
+	public LinkedList<Constraint> constraints;
 
     public SymbolicAndConstraint(Constraint c) {
         constraints = new LinkedList<Constraint>();

@@ -38,7 +38,9 @@ import java.util.Map;
  */
 public class SymbolicIntCompareConstraint extends Constraint {
 
-    public enum COMPARISON_OPS {EQ, NE, GT, GE, LT, LE, UN};
+	private static final long serialVersionUID = -2917870122994602555L;
+
+	public enum COMPARISON_OPS {EQ, NE, GT, GE, LT, LE, UN};
 
     public SymOrInt left;
     public SymOrInt right;
