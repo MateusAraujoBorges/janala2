@@ -58,4 +58,9 @@ public class UnexploredNode implements SymbolicCountNode {
 	public void setRightChild(SymbolicCountNode right) {
 		throw new RuntimeException("Invalid Operation!");
 	}
+	
+	@Override
+	public String toString() {
+		return "Unexplored=> count:" + nsolutions + " cons:" + constraint;
+	}
 }

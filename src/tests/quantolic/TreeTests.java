@@ -2,6 +2,7 @@ package tests.quantolic;
 
 import java.util.List;
 
+import org.apache.commons.math3.random.RandomGenerator;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import com.google.common.collect.Lists;
@@ -18,6 +19,7 @@ import janala.solvers.counters.ConcolicCountTree;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.PCPCounter;
 import janala.solvers.counters.PrunedNode;
+import janala.solvers.counters.QuantolicStrategy;
 import janala.solvers.counters.SymbolicCountNode;
 import janala.solvers.counters.SymbolicTree;
 import janala.solvers.counters.UnexploredNode;
@@ -226,6 +228,115 @@ public class TreeTests {
 		assertEquals(n_n2_n1.getNumberOfSolutions(), new BigRational(224,441));
 		
 	}
+	
+	//TODO rewrite this with a mocking framework
+	@Test
+	public void testQuantolicPathSelection() {
+		//Same tree as before, but with some extra nodes
+		SymOrInt v1 = new SymOrInt("x");
+		SymOrInt v2 = new SymOrInt("y");
+		SymOrInt v3 = new SymOrInt("z");
+
+		SymOrInt c1 = new SymOrInt(1);
+		SymOrInt c2 = new SymOrInt(2);
+		SymOrInt c3 = new SymOrInt(3);
+
+		Constraint a1 = new SymbolicIntCompareConstraint(v1, c1, SymbolicIntCompareConstraint.COMPARISON_OPS.GE);
+		Constraint a2 = new SymbolicIntCompareConstraint(v2, c2, SymbolicIntCompareConstraint.COMPARISON_OPS.GE);
+		Constraint a3 = new SymbolicIntCompareConstraint(v3, c3, SymbolicIntCompareConstraint.COMPARISON_OPS.GE);
+		Constraint a4 = new SymbolicIntCompareConstraint(v1, v2, SymbolicIntCompareConstraint.COMPARISON_OPS.GE);
+
+		// first insertion
+		List<Constraint> constraints = Lists.newArrayList(a1, a2, a3);
+		SymbolicTree tree = new ConcolicCountTree();
+
+		List<SymbolicCountNode> nodes = tree.insertPathIntoTree(constraints);
+		checkNodeLayoutAndSetupProbabilities(tree, nodes);
+
+		// second insertion
+		Constraint a2_1 = new SymbolicIntCompareConstraint(v2, c2, SymbolicIntCompareConstraint.COMPARISON_OPS.LT);
+		List<Constraint> constraints_2 = Lists.newArrayList(a1, a2_1, a3);
+		List<SymbolicCountNode> nodes2 = tree.insertPathIntoTree(constraints_2);
+		checkNodeLayoutAndSetupProbabilities_take2(tree, nodes2);
+
+		SymbolicCountNode node4 = new UnexploredNode(a4);
+		node4.setNumberOfSolutions(new BigRational(1,10));
+		SymbolicCountNode node4_1 = new UnexploredNode(a4);
+		node4_1.setNumberOfSolutions(new BigRational(1,10));
+		
+		tree.getRoot().getLeftChild().getLeftChild().getLeftChild().setRightChild(node4);
+		tree.getRoot().getLeftChild().getRightChild().getLeftChild().setRightChild(node4_1);
+		/*-
+		 * root (p=1)
+		 *  |______________
+		 *  |              | 
+		 * x>=1(p=0.7)  x<1(p=0.3,not explored)
+		 *  |______________
+		 *  |              |
+		 * y>=2(p=0.6)   y<2(p=0.1)
+		 *  |              |____________
+		 *  |			   |            |
+		 *  |______      z>=3(p=0.1)   z<3(p=0.0, not explored)
+		 *  |      |       |___________________          
+		 *  |      |                      |   |
+		 *  |    z<3(p=0.5,not explored)  P   x>y(p=0.1,not explored)    
+		 *  |
+		 * z>=3(p=0.1)
+		 *  |___
+		 *  |   |
+		 *  P  x>y(p=0.1,not explored)
+		 */
+		
+		QuantolicStrategy strategy = new QuantolicStrategy();
+		strategy.rng = new RandomGenerator() {
+			
+			double[] values = new double[]{0.3,0.8,0.2,0.9,0.1,0.99,0.5,0.000000001};
+			int pos = 0;
+			
+			@Override
+			public void setSeed(long arg0) {}
+			@Override
+			public void setSeed(int[] arg0) {}
+			@Override
+			public void setSeed(int arg0) {}
+			@Override
+			public long nextLong() {return -1;}
+			@Override
+			public int nextInt(int arg0) {return -1;}
+			@Override
+			public int nextInt() {return -1;}
+			@Override
+			public double nextGaussian() {return -1;}
+			@Override
+			public float nextFloat() {return -1;}
+			@Override
+			public double nextDouble() {
+				return values[pos++];
+			}
+			@Override
+			public void nextBytes(byte[] arg0) {}
+			public boolean nextBoolean() {return false;}
+		};
+		strategy.tree = tree;
+		
+		List<Constraint> nextPath = strategy.chooseNextPath();
+		assertEquals(nextPath.size(), 3);
+		assertEquals(nextPath.get(0), a1);
+		assertEquals(nextPath.get(1), a2);
+		assertEquals(nextPath.get(2), a3.not());
+		
+		nextPath = strategy.chooseNextPath();
+		assertEquals(nextPath.size(), 1);
+		assertEquals(nextPath.get(0), a1.not());
+		
+		nextPath = strategy.chooseNextPath();
+		assertEquals(nextPath.size(), 4);
+		assertEquals(nextPath.get(0), a1);
+		assertEquals(nextPath.get(1), a2.not());
+		assertEquals(nextPath.get(2), a3);
+		assertEquals(nextPath.get(3), a4);
+	}
+
 
 	private void checkNodeLayoutAndSetupProbabilities(SymbolicTree tree, List<SymbolicCountNode> nodes) {
 		assertEquals(nodes.size(), 4);

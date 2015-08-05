@@ -85,7 +85,9 @@ public class Config {
     public String oldStates;
     public boolean printHistory;
 	public String symtreeFile;
+	public long seed;
 	public Range defaultRange;
+	public String rngFile;
 
     public Config() {
         try {
@@ -111,7 +113,7 @@ public class Config {
             loggerClass = System.getProperty("janala.loggerClass", "janala.logger.FileLogger");
             analysisClass = properties.getProperty("catg.analysisClass", "janala.logger.DJVM").replace('.', '/');
             solver = properties.getProperty("catg.solverClass", "janala.solvers.YicesSolver2");
-            counter = properties.getProperty("catg.countingClass", "janala.solvers.PCPCounter");
+            counter = properties.getProperty("catg.countingClass", "janala.solvers.counters.PCPCounter");
             strategy = properties.getProperty("catg.strategyClass", "janala.solvers.DFSStrategy");
             excludeList = properties.getProperty("catg.excludeList","").split(",");
             includeList = properties.getProperty("catg.includeList","catg.CATG").split(",");
@@ -119,7 +121,9 @@ public class Config {
             pathId = Integer.parseInt(properties.getProperty("catg.pathId","1"));
             scopeBeginMarker = properties.getProperty("catg.scopeBeginMarker", "begin$$$$");
             scopeEndMarker = properties.getProperty("catg.scopeEndMarker", "end$$$$");
-            symtreeFile = properties.getProperty("catg.symbolicTreeFile","symtree");
+            symtreeFile = properties.getProperty("catg.symbolicTreeFile","symtree.ser");
+            seed = Long.parseLong(properties.getProperty("catg.seed","-388213196"));
+            rngFile = properties.getProperty("catg.rngFile","rng.ser");
 
             oldStates = properties.getProperty("catg.oldStatesFile","oldStates");
             test = System.getProperty("catg.test", properties.getProperty("catg.test",  "test"));

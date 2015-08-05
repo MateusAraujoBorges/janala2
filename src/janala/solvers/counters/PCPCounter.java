@@ -1,10 +1,12 @@
 package janala.solvers.counters;
 
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import com.google.common.collect.Lists;
+
 import janala.interpreters.Constraint;
-import janala.solvers.History;
 import janala.solvers.InputElement;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.analysis.SequentialAnalyzerBarvinok;
@@ -24,9 +26,11 @@ public class PCPCounter implements Counter {
 	@Override
 	public BigRational count(List<Constraint> constraints, List<InputElement> inputs) {
 		
+		List<InputElement> filteredInputs = filterInputs(constraints,inputs);
+		
 		Domain.Builder domainBuilder = new Domain.Builder();
 		StringBuilder scenario = new StringBuilder();
-		for (InputElement input : inputs) {
+		for (InputElement input : filteredInputs) {
 			long lo = input.range.lowerEndpoint();
 			long hi = input.range.upperEndpoint();
 			String var = "x"+input.symbol;
@@ -76,6 +80,26 @@ public class PCPCounter implements Counter {
 		}
 
 		return BigRational.MINUS_ONE;
+	}
+
+	/**
+	 * Collect the input variables in {@code inputs} present in {@code constraints}. 
+	 * TODO This should be done with a visitor in the future, but
+	 * @param constraints
+	 * @param inputs
+	 * @return
+	 */
+	
+	private List<InputElement> filterInputs(List<Constraint> constraints, List<InputElement> inputs) {
+		Set<Integer> varIDsInConstraints = VarCollectorVisitor.collectVariableIDs(constraints);
+		List<InputElement> varsInConstraints = Lists.newArrayList();
+		for (InputElement input : inputs) {
+			if (varIDsInConstraints.contains(input.symbol)) {
+				varsInConstraints.add(input);
+			}
+		}
+		
+		return varsInConstraints;
 	}
 
 }

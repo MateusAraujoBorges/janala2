@@ -42,6 +42,7 @@ import janala.utils.MyLogger;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -470,4 +471,16 @@ public class History {
             ((BranchElement)history.get(index-1)).isForceTruth = true;
         }
     }
+
+	public LinkedList<InputElement> getInputs() {
+		return inputs;
+	}
+	
+	public List<Constraint> getPathConstraint() {
+		return pathConstraint;
+	}
+
+	public Solver getSolver() {
+		return solver;
+	}
 }
