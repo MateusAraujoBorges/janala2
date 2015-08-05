@@ -72,7 +72,7 @@ public class Config {
     private String loggerClass;
     private String solver;
     private String counter;
-    private String strategy;
+    public String strategy;
     public int maxStringLength;
     public int pathId;
     public boolean printFormulaAndSolutions;

@@ -60,6 +60,7 @@ public class History {
     private final static Logger logger = MyLogger.getLogger(History.class.getName());
     private final static Logger tester = MyLogger.getTestLogger(Config.mainClass+"."+Config.iteration);
     private boolean ignore;
+    private boolean ignoreAll;
     private boolean predictionFailed = false;
 
     private LinkedList<InputElement> inputs;
@@ -73,7 +74,13 @@ public class History {
         inputs = new LinkedList<InputElement>();
         index = 0;
         this.solver = solver;
-        this.ignore = false;
+		// MATEUS: CATG logs a trace of the execution and uses it
+		// to validate the next execution. If, until the branching point between
+		// the current and the previous execution, the trace doesn't
+		// match, the execution backtracks. In "Quantolic" mode this doesn't
+        // work - two consecutive executions can have no common prefixes.
+	    this.ignore = Config.instance.strategy.equals("janala.solvers.counters.QuantolicStrategy");
+	    this.ignoreAll = this.ignore;
     }
 
     public SymbolicOrValue assumeOrBegin(IntValue arg) {
@@ -311,7 +318,7 @@ public class History {
         } else {
             current.pathConstraintIndex = -1;
         }
-        if (ignore) {
+        if (ignore && !ignoreAll) {
             ignore = false;
         }
 //        current.branch = result.result;
