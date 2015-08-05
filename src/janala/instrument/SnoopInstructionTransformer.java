@@ -91,22 +91,24 @@ public class SnoopInstructionTransformer implements ClassFileTransformer {
     public byte[] transform(ClassLoader loader,String cname, Class<?> c, ProtectionDomain d, byte[] cbuf)
             throws IllegalClassFormatException {
 
-        boolean toInstrument = true;
-        String[] tmp = Config.instance.excludeList;
-        for (int i = 0; i < tmp.length; i++) {
-            String s = tmp[i];
-            if (cname.startsWith(s)) {
-                toInstrument = false;
-                break;
-            }
-        }
-        tmp = Config.instance.includeList;
+		// MATEUS: I inverted the order of the inclusion/exclusion,
+		// and changed the default to 'false'.
+        boolean toInstrument = false;
+        String[] tmp = Config.instance.includeList;
         for (int i = 0; i < tmp.length; i++) {
             String s = tmp[i];
             if (cname.startsWith(s)) {
                 toInstrument = true;
                 break;
             }
+        }
+        tmp = Config.instance.excludeList;
+        for (int i = 0; i < tmp.length; i++) {
+        	String s = tmp[i];
+        	if (cname.startsWith(s)) {
+        		toInstrument = false;
+        		break;
+        	}
         }
 
         if (toInstrument) {
