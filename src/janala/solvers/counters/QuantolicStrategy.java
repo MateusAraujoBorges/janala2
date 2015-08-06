@@ -79,12 +79,18 @@ public class QuantolicStrategy extends Strategy {
 		LinkedList<InputElement> inputs = history.getInputs();
 		Solver solver = history.getSolver();
 		solver.setNegateLast(false);
+//		logger.log(Level.INFO, tree.toString());
 
 		// insert,count,prune
 		List<SymbolicCountNode> treePath = tree.insertPathIntoTree(pathTaken);
+//		System.out.println(tree.toString());
 		tree.count(treePath, inputs, counter);
+//		System.out.println(tree.toString());
 		tree.updateAndPrune(treePath);
+//		System.out.println(tree.toString());
 
+
+		
 		// select and solve
 		ArrayList<Constraint> nextPath = Lists.newArrayList();
 		while (nextPath.isEmpty() && !tree.isDone()) {
@@ -107,6 +113,8 @@ public class QuantolicStrategy extends Strategy {
 					throw new RuntimeException(e);
 				}
 
+				logger.log(Level.INFO, tree.toString());
+				
 				return 1;
 			} else {
 				logger.warning("Infeasible path detected with solutions. Something strange is going on, maybe?");

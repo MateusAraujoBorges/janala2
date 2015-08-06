@@ -7,7 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
+import java.util.Stack;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -194,5 +197,36 @@ public class ConcolicCountTree implements SymbolicTree {
 		}
 	}
 
+	@Override
+	public String toString() {
+		SymbolicCountNode current = root;
+		Deque<SymbolicCountNode> stack = new ArrayDeque<SymbolicCountNode>();
+		Deque<Integer> depthStack = new ArrayDeque<Integer>();
+		stack.push(current);
+		depthStack.push(0);
+		
+		StringBuffer sb = new StringBuffer();
+		while (!stack.isEmpty()) {
+			current = stack.pop();
+			int depth = depthStack.pop();
+			for (int i = 0; i < depth; i++) {
+				sb.append(" > ");
+			}
+			if (!current.isCounted() && current instanceof ConcolicCountNode) {
+				sb.append("!!!uncounted!!!! ");
+			}
+			sb.append(current.toString());
+			sb.append("\n");
+			if (current instanceof UnexploredNode || current instanceof PrunedNode) {
+				continue;
+			} else {
+				stack.push(current.getRightChild());
+				stack.push(current.getLeftChild());
+				depthStack.push(depth + 1);
+				depthStack.push(depth + 1);
+			}
+		}
+		return sb.toString();
+	}
 	
 }

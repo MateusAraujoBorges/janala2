@@ -26,7 +26,7 @@ public class UnexploredNode implements SymbolicCountNode {
 
 	@Override
 	public boolean isCounted() {
-		return nsolutions != BigRational.MINUS_ONE;
+		return !nsolutions.equals(BigRational.MINUS_ONE);
 	}
 
 	@Override
@@ -61,6 +61,6 @@ public class UnexploredNode implements SymbolicCountNode {
 	
 	@Override
 	public String toString() {
-		return "Unexplored=> count:" + nsolutions + " cons:" + constraint;
+		return "[unexplored] count:" + nsolutions + " cons:" + constraint;
 	}
 }

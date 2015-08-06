@@ -59,7 +59,6 @@ public class PCPCounter implements Counter {
 			SequentialAnalyzerBarvinok analyzer = new SequentialAnalyzerBarvinok(configuration, domain, usageProfile, 1);
 			
 			BigRational probability = analyzer.analyzeSpfPC(pc.toString());
-			System.out.println(probability);
 			return probability;
 			
 		} catch (InvalidUsageProfileException e) {

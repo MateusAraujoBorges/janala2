@@ -26,13 +26,7 @@ public class ConcolicCountNode implements SymbolicCountNode {
 		nsolutions = BigRational.MINUS_ONE;
 		alreadyHashed = false;
 		hashcode = 0;
-		//problem = toPCPFormat(cons);
 	}
-
-//	private Problem toPCPFormat(Constraint cons) {
-//		String pc = cons.toString();
-//		pc.toString();
-//	}
 
 	@Override
 	public BigRational getNumberOfSolutions() {
@@ -46,7 +40,7 @@ public class ConcolicCountNode implements SymbolicCountNode {
 
 	@Override
 	public boolean isCounted() {
-		return nsolutions != BigRational.MINUS_ONE;
+		return !nsolutions.equals(BigRational.MINUS_ONE);
 	}
 
 	@Override

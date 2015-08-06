@@ -55,4 +55,8 @@ public class PrunedNode implements SymbolicCountNode {
 		throw new RuntimeException("Invalid Operation!");
 	}
 
+	@Override
+	public String toString() {
+		return " -- PRUNED -- ";
+	}
 }
