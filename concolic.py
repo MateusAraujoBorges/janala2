@@ -25,7 +25,7 @@ catg_tmp_dir = "catg_tmp"
 
 def concolic ():
     cmd1 = "java -Xmx4096M -Xms2048M -Djanala.loggerClass="+loggerClass+" -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea "+yourpgm+" "+arguments
-
+    print cmd1
     cmd1List = shlex.split(cmd1)
     if verbose:
         print cmd1
@@ -117,7 +117,13 @@ else:
     sep = ":"
     windows=False
 catg_home = os.path.abspath(os.path.dirname(__file__)).replace("\\","/")+"/"
-classpath = catg_home+"out/production/tests"+sep+catg_home+"out/production/janala"+sep+catg_home+"lib/asm-all-3.3.1.jar"+sep+catg_home+"lib/trove-3.0.3.jar"+sep+catg_home+"lib/automaton.jar"+sep+catg_home+"lib/iagent.jar"
+pcp_home = "/home/mateus/workspace/PathConditionsProbability/PathConditionsProbability"
+classpath = (catg_home+"out/production/tests"+sep+catg_home+"out/production/janala"+sep+catg_home+"lib/asm-all-3.3.1.jar" +
+            sep+catg_home+"lib/trove-3.0.3.jar"+sep+catg_home+"lib/automaton.jar"+sep+catg_home+"lib/iagent.jar" + 
+            sep+catg_home+"lib/guava-18.0.jar"+sep+catg_home+"lib/commons-math3-3.5.jar"+sep+catg_home+"lib/antlr4-runtime-4.3.jar" +
+            sep+catg_home+"lib/hamcrest-core-1.3.jar"+sep+catg_home+"lib/junit-4.12.jar"+sep+pcp_home+"/target/classes" + sep + pcp_home +
+	    (sep+pcp_home+"/target/dependency/").join([jar for jar in os.listdir(pcp_home+"/target/dependency/") if jar.endswith(".jar")]))
+
 args = getArguments()
 iters = args.maxIterations
 yourpgm = args.className
