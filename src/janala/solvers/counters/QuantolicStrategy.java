@@ -76,11 +76,17 @@ public class QuantolicStrategy extends Strategy {
 	public int solve(ArrayList<Element> trace, int historySize, History history) {
 
 		List<Constraint> pathTaken = getExecutionPathConstraint(history);
+		if (pathTaken.size() == 0) { //no branches with symbolic variables :P
+			logger.log(Level.INFO,"No branches with symbolic variables were found -  Nothing to do here :P");
+			return -1; 
+		}
+		
 		LinkedList<InputElement> inputs = history.getInputs();
 		Solver solver = history.getSolver();
 		solver.setNegateLast(false);
 //		logger.log(Level.INFO, tree.toString());
 
+//		System.out.println(pathTaken);
 		// insert,count,prune
 		List<SymbolicCountNode> treePath = tree.insertPathIntoTree(pathTaken);
 //		System.out.println(tree.toString());
@@ -115,7 +121,7 @@ public class QuantolicStrategy extends Strategy {
 
 				logger.log(Level.INFO, tree.toString());
 				
-				return 1;
+				return 0;
 			} else {
 				logger.warning("Infeasible path detected with solutions. Something strange is going on, maybe?");
 			}
