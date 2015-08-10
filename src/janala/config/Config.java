@@ -86,7 +86,7 @@ public class Config {
     public boolean printHistory;
 	public String symtreeFile;
 	public long seed;
-	public Range defaultRange;
+	public Range<Long> defaultRange;
 	public String rngFile;
 
     public Config() {
