@@ -95,7 +95,8 @@ public class QuantolicStrategy extends Strategy {
 		tree.updateAndPrune(treePath);
 //		System.out.println(tree.toString());
 
-
+		BigRational coverage = BigRational.ONE.minus(tree.getRoot().getNumberOfSolutions());
+		System.out.println("[quantolic] current coverage: " + coverage.doubleValue());
 		
 		// select and solve
 		ArrayList<Constraint> nextPath = Lists.newArrayList();

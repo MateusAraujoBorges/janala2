@@ -37,6 +37,7 @@ import janala.logger.Logger;
 import janala.solvers.Solver;
 import janala.solvers.Strategy;
 import janala.solvers.counters.Counter;
+import janala.solvers.counters.DomainCoverageStrategyWrapper;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -88,6 +89,7 @@ public class Config {
 	public long seed;
 	public Range<Long> defaultRange;
 	public String rngFile;
+	public boolean printDomainCoverage;
 
     public Config() {
         try {
@@ -129,6 +131,7 @@ public class Config {
             test = System.getProperty("catg.test", properties.getProperty("catg.test",  "test"));
             String testCheckingClass = System.getProperty("catg.testCheckingClass",properties.getProperty("catg.testCheckingClass", "janala.config.DefaultTestCheckerImpl"));
             testChecker = (TestChecker) loadClass(testCheckingClass);
+            printDomainCoverage = properties.getProperty("catg.printDomainCoverage","false").trim().equals("true");
 
             String rangeStr = properties.getProperty("catg.defaultRange","-1000,1000");
             long lo = Long.parseLong(rangeStr.split(",")[0]);
@@ -198,6 +201,9 @@ public class Config {
         try {
             Class solverClass = Class.forName(strategy);
             Strategy ret = (Strategy)solverClass.newInstance();
+            if (printDomainCoverage) {
+            	ret = new DomainCoverageStrategyWrapper(ret); 
+            }
             return ret;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
