@@ -25,7 +25,7 @@ catg_tmp_dir = "catg_tmp"
 
 def concolic ():
     cmd1 = "java -Xmx4096M -Xms2048M -Djanala.loggerClass="+loggerClass+" -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea "+yourpgm+" "+arguments
-    print cmd1
+#    print cmd1
     cmd1List = shlex.split(cmd1)
     if verbose:
         print cmd1
@@ -90,8 +90,9 @@ def remove(file):
 
 def rerunTests():
     print "Rerunning tests"
-    cmd1 = "java -Xmx4096M -Xms2048M -ea -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -cp "+catg_home+"lib/emma.jar emmarun -merge yes -raw -sp "+catg_home+"src/ -cp "+ classpath+" "+yourpgm+" "+arguments
+    cmd1 = "java -Xmx4096M -Xms2048M -ea -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:"+catg_home+"/lib/jacocoagent.jar=append=true,destfile=jacoco.exec -cp "+ classpath+" "+yourpgm+" "+arguments
     cmd1List = shlex.split(cmd1)
+    remove('jacoco.exec')
     remove('inputs')
     remove('inputs.bak')
     remove('inputs.old')
@@ -106,7 +107,8 @@ def rerunTests():
             if verbose:
                 print cmd1
             subprocess.call(cmd1List, shell=windows)
-    cmd2 = "java -cp "+catg_home+"lib/emma.jar emma report -r html -in coverage.es -sp "+catg_home+"src/"
+    os.chdir("..")
+    cmd2 = "ant report"
     cmd2List = shlex.split(cmd2)
     subprocess.call(cmd2List, shell=windows)
 

@@ -32,7 +32,12 @@
   ~ Author: Koushik Sen (ksen@cs.berkeley.edu)
   -->
 
-<project basedir="." default="build" name="CATG">
+<project basedir="." default="build" name="CATG" xmlns:jacoco="antlib:org.jacoco.ant">
+
+  <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+    <classpath path="lib/jacocoant.jar"/>
+  </taskdef>
+  
   <property environment="env"/>
   <property name="debuglevel" value="source,lines,vars"/>
   <property name="target" value="1.6"/>
@@ -96,4 +101,27 @@
              basedir="out/production/janala"
              manifest="Manifest.txt"/>
     </target>
+
+	<target name="report">
+	  <jacoco:report>
+        <executiondata>
+          <file file="catg_tmp/jacoco.exec"/>
+        </executiondata>
+        
+        <structure name="Project">
+          <classfiles>
+            <fileset dir="out/production/tests/">
+			  <include name="tests/**/*.class"/>
+			  <include name="database/**/*.class"/>
+			</fileset>
+          </classfiles>
+          <sourcefiles encoding="UTF-8">
+            <fileset dir="src"/>
+          </sourcefiles>
+        </structure>
+        
+        <html destdir="catg_tmp/report/"/>
+        
+      </jacoco:report>
+	</target>
 </project>
