@@ -38,6 +38,7 @@ package janala.interpreters;
 import gnu.trove.iterator.TIntLongIterator;
 import gnu.trove.map.hash.TIntLongHashMap;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class SymbolicInt extends Constraint {
@@ -273,11 +274,15 @@ public class SymbolicInt extends Constraint {
 
 	private void toString(StringBuilder sb) {
 		boolean first = true;
-        for ( TIntLongIterator it = linear.iterator(); it.hasNext(); ) {
-            it.advance();
-            
-            int integer = it.key();
-            long l = it.value();
+		int[] mapKeys = linear.keys();
+		int[] copyKeys = new int[mapKeys.length];
+		System.arraycopy(mapKeys, 0, copyKeys, 0, mapKeys.length);
+		Arrays.sort(copyKeys); // keep the same iteration order everytime
+//        for ( TIntLongIterator it = linear.iterator(); it.hasNext(); ) {
+//            it.advance();
+		for(int i : copyKeys) {
+            int integer = i;
+            long l = linear.get(integer);
             if (first) {
                 first = false;
             } else {
