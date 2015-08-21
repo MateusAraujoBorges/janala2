@@ -34,7 +34,10 @@
 package janala.interpreters;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.Map;
+
+import com.google.common.hash.Hashing;
 
 /**
  * Author: Koushik Sen (ksen@cs.berkeley.edu) Date: 6/22/12 Time: 12:23 PM
@@ -63,6 +66,10 @@ public abstract class Constraint implements Serializable {
 			return obj.toString().equals(this.toString());
 		}
 		return false;
+	}
+	
+	public int hashCode() {
+		return Hashing.goodFastHash(32).newHasher().putString(this.toString(),Charset.defaultCharset()).hash().asInt();
 	}
 	
 	public abstract String toMathString();

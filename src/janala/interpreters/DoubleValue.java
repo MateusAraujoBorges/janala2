@@ -33,6 +33,8 @@
 
 package janala.interpreters;
 
+import com.google.common.hash.Hashing;
+
 /**
  * Author: Koushik Sen (ksen@cs.berkeley.edu)
  * Date: 6/19/12
@@ -110,5 +112,24 @@ public class DoubleValue extends Value{
             return new IntValue(-1);
         }
     }
+
+	@Override
+	public int hashCode() {
+		return Hashing.goodFastHash(32).newHasher().putDouble(concrete).hash().asInt();
+	}
+    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DoubleValue other = (DoubleValue) obj;
+		if (Double.doubleToLongBits(concrete) != Double.doubleToLongBits(other.concrete))
+			return false;
+		return true;
+	}
 
 }

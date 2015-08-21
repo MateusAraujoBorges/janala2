@@ -79,7 +79,8 @@ public class History {
 		// the current and the previous execution, the trace doesn't
 		// match, the execution backtracks. In "Quantolic" mode this doesn't
         // work - two consecutive executions can have no common prefixes.
-	    this.ignore = Config.instance.strategy.equals("janala.solvers.counters.QuantolicStrategy");
+	    this.ignore = Config.instance.strategy.equals("janala.solvers.counters.QuantolicStrategy") ||
+	    		Config.instance.strategy.equals("janala.solvers.counters.BFSStrategy");
 	    this.ignoreAll = this.ignore;
     }
 

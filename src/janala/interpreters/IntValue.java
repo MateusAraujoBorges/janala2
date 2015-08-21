@@ -38,6 +38,9 @@ import janala.solvers.History;
 
 import java.util.Map;
 
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
+
 /**
  * Author: Koushik Sen (ksen@cs.berkeley.edu)
  * Date: 6/19/12
@@ -465,4 +468,39 @@ public class IntValue extends Value {
     public Constraint getSymbolic() {
         return symbolic !=null? symbolic:(nonIntConstraint != null? nonIntConstraint : null);
     }
+
+	@Override
+	public int hashCode() {
+		Hasher hasher = Hashing.goodFastHash(32).newHasher();
+		hasher.putDouble(concrete);
+		if (nonIntConstraint != null) {
+			hasher.putInt(nonIntConstraint.hashCode());
+		}
+        hasher.putInt(symbolic.hashCode()).hashCode();
+        return hasher.hash().asInt();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IntValue other = (IntValue) obj;
+		if (concrete != other.concrete)
+			return false;
+		if (nonIntConstraint == null) {
+			if (other.nonIntConstraint != null)
+				return false;
+		} else if (!nonIntConstraint.equals(other.nonIntConstraint))
+			return false;
+		if (symbolic == null) {
+			if (other.symbolic != null)
+				return false;
+		} else if (!symbolic.equals(other.symbolic))
+			return false;
+		return true;
+	}
 }

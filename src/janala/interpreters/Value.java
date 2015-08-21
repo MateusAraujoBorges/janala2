@@ -33,6 +33,8 @@
 
 package janala.interpreters;
 
+import java.io.Serializable;
+
 import janala.solvers.History;
 
 /**
@@ -40,7 +42,7 @@ import janala.solvers.History;
  * Date: 6/19/12
  * Time: 8:27 AM
  */
-public class Value {
+public class Value implements Serializable {
     public static int symbol = 1;
     public static int inc = 2;
 

@@ -80,7 +80,6 @@ public class SymbolicNotConstraint extends Constraint {
 
 	@Override
 	public String toMathString() {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not Implemented");
+		return " ! ( " + constraint.toMathString() + " )";
 	}
 }

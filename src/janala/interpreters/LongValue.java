@@ -221,4 +221,32 @@ public class LongValue extends Value {
                 ", concrete=" + concrete +
                 '}';
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (concrete ^ (concrete >>> 32));
+		result = prime * result + ((symbolic == null) ? 0 : symbolic.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LongValue other = (LongValue) obj;
+		if (concrete != other.concrete)
+			return false;
+		if (symbolic == null) {
+			if (other.symbolic != null)
+				return false;
+		} else if (!symbolic.equals(other.symbolic))
+			return false;
+		return true;
+	}
 }
