@@ -99,9 +99,8 @@ public class QuantolicStrategy extends Strategy {
 		System.out.println("[quantolic] current coverage: " + coverage.doubleValue());
 		
 		// select and solve
-		ArrayList<Constraint> nextPath = Lists.newArrayList();
-		while (nextPath.isEmpty() && !tree.isDone()) {
-			nextPath = chooseNextPath();
+		ArrayList<Constraint> nextPath = chooseNextPath();
+		while (!nextPath.isEmpty() && !tree.isDone()) {
 			solver.setInputs(inputs);
 			solver.setPathConstraint(nextPath);
 			solver.setPathConstraintIndex(nextPath.size() - 1);
@@ -121,12 +120,13 @@ public class QuantolicStrategy extends Strategy {
 				}
 
 				logger.log(Level.INFO, tree.toString());
-				
+
 				return 0;
 			} else {
 				logger.warning("Infeasible path detected with solutions. Something strange is going on, maybe?");
+				nextPath = chooseNextPath();
 			}
-		}
+		} 
 
 		logger.info("Next path not found. Tree exploration status: " + (tree.isDone() ? " done " : " not done "));
 		return -1;
