@@ -56,7 +56,7 @@ public class ConcolicCountNode implements SymbolicCountNode {
 	private int computeHashCode() {
 		HashFunction hf = Hashing.goodFastHash(32);
 		return hf.newHasher().putInt(constraint.iid).putInt(constraint.index)
-		        .putString(constraint.toString(), Charset.defaultCharset()).hashCode();
+		        .putString(constraint.toString(), Charset.defaultCharset()).hash().asInt();
 	}
 
 	@Override
