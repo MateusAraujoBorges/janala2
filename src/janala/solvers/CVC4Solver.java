@@ -459,7 +459,7 @@ public class CVC4Solver implements Solver {
                 return null;
             }
 
-            ProcessBuilder builder = new ProcessBuilder(new String[]{Config.instance.cvc4Command,"--lang", "cvc4", Config.instance.formulaFile});
+            ProcessBuilder builder = new ProcessBuilder(new String[]{Config.instance.cvc4Command,"--random-seed=" + Math.abs(Config.instance.seed),"--lang", "cvc4", Config.instance.formulaFile});
             builder.redirectErrorStream(true);
             Process process = builder.start();
 
