@@ -36,6 +36,7 @@ package janala.config;
 import janala.logger.Logger;
 import janala.solvers.Solver;
 import janala.solvers.Strategy;
+import janala.solvers.counters.BoundedDomainSolverWrapper;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.DomainCoverageStrategyWrapper;
 
@@ -90,6 +91,8 @@ public class Config {
 	public Range<Long> defaultRange;
 	public String rngFile;
 	public boolean printDomainCoverage;
+	public String bfsFile;
+	private boolean useDomainBoundConstraint;
 
     public Config() {
         try {
@@ -126,12 +129,14 @@ public class Config {
             symtreeFile = properties.getProperty("catg.symbolicTreeFile","symtree.ser");
             seed = Long.parseLong(properties.getProperty("catg.seed","-388213196"));
             rngFile = properties.getProperty("catg.rngFile","rng.ser");
+            bfsFile = properties.getProperty("catg.bfs.mapfile","bfsmap.ser");
 
             oldStates = properties.getProperty("catg.oldStatesFile","oldStates");
             test = System.getProperty("catg.test", properties.getProperty("catg.test",  "test"));
             String testCheckingClass = System.getProperty("catg.testCheckingClass",properties.getProperty("catg.testCheckingClass", "janala.config.DefaultTestCheckerImpl"));
             testChecker = (TestChecker) loadClass(testCheckingClass);
             printDomainCoverage = properties.getProperty("catg.printDomainCoverage","false").trim().equals("true");
+            useDomainBoundConstraint = properties.getProperty("catg.solver.useDomainBoundConstraint","false").trim().equals("true");
 
             String rangeStr = properties.getProperty("catg.defaultRange","-1000,1000");
             long lo = Long.parseLong(rangeStr.split(",")[0]);
@@ -183,6 +188,9 @@ public class Config {
         try {
             Class solverClass = Class.forName(solver);
             Solver ret = (Solver)solverClass.newInstance();
+            if (useDomainBoundConstraint) {
+            	ret = new BoundedDomainSolverWrapper(ret);
+            }
             return ret;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
