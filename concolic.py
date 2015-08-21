@@ -24,7 +24,7 @@ def getArguments ():
 catg_tmp_dir = "catg_tmp"
 
 def concolic ():
-    cmd1 = "java -Xmx4096M -Xms2048M -Djanala.loggerClass="+loggerClass+" -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea "+yourpgm+" "+arguments
+    cmd1 = "java -Xmx4096M -Xms2048M -Djava.util.logging.manager=janala.utils.MyLogManager -Djanala.loggerClass="+loggerClass+" -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea "+yourpgm+" "+arguments
 #    print cmd1
     cmd1List = shlex.split(cmd1)
     if verbose:

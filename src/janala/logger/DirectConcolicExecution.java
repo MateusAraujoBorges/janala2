@@ -36,6 +36,7 @@ package janala.logger;
 import janala.config.Config;
 import janala.interpreters.ConcolicInterpreter;
 import janala.logger.inst.*;
+import janala.utils.MyLogManager;
 import janala.utils.MyLogger;
 
 /**
@@ -60,6 +61,10 @@ public class DirectConcolicExecution extends Thread implements Logger {
         execute(null);
         ((ConcolicInterpreter)intp).endExecution();
         MyLogger.checkLog(tester);
+        // fix issue with loggers shutting down before we finish.
+        // for this to work, we need to set MyLogManager as the log manager
+        // with -Djava.util.logging.manager=janala.utils.MyLogManager
+        MyLogManager.resetFinally();
     }
 
     private void execute(Instruction insn) {
