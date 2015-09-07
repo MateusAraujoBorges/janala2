@@ -36,6 +36,7 @@ package janala.logger;
 import janala.config.Config;
 import janala.interpreters.ConcolicInterpreter;
 import janala.logger.inst.*;
+import janala.solvers.Strategy;
 import janala.utils.MyLogManager;
 import janala.utils.MyLogger;
 

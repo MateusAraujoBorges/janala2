@@ -8,6 +8,6 @@ import name.filieri.antonio.jpf.utils.BigRational;
 
 public interface Counter{
 
-	public BigRational count(List<Constraint> constraints, List<InputElement> inputs);
+	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs);
 	
 }

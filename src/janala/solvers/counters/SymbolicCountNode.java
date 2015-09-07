@@ -7,9 +7,9 @@ import name.filieri.antonio.jpf.utils.BigRational;
 
 public interface SymbolicCountNode extends Serializable {
 
-	public BigRational getNumberOfSolutions();
+	public BigRational getProbabilityOfSolution();
 
-	public void setNumberOfSolutions(BigRational nsolutions);
+	public void setProbabilityOfSolution(BigRational nsolutions);
 
 	public boolean isCounted();
 

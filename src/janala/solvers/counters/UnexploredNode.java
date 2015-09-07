@@ -15,12 +15,12 @@ public class UnexploredNode implements SymbolicCountNode {
 	}
 	
 	@Override
-	public BigRational getNumberOfSolutions() {
+	public BigRational getProbabilityOfSolution() {
 		return nsolutions;
 	}
 
 	@Override
-	public void setNumberOfSolutions(BigRational nsolutions) {
+	public void setProbabilityOfSolution(BigRational nsolutions) {
 		this.nsolutions = nsolutions;
 	}
 

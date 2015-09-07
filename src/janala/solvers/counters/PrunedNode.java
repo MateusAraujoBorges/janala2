@@ -11,12 +11,12 @@ public class PrunedNode implements SymbolicCountNode {
 	private static final long serialVersionUID = 9061980019581486709L;
 
 	@Override
-	public BigRational getNumberOfSolutions() {
+	public BigRational getProbabilityOfSolution() {
 		return BigRational.ZERO;
 	}
 
 	@Override
-	public void setNumberOfSolutions(BigRational nsolutions) {
+	public void setProbabilityOfSolution(BigRational nsolutions) {
 		throw new RuntimeException("Invalid operation!");
 	}
 

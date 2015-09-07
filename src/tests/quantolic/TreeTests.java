@@ -115,18 +115,18 @@ public class TreeTests {
 		 */
 
 		tree.updateAndPrune(nodes);
-		assertEquals(tree.getRoot().getNumberOfSolutions(),new BigRational(9,10));
-		assertEquals(tree.getRoot().getLeftChild().getNumberOfSolutions(),new BigRational(6,10));
+		assertEquals(tree.getRoot().getProbabilityOfSolution(),new BigRational(9,10));
+		assertEquals(tree.getRoot().getLeftChild().getProbabilityOfSolution(),new BigRational(6,10));
 		
 		SymbolicCountNode n2 = tree.getRoot().getLeftChild().getLeftChild();
-		assertEquals(n2.getNumberOfSolutions(),new BigRational(5,10));
+		assertEquals(n2.getProbabilityOfSolution(),new BigRational(5,10));
 		assertTrue(n2 instanceof ConcolicCountNode);
 		assertTrue(n2.getLeftChild() instanceof PrunedNode);
 		assertTrue(n2.getRightChild() instanceof UnexploredNode);
 
 		tree.updateAndPrune(nodes2);
-		assertEquals(tree.getRoot().getNumberOfSolutions(),new BigRational(8,10));
-		assertEquals(tree.getRoot().getLeftChild().getNumberOfSolutions(),new BigRational(5,10));
+		assertEquals(tree.getRoot().getProbabilityOfSolution(),new BigRational(8,10));
+		assertEquals(tree.getRoot().getLeftChild().getProbabilityOfSolution(),new BigRational(5,10));
 		
 		SymbolicCountNode n1 = tree.getRoot().getLeftChild();
 		assertTrue(n1 instanceof ConcolicCountNode);
@@ -212,7 +212,7 @@ public class TreeTests {
 		tree.count(nodes3, inputs, counter);
 		tree.count(nodes4, inputs, counter);
 		
-		assertEquals(tree.getRoot().getNumberOfSolutions(), new BigRational(1));
+		assertEquals(tree.getRoot().getProbabilityOfSolution(), new BigRational(1));
 		SymbolicCountNode n_1 = tree.getRoot().getLeftChild();
 		SymbolicCountNode n_n1 = tree.getRoot().getRightChild();
 		SymbolicCountNode n_2_1 = tree.getRoot().getLeftChild().getLeftChild();
@@ -220,12 +220,12 @@ public class TreeTests {
 		SymbolicCountNode n_2_n1 = tree.getRoot().getRightChild().getLeftChild();
 		SymbolicCountNode n_n2_n1 = tree.getRoot().getRightChild().getRightChild();
 		
-		assertEquals(n_1.getNumberOfSolutions(), new BigRational(147,441));
-		assertEquals(n_n1.getNumberOfSolutions(), new BigRational(294,441));
-		assertEquals(n_2_1.getNumberOfSolutions(), new BigRational(35,441));
-		assertEquals(n_n2_1.getNumberOfSolutions(), new BigRational(112,441));
-		assertEquals(n_2_n1.getNumberOfSolutions(), new BigRational(70,441));
-		assertEquals(n_n2_n1.getNumberOfSolutions(), new BigRational(224,441));
+		assertEquals(n_1.getProbabilityOfSolution(), new BigRational(147,441));
+		assertEquals(n_n1.getProbabilityOfSolution(), new BigRational(294,441));
+		assertEquals(n_2_1.getProbabilityOfSolution(), new BigRational(35,441));
+		assertEquals(n_n2_1.getProbabilityOfSolution(), new BigRational(112,441));
+		assertEquals(n_2_n1.getProbabilityOfSolution(), new BigRational(70,441));
+		assertEquals(n_n2_n1.getProbabilityOfSolution(), new BigRational(224,441));
 		
 	}
 	
@@ -260,9 +260,9 @@ public class TreeTests {
 		checkNodeLayoutAndSetupProbabilities_take2(tree, nodes2);
 
 		SymbolicCountNode node4 = new UnexploredNode(a4);
-		node4.setNumberOfSolutions(new BigRational(1,10));
+		node4.setProbabilityOfSolution(new BigRational(1,10));
 		SymbolicCountNode node4_1 = new UnexploredNode(a4);
-		node4_1.setNumberOfSolutions(new BigRational(1,10));
+		node4_1.setProbabilityOfSolution(new BigRational(1,10));
 		
 		tree.getRoot().getLeftChild().getLeftChild().getLeftChild().setRightChild(node4);
 		tree.getRoot().getLeftChild().getRightChild().getLeftChild().setRightChild(node4_1);
@@ -347,7 +347,7 @@ public class TreeTests {
 		assertTrue(root.getRightChild() != null);
 		assertTrue(root.getRightChild() instanceof UnexploredNode);
 		assertTrue(root.getRightChild().getConstraint().equals(root.getLeftChild().getConstraint().not()));
-		root.setNumberOfSolutions(BigRational.ONE);
+		root.setProbabilityOfSolution(BigRational.ONE);
 
 		SymbolicCountNode n1 = root.getLeftChild();
 		assertEquals(nodes.get(1), n1);
@@ -356,7 +356,7 @@ public class TreeTests {
 		assertTrue(n1.getRightChild() instanceof UnexploredNode);
 		assertTrue(n1.getRightChild().getConstraint().equals(n1.getLeftChild().getConstraint().not()));
 		assertEquals(n1.getConstraint().toString(), "x-1>=0");
-		n1.setNumberOfSolutions(new BigRational(700, 1000));
+		n1.setProbabilityOfSolution(new BigRational(700, 1000));
 
 		SymbolicCountNode n2 = n1.getLeftChild();
 		assertEquals(nodes.get(2), n2);
@@ -365,7 +365,7 @@ public class TreeTests {
 		assertTrue(n2.getRightChild() instanceof UnexploredNode);
 		assertTrue(n2.getRightChild().getConstraint().equals(n2.getLeftChild().getConstraint().not()));
 		assertEquals(n2.getConstraint().toString(), "y-2>=0");
-		n2.setNumberOfSolutions(new BigRational(600, 1000));
+		n2.setProbabilityOfSolution(new BigRational(600, 1000));
 
 		SymbolicCountNode n3 = n2.getLeftChild();
 		assertEquals(nodes.get(3), n3);
@@ -375,7 +375,7 @@ public class TreeTests {
 		assertTrue(n3.getLeftChild() instanceof PrunedNode);
 		assertTrue(n3.getRightChild().equals(n3.getLeftChild()));
 		assertEquals(n3.getConstraint().toString(), "z-3>=0");
-		n3.setNumberOfSolutions(new BigRational(100, 1000));
+		n3.setProbabilityOfSolution(new BigRational(100, 1000));
 	}
 
 	private void checkNodeLayoutAndSetupProbabilities_take2(SymbolicTree tree, List<SymbolicCountNode> nodes) {
@@ -409,7 +409,7 @@ public class TreeTests {
 		assertTrue(n2_2.getRightChild() instanceof UnexploredNode);
 		assertTrue(n2_2.getRightChild().getConstraint().equals(n2_2.getLeftChild().getConstraint().not()));
 		assertEquals(n2_2.getConstraint().toString(), "y-2<0");
-		n2_2.setNumberOfSolutions(new BigRational(100, 1000));
+		n2_2.setProbabilityOfSolution(new BigRational(100, 1000));
 		assertEquals(nodes.get(2), n2_2);
 
 		SymbolicCountNode n3 = n2.getLeftChild();
@@ -427,7 +427,7 @@ public class TreeTests {
 		assertTrue(n3_2.getLeftChild() instanceof PrunedNode);
 		assertTrue(n3_2.getRightChild().equals(n3_2.getLeftChild()));
 		assertEquals(n3_2.getConstraint().toString(), "z-3>=0");
-		n3_2.setNumberOfSolutions(new BigRational(100, 1000));
+		n3_2.setProbabilityOfSolution(new BigRational(100, 1000));
 		assertEquals(nodes.get(3), n3_2);
 	}
 }

@@ -32,7 +32,7 @@ public class DomainCoverageStrategyWrapper extends Strategy {
 		List<Constraint> path = solver.getPathConstraint();
 		List<InputElement> inputs = solver.getInputs();
 		
-		BigRational pathProbability = counter.count(path, inputs);
+		BigRational pathProbability = counter.probabilityOf(path, inputs);
 		System.out.println("[quantolic] domain coverage for this path: " + pathProbability.doubleValue());
 		return strategy.solve(history, historySize, solver);
 	}

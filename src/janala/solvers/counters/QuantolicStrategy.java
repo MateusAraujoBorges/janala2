@@ -95,7 +95,7 @@ public class QuantolicStrategy extends Strategy {
 		tree.updateAndPrune(treePath);
 //		System.out.println(tree.toString());
 
-		BigRational coverage = BigRational.ONE.minus(tree.getRoot().getNumberOfSolutions());
+		BigRational coverage = BigRational.ONE.minus(tree.getRoot().getProbabilityOfSolution());
 		System.out.println("[quantolic] current coverage: " + coverage.doubleValue());
 		
 		// select and solve
@@ -154,17 +154,17 @@ public class QuantolicStrategy extends Strategy {
 			        "We reached a path already taken previously. This shouldn't happen");
 			Preconditions.checkState(left.isCounted() || right.isCounted(), "Both child nodes are uncounted!");
 
-			BigRational nSolCurr = current.getNumberOfSolutions();
-			BigRational nSolLeft = left.getNumberOfSolutions();
-			BigRational nSolRight = right.getNumberOfSolutions();
+			BigRational nSolCurr = current.getProbabilityOfSolution();
+			BigRational nSolLeft = left.getProbabilityOfSolution();
+			BigRational nSolRight = right.getProbabilityOfSolution();
 
 			// left.nsolutions = (current.nsolutions - right.nsolutions)
 			if (!left.isCounted()) {
-				left.setNumberOfSolutions(nSolCurr.minus(nSolRight));
-				nSolLeft = left.getNumberOfSolutions();
+				left.setProbabilityOfSolution(nSolCurr.minus(nSolRight));
+				nSolLeft = left.getProbabilityOfSolution();
 			} else if (!right.isCounted()) {
-				right.setNumberOfSolutions(nSolCurr.minus(nSolLeft));
-				nSolRight = right.getNumberOfSolutions();
+				right.setProbabilityOfSolution(nSolCurr.minus(nSolLeft));
+				nSolRight = right.getProbabilityOfSolution();
 			}
 
 			BigRational leftProb = nSolLeft.div(nSolCurr);

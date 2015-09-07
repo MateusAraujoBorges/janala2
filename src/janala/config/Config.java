@@ -95,7 +95,8 @@ public class Config {
 	public final String isccPath;
 	public final String lattePath;
 	public final String omegaPath;
-	public final String counterWorkingDirectory;
+	public final String countersWorkingDirectory;
+	public final String countersSecondLevelCachePath;
 
 	public Config() {
 		try {
@@ -145,7 +146,8 @@ public class Config {
 					.equals("true");
 
 			isccPath = properties.getProperty("counters.isccPath");
-			counterWorkingDirectory = properties.getProperty("counters.counterWorkingDirectory");
+			countersWorkingDirectory = properties.getProperty("counters.counterWorkingDirectory");
+			countersSecondLevelCachePath = properties.getProperty("counters.secondLevelCachePath");
 			lattePath = properties.getProperty("counters.lattePath");
 			omegaPath = properties.getProperty("counters.omegaPath");
 

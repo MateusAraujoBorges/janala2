@@ -46,7 +46,7 @@ public class CounterTests {
 		List<InputElement> inputs = Lists.<InputElement>newArrayList(ie1,ie2);
 		
 		Counter counter = new PCPCounter();
-		BigRational result = counter.count(constraints, inputs);
+		BigRational result = counter.probabilityOf(constraints, inputs);
 		
 		assertEquals(result, new BigRational(231,441));
 	}

@@ -29,7 +29,7 @@ public class ConcolicCountTree implements SymbolicTree {
 
 	public ConcolicCountTree() {
 		root = new ConcolicCountNode(SymbolicTrueConstraint.instance);
-		root.setNumberOfSolutions(BigRational.ONE);
+		root.setProbabilityOfSolution(BigRational.ONE);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ConcolicCountTree implements SymbolicTree {
 				if (next instanceof UnexploredNode) {
 					UnexploredNode unode = (UnexploredNode) next;
 					SymbolicCountNode newNode = new ConcolicCountNode(cons);
-					newNode.setNumberOfSolutions(unode.getNumberOfSolutions());
+					newNode.setProbabilityOfSolution(unode.getProbabilityOfSolution());
 
 					if (isLeft) {
 						current.setLeftChild(newNode);
@@ -128,8 +128,8 @@ public class ConcolicCountTree implements SymbolicTree {
 				//ignore it
 			} else {
 				List<Constraint> pc = ImmutableList.copyOf(clauses);
-				BigRational result = counter.count(pc, inputs);
-				node.setNumberOfSolutions(result);
+				BigRational result = counter.probabilityOf(pc, inputs);				
+				node.setProbabilityOfSolution(result);
 			}
 		}
 	}
@@ -137,7 +137,7 @@ public class ConcolicCountTree implements SymbolicTree {
 	@Override
 	public void updateAndPrune(List<SymbolicCountNode> path) {
 		SymbolicCountNode last = path.get(path.size() - 1);
-		BigRational explored = last.getNumberOfSolutions();
+		BigRational explored = last.getProbabilityOfSolution();
 
 		SymbolicCountNode toBePruned = last;
 
@@ -145,12 +145,12 @@ public class ConcolicCountTree implements SymbolicTree {
 			SymbolicCountNode current = path.get(i);
 			Preconditions.checkState(current.isCounted(), "The node wasn't 'counted'!");
 
-			BigRational currentNSolutions = current.getNumberOfSolutions();
+			BigRational currentNSolutions = current.getProbabilityOfSolution();
 			currentNSolutions = currentNSolutions.minus(explored);
 			Preconditions.checkState(!currentNSolutions.isNegative(),
 			        "The operation would result in a negative number of solutions");
 
-			current.setNumberOfSolutions(currentNSolutions);
+			current.setProbabilityOfSolution(currentNSolutions);
 			if (current.isEmpty()) { // Last node will always be pruned
 				Preconditions.checkState(toBePruned != null,
 				        "There must not be any 'jumps' in the sequence of pruned nodes");

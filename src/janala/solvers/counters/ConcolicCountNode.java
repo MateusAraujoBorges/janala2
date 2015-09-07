@@ -12,40 +12,38 @@ public class ConcolicCountNode implements SymbolicCountNode {
 
 	private static final long serialVersionUID = -7018150946471139179L;
 
-	private BigRational nsolutions;
+	private BigRational probabilityOfSolution;
 	private Constraint constraint;
 	//private Problem problem;
-	private boolean alreadyHashed;
-	private int hashcode;
+	private Integer hashcode = null;
 	
 	private SymbolicCountNode left;
 	private SymbolicCountNode right;
 
 	public ConcolicCountNode(Constraint cons) {
 		this.constraint = cons;
-		nsolutions = BigRational.MINUS_ONE;
-		alreadyHashed = false;
+		probabilityOfSolution = BigRational.MINUS_ONE;
 		hashcode = 0;
 	}
 
 	@Override
-	public BigRational getNumberOfSolutions() {
-		return nsolutions;
+	public BigRational getProbabilityOfSolution() {
+		return probabilityOfSolution;
 	}
 
 	@Override
-	public void setNumberOfSolutions(BigRational nsolutions) {
-		this.nsolutions = nsolutions;
+	public void setProbabilityOfSolution(BigRational probabilityOfSolution) {
+		this.probabilityOfSolution = probabilityOfSolution;
 	}
 
 	@Override
 	public boolean isCounted() {
-		return !nsolutions.equals(BigRational.MINUS_ONE);
+		return !probabilityOfSolution.equals(BigRational.MINUS_ONE);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return isCounted() && nsolutions.equals(BigRational.ZERO);
+		return isCounted() && probabilityOfSolution.equals(BigRational.ZERO);
 	}
 
 	@Override
@@ -61,11 +59,10 @@ public class ConcolicCountNode implements SymbolicCountNode {
 
 	@Override
 	public int hashCode() {
-		if (!alreadyHashed) {
-			hashcode = computeHashCode();
-			alreadyHashed = true;
+		if (this.hashcode==null) {
+			this.hashcode = computeHashCode();
 		}
-		return hashcode;
+		return this.hashcode;
 	}
 	
 	@Override
@@ -80,7 +77,7 @@ public class ConcolicCountNode implements SymbolicCountNode {
 
 	@Override
 	public String toString() {
-		return "count: " + nsolutions + " cons:" + constraint;
+		return "count: " + probabilityOfSolution + " cons:" + constraint;
 	}
 	
 	@Override
