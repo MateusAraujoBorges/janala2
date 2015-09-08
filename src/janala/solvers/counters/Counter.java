@@ -10,4 +10,11 @@ public interface Counter{
 
 	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs);
 	
+	/**
+	 * Tell the counter that we won't be using it anymore, and it should clean up the house
+	 * (flush caches to disk, etc.). 
+	 */
+	
+	public void shutdown();
+	
 }

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -16,8 +15,8 @@ import janala.solvers.InputElement;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.analysis.SequentialAnalyzerBarvinok;
 import name.filieri.antonio.jpf.analysis.exceptions.AnalysisException;
+import name.filieri.antonio.jpf.caching.SecondLevelCache;
 import name.filieri.antonio.jpf.domain.Domain;
-import name.filieri.antonio.jpf.domain.Problem;
 import name.filieri.antonio.jpf.domain.UsageProfile;
 import name.filieri.antonio.jpf.domain.exceptions.InvalidUsageProfileException;
 import name.filieri.antonio.jpf.latte.LatteException;
@@ -29,9 +28,7 @@ public class PCPCounter implements Counter {
 
 	private final static Logger logger = MyLogger.getLogger(PCPCounter.class.getName());
 	
-	private LoadingCache<Problem, BigRational> executionCache = null;
-	
-	public PCPCounter(){
+	public PCPCounter() {
 		//Just to force the initialization of the caches
 		List<Constraint> falseConstraint = ImmutableList.<Constraint>of(new SymbolicFalseConstraint());
 		List<InputElement> anyElement = ImmutableList.of(new InputElement(1, new IntValue(0)));
@@ -70,14 +67,9 @@ public class PCPCounter implements Counter {
 			configuration.setTemporaryDirectory(Config.instance.countersWorkingDirectory);
 			configuration.setIsccExecutablePath(Config.instance.isccPath);
 			configuration.setSecondLevelCachePath(Config.instance.countersSecondLevelCachePath);
-			SequentialAnalyzerBarvinok analyzer = new SequentialAnalyzerBarvinok(configuration, domain, usageProfile, 1);
 			
-			if(this.executionCache!=null){
-				analyzer.setBarvinokCache(executionCache);
-			}
-			
+			SequentialAnalyzerBarvinok analyzer = new SequentialAnalyzerBarvinok(configuration, domain, usageProfile, 1, false);
 			BigRational probability = analyzer.analyzeSpfPC(pc.toString());
-			this.executionCache=analyzer.getBarvinokCache();
 			return probability;
 			
 		} catch (InvalidUsageProfileException e) {
@@ -99,7 +91,7 @@ public class PCPCounter implements Counter {
 
 		return BigRational.MINUS_ONE;
 	}
-
+	
 	/**
 	 * Collect the input variables in {@code inputs} present in {@code constraints}. 
 	 * TODO This should be done with a visitor in the future, but
@@ -120,4 +112,8 @@ public class PCPCounter implements Counter {
 		return varsInConstraints;
 	}
 
+	@Override
+	public void shutdown() {
+		SecondLevelCache.shutdownAllCaches();
+	}
 }
