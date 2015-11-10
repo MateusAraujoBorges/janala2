@@ -141,18 +141,6 @@ public class SymbolicOrConstraint extends Constraint {
 
 	@Override
 	public String toMathString() {
-		StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for(Constraint c:constraints) {
-            if (first) {
-                first = false;
-            } else {
-                sb.append(" || ");
-            }
-            sb.append("(");
-            sb.append(c.toMathString());
-            sb.append(")");
-        }
-        return sb.toString();
+        return this.toString();
 	}
 }

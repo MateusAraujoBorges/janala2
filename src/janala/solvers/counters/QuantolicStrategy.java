@@ -96,7 +96,7 @@ public class QuantolicStrategy extends Strategy {
 //		System.out.println(tree.toString());
 
 		BigRational coverage = BigRational.ONE.minus(tree.getRoot().getProbabilityOfSolution());
-		System.out.println("[quantolic] current coverage: " + coverage.doubleValue());
+		System.out.println("[quantolic] current cumulative domain coverage (including this path): " + coverage.doubleValue());
 		
 		// select and solve
 		ArrayList<Constraint> nextPath = chooseNextPath();
@@ -111,6 +111,7 @@ public class QuantolicStrategy extends Strategy {
 				try {
 					writeTreeToFile(Config.instance.symtreeFile);
 					writeRNGToFile(Config.instance.rngFile);
+					counter.shutdown();
 				} catch (FileNotFoundException e) {
 					logger.log(Level.SEVERE, "Problems while opening the file:", e);
 					throw new RuntimeException(e);
@@ -119,7 +120,7 @@ public class QuantolicStrategy extends Strategy {
 					throw new RuntimeException(e);
 				}
 
-				logger.log(Level.INFO, tree.toString());
+				logger.log(Level.FINEST, tree.toString());
 
 				return 0;
 			} else {

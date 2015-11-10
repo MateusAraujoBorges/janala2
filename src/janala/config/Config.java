@@ -97,6 +97,8 @@ public class Config {
 	public final String omegaPath;
 	public final String countersWorkingDirectory;
 	public final String countersSecondLevelCachePath;
+	public final String  remoteCounterAddress;
+	public final int remoteCounterPort;
 
 	public Config() {
 		try {
@@ -150,6 +152,9 @@ public class Config {
 			countersSecondLevelCachePath = properties.getProperty("counters.secondLevelCachePath");
 			lattePath = properties.getProperty("counters.lattePath");
 			omegaPath = properties.getProperty("counters.omegaPath");
+			
+			remoteCounterAddress = properties.getProperty("counters.remoteAddress","none");
+			remoteCounterPort = Integer.parseInt(properties.getProperty("counters.remotePort","0"));
 
 			String rangeStr = properties.getProperty("catg.defaultRange", "-1000,1000");
 			long lo = Long.parseLong(rangeStr.split(",")[0]);

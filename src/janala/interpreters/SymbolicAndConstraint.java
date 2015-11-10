@@ -150,6 +150,6 @@ public class SymbolicAndConstraint extends Constraint {
 
 	@Override
 	public String toMathString() {
-		throw new RuntimeException("Not implemented yet");
+		return this.toString();
 	}
 }
