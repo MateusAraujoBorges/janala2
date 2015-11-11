@@ -39,6 +39,7 @@ public class PCPVersionTwoCounter implements Counter {
 	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs) {
 		StringBuilder query = new StringBuilder();
 		//prepare domain
+		query.append("(clear)\n");
 		for (InputElement input : inputs) {
 			String dec = processInputElement(input);
 			query.append(dec);

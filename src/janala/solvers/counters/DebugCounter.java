@@ -16,7 +16,7 @@ public class DebugCounter implements Counter {
 		counters = new ArrayList<Counter>();
 		counters.add(new PCPCounter("127.0.0.1",9990));
 		try {
-			counters.add(new PCPVersionTwoCounter());
+			counters.add(new PCPVersionTwoCounter("127.0.0.1",9991));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
