@@ -31,11 +31,13 @@ import name.filieri.antonio.jpf.utils.BigRational;
 
 public class QuantolicStrategy extends Strategy {
 
-	public SymbolicTree tree;
-	public Counter counter = Config.instance.getCounter();
-	public RandomGenerator rng;
+	private final Counter counter;
+	private SymbolicTree tree;
+	private RandomGenerator rng;
 
 	public QuantolicStrategy() {
+		this.counter = Config.instance.getCounter();
+		
 		try {
 			this.rng = readRNGFromFile(Config.instance.rngFile);
 		} catch (FileNotFoundException e) {
@@ -61,6 +63,12 @@ public class QuantolicStrategy extends Strategy {
 			logger.log(Level.SEVERE, "Problems while opening the file:", e);
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public QuantolicStrategy(Counter counter, SymbolicTree tree, RandomGenerator rng) {
+		this.counter = counter;
+		this.rng = rng;
+		this.tree = tree;
 	}
 
 	private final static Logger logger = MyLogger.getLogger(QuantolicStrategy.class.getName());
@@ -100,6 +108,7 @@ public class QuantolicStrategy extends Strategy {
 		
 		// select and solve
 		ArrayList<Constraint> nextPath = chooseNextPath();
+		logger.log(Level.INFO,"[quantolic] next path: {0}", nextPath);
 		while (!nextPath.isEmpty() && !tree.isDone()) {
 			solver.setInputs(inputs);
 			solver.setPathConstraint(nextPath);
@@ -154,7 +163,7 @@ public class QuantolicStrategy extends Strategy {
 			Preconditions.checkState(!(left instanceof PrunedNode && right instanceof PrunedNode),
 			        "We reached a path already taken previously. This shouldn't happen");
 			Preconditions.checkState(left.isCounted() || right.isCounted(), "Both child nodes are uncounted!");
-
+			
 			BigRational nSolCurr = current.getProbabilityOfSolution();
 			BigRational nSolLeft = left.getProbabilityOfSolution();
 			BigRational nSolRight = right.getProbabilityOfSolution();
@@ -167,11 +176,19 @@ public class QuantolicStrategy extends Strategy {
 				right.setProbabilityOfSolution(nSolCurr.minus(nSolLeft));
 				nSolRight = right.getProbabilityOfSolution();
 			}
-
+			
+			Preconditions.checkState(nSolLeft.isPositive() || nSolRight.isPositive(), "Both child nodes have zero probability!");
+			
+			if (nSolLeft.isZero()) { //prune
+				current.setLeftChild(PrunedNode.INSTANCE);
+			} else if (nSolRight.isZero()) {
+				current.setRightChild(PrunedNode.INSTANCE);
+			}
+			
 			BigRational leftProb = nSolLeft.div(nSolCurr);
 			BigRational randomRoll = BigRational.valueOf(rng.nextDouble());
 
-			if (randomRoll.compareTo(leftProb) <= 0) { // leftProb <= randomRoll
+			if (randomRoll.compareTo(leftProb) < 0) { // leftProb < randomRoll (we use '<' in case leftProb == 0)
 				nextPath.add(left.getConstraint());
 				current = left;
 			} else {
