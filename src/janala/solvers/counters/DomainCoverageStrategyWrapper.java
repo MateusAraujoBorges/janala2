@@ -28,12 +28,14 @@ public class DomainCoverageStrategyWrapper extends Strategy {
 	
 	@Override
 	public int solve(ArrayList<Element> history, int historySize, History solver) {
-		
+		long start = System.nanoTime();
 		List<Constraint> path = solver.getPathConstraint();
 		List<InputElement> inputs = solver.getInputs();
 		
 		BigRational pathProbability = counter.probabilityOf(path, inputs);
+		long end = System.nanoTime();
 		System.out.println("[quantolic] domain coverage for this path: " + pathProbability.doubleValue());
+		System.out.println("[quantolic] time spent calling the counter: " + (end - start) / Math.pow(10, 9));
 		return strategy.solve(history, historySize, solver);
 	}
 
