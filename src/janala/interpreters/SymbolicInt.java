@@ -63,12 +63,36 @@ public class SymbolicInt extends Constraint {
         if ((o == null) || (getClass() != o.getClass()))
             return false;
         SymbolicInt e = (SymbolicInt) o;
-        return (linear.equals(e.linear)
-                && (constant == e.constant)
-                && (op == e.op));
+        return (
+        		/*- MAB: map equality in TIntLongHashMap is broken; 
+        		 see tests.quantolic.TreeAndCounterTests.troveMapBehaviorTest() */ 
+        		(constant == e.constant)
+                && (op == e.op)
+                && correctTroveMapEquality(this.linear,e.linear));
     }
 
-    public int hashCode() {
+    private boolean correctTroveMapEquality(TIntLongHashMap a, TIntLongHashMap b) {
+    	if (a.size() != b.size()) {
+    		return false;
+    	}
+    	
+    	TIntLongIterator it = a.iterator();
+    	it.advance();
+    	while (it.hasNext()) {
+    		int k = it.key();
+    		long v = it.value();
+    		
+    		if (b.get(k) != v) {
+    			return false;
+    		} else {
+    			it.advance();
+    		}
+		}
+		return true;
+	}
+
+
+	public int hashCode() {
         int ret = 37;
         ret = 71 * ret + linear.hashCode();
         ret = 71 * ret + (int) constant;

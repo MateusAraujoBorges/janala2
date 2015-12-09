@@ -69,7 +69,7 @@ public abstract class Constraint implements Serializable {
 	}
 	
 	public int hashCode() {
-		return Hashing.goodFastHash(32).newHasher().putString(this.toString(),Charset.defaultCharset()).hash().asInt();
+		return Hashing.goodFastHash(32).newHasher().putString(this.toMathString(),Charset.defaultCharset()).hash().asInt();
 	}
 	
 	public abstract String toMathString();
