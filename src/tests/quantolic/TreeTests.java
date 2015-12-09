@@ -287,8 +287,7 @@ public class TreeTests {
 		 *  P  x>y(p=0.1,not explored)
 		 */
 		
-		QuantolicStrategy strategy = new QuantolicStrategy();
-		strategy.rng = new RandomGenerator() {
+		RandomGenerator rng = new RandomGenerator() {
 			
 			double[] values = new double[]{0.3,0.8,0.2,0.9,0.1,0.99,0.5,0.000000001};
 			int pos = 0;
@@ -317,7 +316,15 @@ public class TreeTests {
 			public void nextBytes(byte[] arg0) {}
 			public boolean nextBoolean() {return false;}
 		};
-		strategy.tree = tree;
+		
+		QuantolicStrategy strategy = new QuantolicStrategy(new Counter() {
+			@Override
+			public void shutdown() {}
+			@Override
+			public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs) {
+				throw new RuntimeException();
+			}
+		}, tree, rng);
 		
 		List<Constraint> nextPath = strategy.chooseNextPath();
 		assertEquals(nextPath.size(), 3);
