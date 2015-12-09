@@ -85,6 +85,12 @@ public class StaticInvocation {
             int symbol = args[0].MAKE_SYMBOLIC(history);
             history.addInput(symbol, args[0]);
             return PlaceHolder.instance;
+        } else if (owner.equals("janala/Main") && name.equals("MakeSymbolic") && args.length==3) {
+            int symbol = args[0].MAKE_SYMBOLIC(history);
+            int lo = ((IntValue)args[1]).concrete;
+            int hi = ((IntValue)args[2]).concrete;
+            history.addInput(symbol, args[0],lo,hi);
+            return PlaceHolder.instance;
         } else if (owner.equals("janala/Main") && name.equals("BeginScope") && args.length==0) {
             history.addInput(Config.instance.scopeBeginSymbol, null);
             history.beginScope(iid);

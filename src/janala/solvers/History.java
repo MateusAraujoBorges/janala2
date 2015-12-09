@@ -471,6 +471,10 @@ public class History {
     public void addInput(int symbol, Value value) {
         inputs.addLast(new InputElement(symbol, value));
     }
+    
+    public void addInput(int symbol, Value value, int lo, int hi) {
+        inputs.addLast(new InputElement(symbol, value, lo, hi));
+    }
 
     public void setLastForceTruth() {
         System.out.println("Set Last Force True in");
