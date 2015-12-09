@@ -10,26 +10,33 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import janala.interpreters.Constraint;
 import janala.interpreters.SymbolicTrueConstraint;
 import janala.solvers.InputElement;
+import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.utils.BigRational;
 
 public class ConcolicCountTree implements SymbolicTree {
 
 	private static final long serialVersionUID = -5739239625633749868L;
-
+	private final static Logger logger = MyLogger.getLogger(ConcolicCountTree.class.getName());
+	
 	private final SymbolicCountNode root;
+	private final boolean mergeIdenticalConstraints;
 
 	public ConcolicCountTree() {
 		root = new ConcolicCountNode(SymbolicTrueConstraint.instance);
 		root.setProbabilityOfSolution(BigRational.ONE);
+		mergeIdenticalConstraints = true;
 	}
 
 	@Override
@@ -49,6 +56,15 @@ public class ConcolicCountTree implements SymbolicTree {
 	public List<SymbolicCountNode> insertPathIntoTree(List<Constraint> constraints) {
 		Preconditions.checkArgument(constraints.size() > 0, "Empty lists are not allowed");
 
+		if (mergeIdenticalConstraints) {
+			Set<Constraint> set = Sets.newLinkedHashSet(constraints);
+			logger.log(Level.INFO,"[concolictree] Merging constraints: (size) {0} -> {1} ",
+					new Object[]{ constraints.size(), set.size()});
+			logger.log(Level.INFO,"[concolictree] Merging constraints:\n\t old: {0} \n\t new: {1}",
+					new Object[]{constraints,set});
+			constraints = ImmutableList.copyOf(set);
+		}
+		
 		List<SymbolicCountNode> path = Lists.newArrayList();
 		SymbolicCountNode current = root;
 		SymbolicCountNode next = root;
@@ -125,8 +141,9 @@ public class ConcolicCountTree implements SymbolicTree {
 //			}
 			
 			if (node.isCounted()) {
-				//ignore it
+//				logger.log(Level.INFO, "[ConcolicCountTree] Node already counted: {}", node);
 			} else {
+//				logger.log(Level.INFO, "[ConcolicCountTree] Counting node: {}", node);
 				List<Constraint> pc = ImmutableList.copyOf(clauses);
 				BigRational result = counter.probabilityOf(pc, inputs);				
 				node.setProbabilityOfSolution(result);
