@@ -51,13 +51,17 @@ def concolic ():
             shutil.copy("inputs", "inputs.old")
         except:
             pass
-        try: 
+        try:
             shutil.copy("history", "history.old")
+            with open("inputs") as infile:
+                inputData = infile.read().replace('\n',' ')
         except:
+            inputData = "empty"
             pass
         dt = datetime.now()
 
-        print "[Input {} at ({}, {}, {}, {}, {})]".format(i, dt.day, dt.hour, dt.minute, dt.second, dt.microsecond)
+
+        print "[Input {} at ({}, {}, {}, {}, {}) : {}]".format(i, dt.day, dt.hour, dt.minute, dt.second, dt.microsecond, inputData)
         sys.stdout.flush()
         subprocess.call(cmd1List, shell=windows)
         if isOffline:
