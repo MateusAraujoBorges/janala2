@@ -125,8 +125,9 @@ public class CATG {
     public static int readInt(int x) {
         int y = Main.readInt(x);
         Main.MakeSymbolic(y);
-        Main.Assume(y <= Integer.MAX_VALUE?1:0);
-        Main.Assume(y >= Integer.MIN_VALUE?1:0);
+        //MATEUS: decrement one from max to avoid overflows when manipulating terms
+        Main.Assume(y <= Integer.MAX_VALUE - 1?1:0); 
+        Main.Assume(y >= Integer.MIN_VALUE + 1?1:0);
         return y;
     }
 
