@@ -1,6 +1,8 @@
 package tests.quantolic;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.math3.random.RandomGenerator;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import janala.interpreters.IntValue;
 import janala.interpreters.SymOrInt;
 import janala.interpreters.SymbolicInt;
 import janala.interpreters.SymbolicIntCompareConstraint;
+import janala.interpreters.Value;
 import janala.solvers.InputElement;
 import janala.solvers.counters.ConcolicCountNode;
 import janala.solvers.counters.ConcolicCountTree;
@@ -207,10 +210,10 @@ public class TreeTests {
 		List<SymbolicCountNode> nodes4 = tree.insertPathIntoTree(constraints4);
 		
 		Counter counter = new PCPCounter();
-		tree.count(nodes1, inputs, counter);
-		tree.count(nodes2, inputs, counter);
-		tree.count(nodes3, inputs, counter);
-		tree.count(nodes4, inputs, counter);
+		tree.count(nodes1, inputs, Collections.<Integer,Value>emptyMap(), counter);
+		tree.count(nodes2, inputs, Collections.<Integer,Value>emptyMap(), counter);
+		tree.count(nodes3, inputs, Collections.<Integer,Value>emptyMap(), counter);
+		tree.count(nodes4, inputs, Collections.<Integer,Value>emptyMap(), counter);
 		
 		assertEquals(tree.getRoot().getProbabilityOfSolution(), new BigRational(1));
 		SymbolicCountNode n_1 = tree.getRoot().getLeftChild();
@@ -321,7 +324,7 @@ public class TreeTests {
 			@Override
 			public void shutdown() {}
 			@Override
-			public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs) {
+			public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs, Map<Integer,Value> syntheticVars) {
 				throw new RuntimeException();
 			}
 		}, tree, rng);

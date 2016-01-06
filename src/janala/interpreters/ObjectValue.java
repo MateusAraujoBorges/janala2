@@ -109,4 +109,14 @@ public class ObjectValue extends Value {
     public Value invokeMethod(String name, Value[] args, History history) {
         return PlaceHolder.instance;
     }
+
+	@Override
+	public boolean isSymbolic() {
+		return symbolic != null;
+	}
+
+	@Override
+	public boolean isSynthetic() {
+		throw new RuntimeException("Not implemented yet for symbolic objects!");
+	}
 }

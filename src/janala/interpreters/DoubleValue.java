@@ -132,4 +132,14 @@ public class DoubleValue extends Value{
 		return true;
 	}
 
+	@Override
+	public boolean isSymbolic() {
+		throw new RuntimeException("Floating-point symvars aren't supported yet!");
+	}
+
+	@Override
+	public boolean isSynthetic() {
+		throw new RuntimeException("Floating-point symvars aren't supported yet!");
+	}
+
 }

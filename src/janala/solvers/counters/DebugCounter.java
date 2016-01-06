@@ -3,10 +3,12 @@ package janala.solvers.counters;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import janala.interpreters.Constraint;
+import janala.interpreters.Value;
 import janala.solvers.InputElement;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.utils.BigRational;
@@ -27,14 +29,14 @@ public class DebugCounter implements Counter {
 	}
 
 	@Override
-	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs) {
+	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs,  Map<Integer,Value> syntheticVars) {
 		List<BigRational> results = new ArrayList<BigRational>();
 		List<Long> timeSpent = new ArrayList<Long>();
 		logger.log(Level.INFO, "[debugCounter] constraints: " + constraints);
 
 		for (Counter counter : counters) {
 			long start = System.nanoTime();
-			results.add(counter.probabilityOf(constraints, inputs));
+			results.add(counter.probabilityOf(constraints, inputs, syntheticVars));
 			long end = System.nanoTime();
 			timeSpent.add(end - start);
 		}

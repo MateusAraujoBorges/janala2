@@ -5,8 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import janala.interpreters.Constraint;
+import janala.interpreters.Value;
 import janala.solvers.InputElement;
 
 public interface SymbolicTree extends Serializable {
@@ -33,7 +35,7 @@ public interface SymbolicTree extends Serializable {
 	 * {@code isCounted()} is computed using the {@code counter} object.
 	 */
 
-	public void count(List<SymbolicCountNode> path, List<InputElement> inputs, Counter counter);
+	public void count(List<SymbolicCountNode> path, List<InputElement> inputs, Map<Integer,Value> syntheticVars, Counter counter);
 
 	/**
 	 * Update count estimates and remove nodes without remaining unexplored

@@ -249,4 +249,14 @@ public class LongValue extends Value {
 			return false;
 		return true;
 	}
+
+	@Override
+	public boolean isSymbolic() {
+		return symbolic != null;
+	}
+
+	@Override
+	public boolean isSynthetic() {
+		throw new RuntimeException("Not implemented yet for longs!");
+	}
 }

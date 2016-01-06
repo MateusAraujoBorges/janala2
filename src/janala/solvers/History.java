@@ -41,8 +41,10 @@ import janala.utils.MyLogger;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +66,7 @@ public class History {
     private boolean predictionFailed = false;
 
     private LinkedList<InputElement> inputs;
+    private final Map<Integer,Value> syntheticVarMap;
 //    private ArrayList<Value> inputs;
     private Strategy strategy = Config.instance.getStrategy();
 
@@ -72,6 +75,7 @@ public class History {
         history = new ArrayList<Element>(1024);
         pathConstraint = new ArrayList<Constraint>(1024);
         inputs = new LinkedList<InputElement>();
+        syntheticVarMap = new LinkedHashMap<Integer,Value>();
         index = 0;
         this.solver = solver;
 		// MATEUS: CATG logs a trace of the execution and uses it
@@ -494,5 +498,13 @@ public class History {
 
 	public Solver getSolver() {
 		return solver;
+	}
+	
+	public void addSyntheticInput(Integer index, Value synthetic) {
+		syntheticVarMap.put(index, synthetic);
+	}
+	
+	public Map<Integer, Value> getSyntheticVars() {
+		return syntheticVarMap;
 	}
 }

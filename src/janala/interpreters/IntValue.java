@@ -50,6 +50,7 @@ public class IntValue extends Value {
     public SymbolicInt symbolic;
     public Constraint nonIntConstraint;
     public int concrete;
+	public boolean synthetic;
     final static public IntValue TRUE = new IntValue(1);
     final static public IntValue FALSE = new IntValue(0);
 
@@ -62,6 +63,7 @@ public class IntValue extends Value {
         concrete = i;
         symbolic = null;
         nonIntConstraint = null;
+        synthetic = false;
     }
 
 //    public IntValue(int i, SymbolicInt symbolic) {
@@ -91,6 +93,15 @@ public class IntValue extends Value {
 //            System.out.println(ste);
 //        }
         return symbol-inc;
+    }
+    
+    public void makeSynthetic(History history, int index) {
+    	if (synthetic) {
+    		throw new RuntimeException("This method was already called in the past!");
+    	} else {
+    		synthetic = true;
+    		history.addSyntheticInput(index, this);
+    	}
     }
 
     public long substituteInLinear(Map<String, Long> assignments) {
@@ -502,5 +513,15 @@ public class IntValue extends Value {
 		} else if (!symbolic.equals(other.symbolic))
 			return false;
 		return true;
+	}
+
+	@Override
+	public boolean isSymbolic() {
+		return symbolic != null;
+	}
+
+	@Override
+	public boolean isSynthetic() {
+		return isSymbolic() && synthetic;
 	}
 }

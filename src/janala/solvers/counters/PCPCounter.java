@@ -1,7 +1,9 @@
 package janala.solvers.counters;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +15,7 @@ import com.google.common.collect.Lists;
 import janala.interpreters.Constraint;
 import janala.interpreters.IntValue;
 import janala.interpreters.SymbolicFalseConstraint;
+import janala.interpreters.Value;
 import janala.solvers.InputElement;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.analysis.RemoteAnalyzer;
@@ -48,12 +51,12 @@ public class PCPCounter implements Counter {
 		//Just to force the initialization of the caches
 		List<Constraint> falseConstraint = ImmutableList.<Constraint>of(new SymbolicFalseConstraint());
 		List<InputElement> anyElement = ImmutableList.of(new InputElement(1, new IntValue(0)));
-		probabilityOf(falseConstraint,anyElement);
+		probabilityOf(falseConstraint,anyElement, Collections.<Integer,Value>emptyMap());
 	}
 	
 	
 	@Override
-	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs) {
+	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs,  Map<Integer,Value> syntheticVars) {
 		
 		//List<InputElement> filteredInputs = filterInputs(constraints,inputs);
 		

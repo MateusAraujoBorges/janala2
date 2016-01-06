@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,7 @@ import com.google.common.collect.Sets;
 
 import janala.interpreters.Constraint;
 import janala.interpreters.SymbolicTrueConstraint;
+import janala.interpreters.Value;
 import janala.solvers.InputElement;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.utils.BigRational;
@@ -132,7 +134,7 @@ public class ConcolicCountTree implements SymbolicTree {
 	}
 
 	@Override
-	public void count(List<SymbolicCountNode> path, List<InputElement> inputs, Counter counter) { 
+	public void count(List<SymbolicCountNode> path, List<InputElement> inputs,  Map<Integer,Value> syntheticVars, Counter counter) { 
 		List<Constraint> clauses = Lists.newArrayList();
 		
 		for (SymbolicCountNode node : path) {
@@ -145,7 +147,7 @@ public class ConcolicCountTree implements SymbolicTree {
 			} else {
 //				logger.log(Level.INFO, "[ConcolicCountTree] Counting node: {}", node);
 				List<Constraint> pc = ImmutableList.copyOf(clauses);
-				BigRational result = counter.probabilityOf(pc, inputs);				
+				BigRational result = counter.probabilityOf(pc, inputs, syntheticVars);				
 				node.setProbabilityOfSolution(result);
 			}
 		}

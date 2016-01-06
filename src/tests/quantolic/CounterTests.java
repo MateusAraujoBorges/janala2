@@ -2,6 +2,7 @@ package tests.quantolic;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,6 +13,7 @@ import com.google.common.collect.Range;
 import janala.interpreters.Constraint;
 import janala.interpreters.IntValue;
 import janala.interpreters.SymbolicInt;
+import janala.interpreters.Value;
 import janala.solvers.InputElement;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.PCPCounter;
@@ -46,7 +48,7 @@ public class CounterTests {
 		List<InputElement> inputs = Lists.<InputElement>newArrayList(ie1,ie2);
 		
 		Counter counter = new PCPCounter();
-		BigRational result = counter.probabilityOf(constraints, inputs);
+		BigRational result = counter.probabilityOf(constraints, inputs, Collections.<Integer,Value>emptyMap());
 		
 		assertEquals(result, new BigRational(231,441));
 	}

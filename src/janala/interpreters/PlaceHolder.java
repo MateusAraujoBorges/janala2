@@ -40,4 +40,14 @@ package janala.interpreters;
  */
 public class PlaceHolder extends Value{
     final public static PlaceHolder instance = new PlaceHolder();
+
+	@Override
+	public boolean isSymbolic() {
+		return false;
+	}
+
+	@Override
+	public boolean isSynthetic() {
+		return false;
+	}
 }

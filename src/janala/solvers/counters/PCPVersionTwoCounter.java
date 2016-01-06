@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,12 +38,18 @@ public class PCPVersionTwoCounter implements Counter {
 	}
 	
 	@Override
-	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs) {
+	public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs, Map<Integer,Value> syntheticVars) {
 		StringBuilder query = new StringBuilder();
 		//prepare domain
 		query.append("(clear)\n");
 		for (InputElement input : inputs) {
 			String dec = processInputElement(input);
+			query.append(dec);
+			query.append('\n');
+		}
+		
+		for (Entry<Integer,Value> entry : syntheticVars.entrySet()) {
+			String dec = processSyntheticVar(entry.getKey(),entry.getValue());
 			query.append(dec);
 			query.append('\n');
 		}
@@ -57,6 +65,17 @@ public class PCPVersionTwoCounter implements Counter {
 		
 		query.append("(count)\n");
 		return conn.count(query.toString());
+	}
+
+	private String processSyntheticVar(Integer key, Value value) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("(declare-dependent-var x");
+		sb.append(key);
+		sb.append(" ");
+		String type = toPcpType(value);
+		sb.append(type);
+		sb.append(")");
+		return sb.toString();
 	}
 
 	public static String processInputElement(InputElement input) {
@@ -113,7 +132,7 @@ public class PCPVersionTwoCounter implements Counter {
 		@Override
 		public BigRational count(String query) {
 			try {
-				logger.log(Level.INFO, "[pcpV2] query sent: \n	" + query.replaceAll("\n", "\n	"));
+//				logger.log(Level.INFO, "[pcpV2] query sent: \n	" + query.replaceAll("\n", "\n	"));
 				out.write(query,0,query.length());
 				out.flush();
 				String response = in.readLine();

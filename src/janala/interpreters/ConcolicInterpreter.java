@@ -126,7 +126,8 @@ public class ConcolicInterpreter implements IVisitor {
     private Value getArrayElementInt(int iid, ObjectValue ref, IntValue i1, Value val) {
         if (i1.symbolic != null) {
             IntValue sval = new IntValue(((IntValue)val).concrete);
-            sval.MAKE_SYMBOLIC(history);
+            int index = sval.MAKE_SYMBOLIC(history);
+            sval.makeSynthetic(history,index);
             SymbolicOrConstraint or1 = null;
             SymbolicAndConstraint and1;
 

@@ -98,7 +98,7 @@ public class QuantolicStrategy extends Strategy {
 		// insert,count,prune
 		List<SymbolicCountNode> treePath = tree.insertPathIntoTree(pathTaken);
 //		System.out.println(tree.toString());
-		tree.count(treePath, inputs, counter);
+		tree.count(treePath, inputs, history.getSyntheticVars(), counter);
 //		System.out.println(tree.toString());
 		tree.updateAndPrune(treePath);
 //		System.out.println(tree.toString());

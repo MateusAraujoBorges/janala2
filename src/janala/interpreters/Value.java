@@ -42,7 +42,7 @@ import janala.solvers.History;
  * Date: 6/19/12
  * Time: 8:27 AM
  */
-public class Value implements Serializable {
+public abstract class Value implements Serializable {
     public static int symbol = 1;
     public static int inc = 2;
 
@@ -53,4 +53,13 @@ public class Value implements Serializable {
     public Object getConcrete() {
         return null;
     }
+    
+    public abstract boolean isSymbolic();
+    
+    /** 
+     * @return true if the value is symbolic and was created by the
+     * engine (i.e. auxiliar variable to hold result of an array access)
+     */
+    public abstract boolean isSynthetic();
+    
 }
