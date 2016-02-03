@@ -72,7 +72,9 @@ public class ConcolicCountTree implements SymbolicTree {
 		SymbolicCountNode next = root;
 		path.add(current);
 		// TODO check toString performance of Constraints; caching should help.
+		int depth = 0;
 		for (Constraint cons : constraints) {
+			depth++;
 			Preconditions.checkState(!current.isEmpty(), "Trying to insert into an empty/pruned node!");
 			Preconditions.checkState(!(current instanceof UnexploredNode), "A unexplored node wasn't replaced!");
 
@@ -106,7 +108,9 @@ public class ConcolicCountTree implements SymbolicTree {
 				} else if (!right.isEmpty() && right.getConstraint().equals(cons)) {
 					next = current.getRightChild();
 				} else {
-					Preconditions.checkArgument(false, "Can't find the next node in the path!");
+					// the new path ends here
+					Preconditions.checkArgument(constraints.size() == depth, "Can't find the next node in the path!");
+					break;
 				}
 
 				if (next instanceof UnexploredNode) {
