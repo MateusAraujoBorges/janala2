@@ -1,0 +1,91 @@
+Binary Search Tree is taken from the book "data structures & algorithm analysis in java"
+by Mark Weiss. 
+
+Checking insert(int) method,
+k=1,
+Total #Pre:2 #POST: 4
+Method MAIN: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;Lintkey/Range;)Z|}: Total num of branches is 12 covered is 11 branch coverage is 0.9166666666666666 Total num of location is 61 num of covered location is 61
+Method {|intkey.Range.setUpper(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.insert$Top(I)V|}: Total num of branches is 2 covered is 1 branch coverage is 0.5 Total num of location is 30 num of covered location is 27
+Method {|intkey.Range.<init>(IIZZ)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 15 num of covered location is 15
+Method {|intkey.Range.<init>()V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 8 num of covered location is 8
+Method {|intkey.Range.inRange(I)Z|}: Total num of branches is 10 covered is 9 branch coverage is 0.9 Total num of location is 33 num of covered location is 33
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;)Z|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.Range.setLower(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.insert(ILintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 6 covered is 6 branch coverage is 1.0 Total num of location is 43 num of covered location is 43
+Method {|intkey.BinarySearchTree.spex_M_insert(I)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinaryNode.<init>(ILintkey/BinaryNode;Lintkey/BinaryNode;)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 12 num of covered location is 12
+k=2,
+Total #Pre:5 #POST: 21
+Method MAIN: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;Lintkey/Range;)Z|}: Total num of branches is 12 covered is 11 branch coverage is 0.9166666666666666 Total num of location is 61 num of covered location is 61
+Method {|intkey.Range.setUpper(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.insert$Top(I)V|}: Total num of branches is 2 covered is 1 branch coverage is 0.5 Total num of location is 30 num of covered location is 27
+Method {|intkey.Range.<init>(IIZZ)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 15 num of covered location is 15
+Method {|intkey.Range.<init>()V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 8 num of covered location is 8
+Method {|intkey.Range.inRange(I)Z|}: Total num of branches is 10 covered is 10 branch coverage is 1.0 Total num of location is 33 num of covered location is 33
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;)Z|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.Range.setLower(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.insert(ILintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 6 covered is 6 branch coverage is 1.0 Total num of location is 43 num of covered location is 43
+Method {|intkey.BinarySearchTree.spex_M_insert(I)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinaryNode.<init>(ILintkey/BinaryNode;Lintkey/BinaryNode;)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 12 num of covered location is 12
+k=3,
+Total #Pre:26 #POST: 236
+Method MAIN: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;Lintkey/Range;)Z|}: Total num of branches is 12 covered is 11 branch coverage is 0.9166666666666666 Total num of location is 61 num of covered location is 61
+Method {|intkey.Range.setUpper(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.insert$Top(I)V|}: Total num of branches is 2 covered is 1 branch coverage is 0.5 Total num of location is 30 num of covered location is 27
+Method {|intkey.Range.<init>(IIZZ)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 15 num of covered location is 15
+Method {|intkey.Range.<init>()V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 8 num of covered location is 8
+Method {|intkey.Range.inRange(I)Z|}: Total num of branches is 10 covered is 10 branch coverage is 1.0 Total num of location is 33 num of covered location is 33
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;)Z|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.Range.setLower(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.insert(ILintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 6 covered is 6 branch coverage is 1.0 Total num of location is 43 num of covered location is 43
+Method {|intkey.BinarySearchTree.spex_M_insert(I)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinaryNode.<init>(ILintkey/BinaryNode;Lintkey/BinaryNode;)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 12 num of covered location is 12
+
+Check remove(int) method,
+k=1,
+Total #Pre:2 #POST: 4
+Method {|intkey.BinarySearchTree.remove(ILintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 12 covered is 8 branch coverage is 0.6666666666666666 Total num of location is 75 num of covered location is 48
+Method MAIN: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;Lintkey/Range;)Z|}: Total num of branches is 12 covered is 11 branch coverage is 0.9166666666666666 Total num of location is 61 num of covered location is 61
+Method {|intkey.Range.setUpper(I)Lintkey/Range;|}: Total num of branches is 6 covered is 2 branch coverage is 0.3333333333333333 Total num of location is 28 num of covered location is 18
+Method {|intkey.Range.<init>()V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 8 num of covered location is 8
+Method {|intkey.Range.<init>(IIZZ)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 15 num of covered location is 15
+Method {|intkey.Range.inRange(I)Z|}: Total num of branches is 10 covered is 7 branch coverage is 0.7 Total num of location is 33 num of covered location is 29
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;)Z|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.Range.setLower(I)Lintkey/Range;|}: Total num of branches is 6 covered is 2 branch coverage is 0.3333333333333333 Total num of location is 28 num of covered location is 18
+Method {|intkey.BinarySearchTree.spex_M_remove(I)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.remove$Top(I)V|}: Total num of branches is 2 covered is 1 branch coverage is 0.5 Total num of location is 30 num of covered location is 27
+
+k=2,
+Total #Pre:5 #POST: 21
+Method {|intkey.BinarySearchTree.remove(ILintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 12 covered is 12 branch coverage is 1.0 Total num of location is 75 num of covered location is 75
+Method MAIN: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;Lintkey/Range;)Z|}: Total num of branches is 12 covered is 11 branch coverage is 0.9166666666666666 Total num of location is 61 num of covered location is 61
+Method {|intkey.Range.setUpper(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.Range.<init>()V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 8 num of covered location is 8
+Method {|intkey.Range.<init>(IIZZ)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 15 num of covered location is 15
+Method {|intkey.Range.inRange(I)Z|}: Total num of branches is 10 covered is 10 branch coverage is 1.0 Total num of location is 33 num of covered location is 33
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;)Z|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.Range.setLower(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.spex_M_remove(I)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.findMin(Lintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 4 covered is 2 branch coverage is 0.5 Total num of location is 18 num of covered location is 9
+Method {|intkey.BinarySearchTree.remove$Top(I)V|}: Total num of branches is 2 covered is 1 branch coverage is 0.5 Total num of location is 30 num of covered location is 27
+
+k=3,
+Total #Pre:26 #POST: 236
+Method {|intkey.BinarySearchTree.remove(ILintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 12 covered is 12 branch coverage is 1.0 Total num of location is 75 num of covered location is 75
+Method MAIN: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;Lintkey/Range;)Z|}: Total num of branches is 12 covered is 11 branch coverage is 0.9166666666666666 Total num of location is 61 num of covered location is 61
+Method {|intkey.Range.setUpper(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.Range.<init>()V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 8 num of covered location is 8
+Method {|intkey.Range.<init>(IIZZ)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 15 num of covered location is 15
+Method {|intkey.Range.inRange(I)Z|}: Total num of branches is 10 covered is 10 branch coverage is 1.0 Total num of location is 33 num of covered location is 33
+Method {|intkey.BinarySearchTree.repOK(Lintkey/BinaryNode;)Z|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.Range.setLower(I)Lintkey/Range;|}: Total num of branches is 6 covered is 4 branch coverage is 0.6666666666666666 Total num of location is 28 num of covered location is 23
+Method {|intkey.BinarySearchTree.spex_M_remove(I)V|}: Total num of branches is 0 covered is 0 branch coverage is NaN Total num of location is 10 num of covered location is 10
+Method {|intkey.BinarySearchTree.findMin(Lintkey/BinaryNode;)Lintkey/BinaryNode;|}: Total num of branches is 4 covered is 3 branch coverage is 0.75 Total num of location is 18 num of covered location is 16
+Method {|intkey.BinarySearchTree.remove$Top(I)V|}: Total num of branches is 2 covered is 1 branch coverage is 0.5 Total num of location is 30 num of covered location is 27
