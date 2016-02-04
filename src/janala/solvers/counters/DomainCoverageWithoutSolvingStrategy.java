@@ -11,19 +11,11 @@ import janala.solvers.InputElement;
 import janala.solvers.Strategy;
 import name.filieri.antonio.jpf.utils.BigRational;
 
-/**
- * Logs the coverage of the domain for the current path
- * @author mateus
- *
- */
+public class DomainCoverageWithoutSolvingStrategy extends Strategy {
 
-public class DomainCoverageStrategyWrapper extends Strategy {
-
-	Strategy strategy;
-	Counter counter;
+	private Counter counter;
 	
-	public DomainCoverageStrategyWrapper(Strategy strategy) throws IOException {
-		this.strategy = strategy;
+	public DomainCoverageWithoutSolvingStrategy() throws IOException {
 		counter = new PCPVersionTwoCounter();
 	}
 	
@@ -36,8 +28,8 @@ public class DomainCoverageStrategyWrapper extends Strategy {
 		BigRational pathProbability = counter.probabilityOf(path, inputs, solver.getSyntheticVars());
 		long end = System.nanoTime();
 		System.out.println("[quantolic] domain coverage for this path: " + pathProbability.doubleValue());
+		System.out.println("[quantolic] full path: " + path);
 		System.out.println("[quantolic] time spent calling the counter: " + (end - start) / Math.pow(10, 9));
-		return strategy.solve(history, historySize, solver);
+		return -1;
 	}
-
 }

@@ -22,8 +22,9 @@ def getArguments ():
 
 
 catg_tmp_dir = "catg_tmp"
+CONCOLIC_OUTPUT_FILE="catg_output"
 
-def concolic ():
+def concolic (first_input=None):
     cmd1 = "java -Xmx4096M -Xms2048M -Djava.util.logging.manager=janala.utils.MyLogManager -Djanala.loggerClass="+loggerClass+" -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea "+yourpgm+" "+arguments
 #    print cmd1
     cmd1List = shlex.split(cmd1)
@@ -35,7 +36,11 @@ def concolic ():
     os.mkdir(catg_tmp_dir)
     os.chdir(catg_tmp_dir)
 
-    print "Now testing "+yourpgm
+    print "[janala] performing concolic execution of "+yourpgm
+    if first_input is not None:
+        with open("inputs","w") as outfile:
+            outfile.write(first_input)
+            outfile.flush()
 
     i = 1
     while i <= iters:
@@ -53,17 +58,22 @@ def concolic ():
             pass
         try:
             shutil.copy("history", "history.old")
+        except:
+            pass
+        dt = datetime.now()
+
+        try:
             with open("inputs") as infile:
                 inputData = infile.read().replace('\n',' ')
         except:
             inputData = "empty"
-            pass
-        dt = datetime.now()
-
 
         print "[Input {} at ({}, {}, {}, {}, {}) : {}]".format(i, dt.day, dt.hour, dt.minute, dt.second, dt.microsecond, inputData)
         sys.stdout.flush()
-        subprocess.call(cmd1List, shell=windows)
+
+        with open(CONCOLIC_OUTPUT_FILE,"w") as outfile:
+            subprocess.call(cmd1List, shell=windows,stdout=outfile)
+
         if isOffline:
             print "..."
             cmd2 = "java -Xmx4096M -Xms2048M -Djanala.conf="+catg_home+"catg.conf -Djanala.mainClass="+yourpgm+" -Djanala.iteration="+str(i)+" -cp "+classpath+" -ea janala.interpreters.LoadAndExecuteInstructions"
@@ -84,6 +94,8 @@ def concolic ():
             return
     with open("../test.log", 'a') as f:
         f.write("****************** {} ({}) failed!!!\n".format(yourpgm, iters))
+
+
 
 def remove(file):
     try:
@@ -130,29 +142,34 @@ classpath = (catg_home+"out/production/tests"+sep+catg_home+"out/production/jana
             sep+catg_home+"lib/hamcrest-core-1.3.jar"+sep+catg_home+"lib/junit-4.12.jar"+sep+pcp_home+"/target/classes" + sep + pcp_home +
 	    (sep+pcp_home+"/target/dependency/").join([jar for jar in os.listdir(pcp_home+"/target/dependency/") if jar.endswith(".jar")]))
 
-args = getArguments()
-iters = args.maxIterations
-yourpgm = args.className
-isOffline = args.offline
-verbose = args.verbose
-print args.D
-if not args.D == None:
-    jvmOpts = "-D"+(" -D".join(args.D))
-else:
-    jvmOpts = ""
-print jvmOpts
-if isOffline:
-    loggerClass = "janala.logger.FileLogger"
-else:
-    loggerClass = "janala.logger.DirectConcolicExecution"
-arguments = ' '.join(args.arguments)
+def handle_args(args):
+    #TODO clean this global
+    global loggerClass, iters, yourpgm,isOffline,verbose,arguments,jvmOpts
+    
+    iters = args.maxIterations
+    yourpgm = args.className
+    isOffline = args.offline
+    verbose = args.verbose
+#    print args.D
+    if not args.D == None:
+        jvmOpts = "-D"+(" -D".join(args.D))
+    else:
+        jvmOpts = ""
+#    print jvmOpts
+    if isOffline:
+        loggerClass = "janala.logger.FileLogger"
+    else:
+        loggerClass = "janala.logger.DirectConcolicExecution"
+    arguments = ' '.join(args.arguments)
 
-
-
-concolic()
-if args.coverage:
-    rerunTests()
-    print "\n\n*********************************************************************************************"
-    print "To see detailed coverage information open the file catg_tmp/coverage/index.html in a browser."
-    print "*********************************************************************************************\n"
+if __name__ == "__main__":
+    args = getArguments()
+    print args
+    handle_args(args)
+    concolic()
+    if args.coverage:
+        rerunTests()
+        print "\n\n*********************************************************************************************"
+        print "To see detailed coverage information open the file catg_tmp/coverage/index.html in a browser."
+        print "*********************************************************************************************\n"
 

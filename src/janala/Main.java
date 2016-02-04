@@ -144,7 +144,9 @@ public class Main {
     public static void MakeSymbolic(int x, int lo, int hi) {}
     public static void MakeSymbolic(long x) {    }
     public static void MakeSymbolic(char x) {    }
+    public static void MakeSymbolic(char x, int lo, int hi) {}
     public static void MakeSymbolic(byte x) {    }
+    public static void MakeSymbolic(byte x, int lo, int hi) {}
     public static void MakeSymbolic(short x) {    }
     public static void MakeSymbolic(boolean x) {    }
     public static void MakeSymbolic(String x) {    }
@@ -174,10 +176,10 @@ public class Main {
     static public char readChar(char x) {
         if (isInputAvailable()) {
             String input = inputs.get(index++);
-//            System.out.println("ReadChar:"+input);
+            System.out.println("[main.readchar] : "+input);
             return (char)Integer.parseInt(input);
         } else {
-            //System.out.println(x);
+            System.out.println("[main.readchar] : no input is available. default: " + x);
             return x;
         }
     }
