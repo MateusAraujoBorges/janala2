@@ -71,7 +71,7 @@ def concolic (first_input=None):
         print "[Input {} at ({}, {}, {}, {}, {}) : {}]".format(i, dt.day, dt.hour, dt.minute, dt.second, dt.microsecond, inputData)
         sys.stdout.flush()
 
-        with open(CONCOLIC_OUTPUT_FILE,"w") as outfile:
+        with open(CONCOLIC_OUTPUT_FILE,"a") as outfile:
             subprocess.call(cmd1List, shell=windows,stdout=outfile)
 
         if isOffline:
