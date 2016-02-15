@@ -10,6 +10,7 @@ import java.util.Map;
 import janala.interpreters.Constraint;
 import janala.interpreters.Value;
 import janala.solvers.InputElement;
+import name.filieri.antonio.jpf.utils.BigRational;
 
 public interface SymbolicTree extends Serializable {
 
@@ -33,9 +34,10 @@ public interface SymbolicTree extends Serializable {
 	/**
 	 * The number of solutions of every uncounted node (checked using
 	 * {@code isCounted()} is computed using the {@code counter} object.
+	 * @return 
 	 */
 
-	public void count(List<SymbolicCountNode> path, List<InputElement> inputs, Map<Integer,Value> syntheticVars, Counter counter);
+	public BigRational count(List<SymbolicCountNode> path, List<InputElement> inputs, Map<Integer,Value> syntheticVars, Counter counter);
 
 	/**
 	 * Update count estimates and remove nodes without remaining unexplored

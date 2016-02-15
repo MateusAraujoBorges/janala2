@@ -98,12 +98,13 @@ public class QuantolicStrategy extends Strategy {
 		// insert,count,prune
 		List<SymbolicCountNode> treePath = tree.insertPathIntoTree(pathTaken);
 //		System.out.println(tree.toString());
-		tree.count(treePath, inputs, history.getSyntheticVars(), counter);
+		BigRational probability = tree.count(treePath, inputs, history.getSyntheticVars(), counter);
 //		System.out.println(tree.toString());
 		tree.updateAndPrune(treePath);
 //		System.out.println(tree.toString());
 
 		BigRational coverage = BigRational.ONE.minus(tree.getRoot().getProbabilityOfSolution());
+		System.out.println("[quantolic] domain coverage for this path: " + probability.doubleValue() + " at " + System.currentTimeMillis());
 		logger.log(Level.SEVERE,"[quantolic] current cumulative domain coverage (including this path): " + coverage.doubleValue());
 		
 		// select and solve

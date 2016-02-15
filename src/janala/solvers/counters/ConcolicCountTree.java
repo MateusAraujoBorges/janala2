@@ -138,23 +138,24 @@ public class ConcolicCountTree implements SymbolicTree {
 	}
 
 	@Override
-	public void count(List<SymbolicCountNode> path, List<InputElement> inputs,  Map<Integer,Value> syntheticVars, Counter counter) { 
+	public BigRational count(List<SymbolicCountNode> path, List<InputElement> inputs,  Map<Integer,Value> syntheticVars, Counter counter) { 
 		List<Constraint> clauses = Lists.newArrayList();
+		BigRational result = BigRational.MINUS_ONE;
+		Preconditions.checkArgument(path.size() > 0, "Empty paths are not allowed!");
 		
 		for (SymbolicCountNode node : path) {
-//			if (!clauses.equals(SymbolicTrueConstraint.instance)) {
-				clauses.add(node.getConstraint());
-//			}
+			clauses.add(node.getConstraint());
 			
 			if (node.isCounted()) {
 //				logger.log(Level.INFO, "[ConcolicCountTree] Node already counted: {}", node);
 			} else {
 //				logger.log(Level.INFO, "[ConcolicCountTree] Counting node: {}", node);
 				List<Constraint> pc = ImmutableList.copyOf(clauses);
-				BigRational result = counter.probabilityOf(pc, inputs, syntheticVars);				
+				result = counter.probabilityOf(pc, inputs, syntheticVars);				
 				node.setProbabilityOfSolution(result);
 			}
 		}
+		return result;
 	}
 
 	@Override
