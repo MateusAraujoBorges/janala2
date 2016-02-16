@@ -147,6 +147,7 @@ public class ConcolicCountTree implements SymbolicTree {
 			clauses.add(node.getConstraint());
 			
 			if (node.isCounted()) {
+				result = node.getProbabilityOfSolution();
 //				logger.log(Level.INFO, "[ConcolicCountTree] Node already counted: {}", node);
 			} else {
 //				logger.log(Level.INFO, "[ConcolicCountTree] Counting node: {}", node);
