@@ -57,7 +57,7 @@ def run_janala_once(classname,first_input):
     #-a will force it to handle the input as a text file
     cov_string = check_output("grep -a -F '[quantolic] domain coverage for this path:' '{}' | cut -f 7 -d ' ' ".format(CATG_OUTPUT_FILE),shell=True)
     cov = float(cov_string)
-    path = check_output("grep -F '[quantolic] full path: ' {} | cut -f 4-  -d ' '".format(CATG_OUTPUT_FILE),shell=True)
+    path = check_output("grep -a -F '[quantolic] full path: ' {} | cut -f 4-  -d ' '".format(CATG_OUTPUT_FILE),shell=True)
     return (path,cov)
 
 
@@ -101,7 +101,7 @@ def heuristic_janala(classname,ntimes,start):
     concolic.handle_args(args)
     concolic.concolic()
     chdir("..")
-    cov_string = check_output("grep -F '[quantolic] domain coverage for this path:' '{}' | cut -f 7,9 -d ' ' ".format(CATG_OUTPUT_FILE),shell=True)
+    cov_string = check_output("grep -a -F '[quantolic] domain coverage for this path:' '{}' | cut -f 7,9 -d ' ' ".format(CATG_OUTPUT_FILE),shell=True)
     cov_string_split = cov_string.strip().split("\n")
     coverage = [float(x.strip().split(" ")[0]) for x in cov_string_split]
     cov_timestamps = [(float(x.strip().split(" ")[1]) / 10**3) - start for x in cov_string_split]
@@ -151,7 +151,7 @@ def main():
             stats = heuristic_janala(classname,ntimes,start)
 
         end = time()
-        print "[benchmark] final coverage after {} paths ({} distinct) and {} seconds: {}".format(ntimes, ntimes - stats["repeated_paths"], end - start, sum(stats["coverage"]))
+        print "[benchmark] final coverage, max of {} paths ({} distinct) in {} seconds: {}".format(ntimes, len(stats["coverage"]), end - start, sum(stats["coverage"]))
         dump_csv(classname,strategy,stats)
 
 main()
