@@ -165,7 +165,7 @@ public class CATG {
 
     public static boolean readBool(boolean x) {
         boolean y = Main.readBool(x);
-        Main.MakeSymbolic(y);
+        Main.MakeSymbolicBool(y);
         OrValue tmp;
         Main.Ignore();
         tmp = Main.AssumeOrBegin(y==true?1:0);

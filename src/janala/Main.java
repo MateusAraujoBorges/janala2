@@ -148,7 +148,7 @@ public class Main {
     public static void MakeSymbolic(byte x) {    }
     public static void MakeSymbolic(byte x, int lo, int hi) {}
     public static void MakeSymbolic(short x) {    }
-    public static void MakeSymbolic(boolean x) {    }
+    public static void MakeSymbolicBool(boolean x) {    }
     public static void MakeSymbolic(String x) {    }
 
     static public int readInt(int x) {

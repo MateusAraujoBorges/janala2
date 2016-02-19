@@ -81,6 +81,10 @@ public class StaticInvocation {
         } else if (owner.equals("janala/Main") && name.equals("ForceTruth") && args.length==1) {
             history.setLastForceTruth();
             return PlaceHolder.instance;
+        } else if (owner.equals("janala/Main") && name.equals("MakeSymbolicBool") && args.length==1) {
+            int symbol = args[0].MAKE_SYMBOLIC(history);
+            history.addInput(symbol, args[0],0,1);
+            return PlaceHolder.instance;
         } else if (owner.equals("janala/Main") && name.equals("MakeSymbolic") && args.length==1) {
             int symbol = args[0].MAKE_SYMBOLIC(history);
             history.addInput(symbol, args[0]);
