@@ -1,5 +1,6 @@
 package tests.quantolic;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -17,15 +18,17 @@ import janala.interpreters.SymbolicInt;
 import janala.interpreters.SymbolicIntCompareConstraint;
 import janala.interpreters.Value;
 import janala.solvers.InputElement;
-import janala.solvers.counters.ConcolicCountNode;
-import janala.solvers.counters.ConcolicCountTree;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.PCPCounter;
-import janala.solvers.counters.PrunedNode;
+import janala.solvers.counters.PCPVersionTwoCounter;
 import janala.solvers.counters.QuantolicStrategy;
-import janala.solvers.counters.SymbolicCountNode;
-import janala.solvers.counters.SymbolicTree;
-import janala.solvers.counters.UnexploredNode;
+import janala.solvers.counters.trees.ConcolicCountNode;
+import janala.solvers.counters.trees.ConcolicCountTree;
+import janala.solvers.counters.trees.PrunedNode;
+import janala.solvers.counters.trees.QuantolicTreePolicy;
+import janala.solvers.counters.trees.SymbolicCountNode;
+import janala.solvers.counters.trees.SymbolicTree;
+import janala.solvers.counters.trees.UnexploredNode;
 import name.filieri.antonio.jpf.utils.BigRational;
 
 public class TreeTests {
@@ -139,7 +142,7 @@ public class TreeTests {
 	}
 
 	@Test
-	public void testTreeCounting() {
+	public void testTreeCounting() throws IOException {
 		// Input: 10 >= x1 >= -10, 10 >= x2 >= -10
 		// Tree:
 		/*-
@@ -209,7 +212,7 @@ public class TreeTests {
 		List<SymbolicCountNode> nodes3 = tree.insertPathIntoTree(constraints3);
 		List<SymbolicCountNode> nodes4 = tree.insertPathIntoTree(constraints4);
 		
-		Counter counter = new PCPCounter();
+		Counter counter = new PCPVersionTwoCounter();
 		tree.count(nodes1, inputs, Collections.<Integer,Value>emptyMap(), counter);
 		tree.count(nodes2, inputs, Collections.<Integer,Value>emptyMap(), counter);
 		tree.count(nodes3, inputs, Collections.<Integer,Value>emptyMap(), counter);
@@ -320,6 +323,7 @@ public class TreeTests {
 			public boolean nextBoolean() {return false;}
 		};
 		
+		QuantolicTreePolicy policy = new QuantolicTreePolicy();
 		QuantolicStrategy strategy = new QuantolicStrategy(new Counter() {
 			@Override
 			public void shutdown() {}
@@ -327,19 +331,19 @@ public class TreeTests {
 			public BigRational probabilityOf(List<Constraint> constraints, List<InputElement> inputs, Map<Integer,Value> syntheticVars) {
 				throw new RuntimeException();
 			}
-		}, tree, rng);
+		}, tree, policy, rng);
 		
-		List<Constraint> nextPath = strategy.chooseNextPath();
+		List<Constraint> nextPath = policy.chooseNextPath(tree,rng);
 		assertEquals(nextPath.size(), 3);
 		assertEquals(nextPath.get(0), a1);
 		assertEquals(nextPath.get(1), a2);
 		assertEquals(nextPath.get(2), a3.not());
 		
-		nextPath = strategy.chooseNextPath();
+		nextPath = policy.chooseNextPath(tree,rng);
 		assertEquals(nextPath.size(), 1);
 		assertEquals(nextPath.get(0), a1.not());
 		
-		nextPath = strategy.chooseNextPath();
+		nextPath = policy.chooseNextPath(tree,rng);
 		assertEquals(nextPath.size(), 4);
 		assertEquals(nextPath.get(0), a1);
 		assertEquals(nextPath.get(1), a2.not());

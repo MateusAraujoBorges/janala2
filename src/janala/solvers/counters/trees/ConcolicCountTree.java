@@ -1,4 +1,4 @@
-package janala.solvers.counters;
+package janala.solvers.counters.trees;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +24,7 @@ import janala.interpreters.Constraint;
 import janala.interpreters.SymbolicTrueConstraint;
 import janala.interpreters.Value;
 import janala.solvers.InputElement;
+import janala.solvers.counters.Counter;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.utils.BigRational;
 
@@ -34,11 +35,13 @@ public class ConcolicCountTree implements SymbolicTree {
 	
 	private final SymbolicCountNode root;
 	private final boolean mergeIdenticalConstraints;
+	private int nExploredPaths;
 
 	public ConcolicCountTree() {
 		root = new ConcolicCountNode(SymbolicTrueConstraint.instance);
 		root.setProbabilityOfSolution(BigRational.ONE);
 		mergeIdenticalConstraints = true;
+		nExploredPaths = 0;
 	}
 
 	@Override
@@ -60,11 +63,13 @@ public class ConcolicCountTree implements SymbolicTree {
 
 		if (mergeIdenticalConstraints) {
 			Set<Constraint> set = Sets.newLinkedHashSet(constraints);
-			logger.log(Level.INFO,"[concolictree] Merging constraints: (size) {0} -> {1} ",
-					new Object[]{ constraints.size(), set.size()});
-			logger.log(Level.INFO,"[concolictree] Merging constraints:\n\t old: {0} \n\t new: {1}",
-					new Object[]{constraints,set});
-			constraints = ImmutableList.copyOf(set);
+			if (constraints.size() > set.size()) {
+				logger.log(Level.INFO, "[concolictree] Merging constraints: (size) {0} -> {1} ",
+				        new Object[] { constraints.size(), set.size() });
+				logger.log(Level.INFO, "[concolictree] Merging constraints:\n\t old: {0} \n\t new: {1}",
+				        new Object[] { constraints, set });
+				constraints = ImmutableList.copyOf(set);
+			}
 		}
 		
 		List<SymbolicCountNode> path = Lists.newArrayList();
@@ -74,6 +79,7 @@ public class ConcolicCountTree implements SymbolicTree {
 		// TODO check toString performance of Constraints; caching should help.
 		int depth = 0;
 		for (Constraint cons : constraints) {
+			current.setNumberVisits(current.getNumberVisits() + 1);
 			depth++;
 			Preconditions.checkState(!current.isEmpty(), "Trying to insert into an empty/pruned node!");
 			Preconditions.checkState(!(current instanceof UnexploredNode), "A unexplored node wasn't replaced!");
@@ -131,9 +137,13 @@ public class ConcolicCountTree implements SymbolicTree {
 			}
 			path.add(current);
 		}
+
+		current.setNumberVisits(current.getNumberVisits() + 1);
 		// "plug" the paths in the leaf
 		current.setLeftChild(PrunedNode.INSTANCE);
 		current.setRightChild(PrunedNode.INSTANCE);
+		
+		nExploredPaths++;
 		return path;
 	}
 
@@ -252,6 +262,11 @@ public class ConcolicCountTree implements SymbolicTree {
 			}
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public int getNumberOfExploredPaths() {
+		return nExploredPaths;
 	}
 	
 }

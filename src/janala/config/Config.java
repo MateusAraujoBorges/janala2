@@ -45,6 +45,9 @@ import janala.solvers.Strategy;
 import janala.solvers.counters.BoundedDomainSolverWrapper;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.DomainCoverageStrategyWrapper;
+import janala.solvers.counters.trees.TreePolicy;
+import janala.solvers.counters.trees.UCB1TreePolicy;
+import janala.solvers.counters.trees.UCB1TreePolicy.FPU_TYPE;
 
 public class Config {
 	public static final String mainClass = System.getProperty("janala.mainClass", null);
@@ -72,6 +75,7 @@ public class Config {
 	private String loggerClass;
 	private String solver;
 	private String counter;
+	public final String policy;
 	public final String strategy;
 	public final int maxStringLength;
 	public final int pathId;
@@ -99,6 +103,9 @@ public class Config {
 	public final String countersSecondLevelCachePath;
 	public final String  remoteCounterAddress;
 	public final int remoteCounterPort;
+	
+	public final boolean ucbUseConstant;
+	public final FPU_TYPE ucbFpuType;
 
 	public Config() {
 		try {
@@ -127,6 +134,7 @@ public class Config {
 			solver = properties.getProperty("catg.solverClass", "janala.solvers.YicesSolver2");
 			counter = properties.getProperty("catg.countingClass", "janala.solvers.counters.PCPCounter");
 			strategy = properties.getProperty("catg.strategyClass", "janala.solvers.DFSStrategy");
+			policy = properties.getProperty("catg.policyClass", "janala.solvers.counters.trees.QuantolicTreePolicy");
 			excludeList = properties.getProperty("catg.excludeList", "").split(",");
 			includeList = properties.getProperty("catg.includeList", "catg.CATG").split(",");
 			maxStringLength = Integer.parseInt(properties.getProperty("catg.maxStringLength", "30"));
@@ -156,11 +164,14 @@ public class Config {
 			remoteCounterAddress = properties.getProperty("counters.remoteAddress","none");
 			remoteCounterPort = Integer.parseInt(properties.getProperty("counters.remotePort","0"));
 
+			ucbUseConstant = Boolean.parseBoolean(properties.getProperty("mcts.ucb1.useConstant","true"));
+			ucbFpuType = FPU_TYPE.valueOf(properties.getProperty("mcts.ucb1.fpu","ONE").toUpperCase().trim());
+			
 			String rangeStr = properties.getProperty("catg.defaultRange", "-1000,1000");
 			long lo = Long.parseLong(rangeStr.split(",")[0]);
 			long hi = Long.parseLong(rangeStr.split(",")[1]);
 			defaultRange = Range.closed(lo, hi);
-
+			
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -267,5 +278,27 @@ public class Config {
 
 	public Range<Long> getDefaultRange() {
 		return defaultRange;
+	}
+
+	public TreePolicy getPolicy() {
+		try {
+			if (policy.equals(UCB1TreePolicy.class.getName())) {
+				return new UCB1TreePolicy(ucbUseConstant, ucbFpuType);
+			} else {
+				Class<?> policyClass = Class.forName(policy);
+				TreePolicy ret = (TreePolicy) policyClass.newInstance();
+				return ret;
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			System.exit(1);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			System.exit(1);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
 	}
 }

@@ -1,42 +1,38 @@
-package janala.solvers.counters;
+package janala.solvers.counters.trees;
 
 import janala.interpreters.Constraint;
+import janala.interpreters.SymbolicFalseConstraint;
 import name.filieri.antonio.jpf.utils.BigRational;
 
-public class UnexploredNode implements SymbolicCountNode {
+public class PrunedNode implements SymbolicCountNode {
 
-	private final Constraint constraint;
-	private BigRational nsolutions;
-	private static final long serialVersionUID = 6686134494504599192L;
- 
-	public UnexploredNode(Constraint constraint) {
-		this.constraint = constraint;
-		this.nsolutions = BigRational.MINUS_ONE;
-	}
-	
+	public static final SymbolicCountNode INSTANCE = new PrunedNode();
+
+	private static final long serialVersionUID = 9061980019581486709L;
+
 	@Override
 	public BigRational getProbabilityOfSolution() {
-		return nsolutions;
+		return BigRational.ZERO;
 	}
 
 	@Override
 	public void setProbabilityOfSolution(BigRational nsolutions) {
-		this.nsolutions = nsolutions;
+		throw new RuntimeException("Invalid operation!");
 	}
 
 	@Override
 	public boolean isCounted() {
-		return !nsolutions.equals(BigRational.MINUS_ONE);
+		return true;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return isCounted() && nsolutions.equals(BigRational.ZERO);
+		return true;
 	}
 
 	@Override
 	public Constraint getConstraint() {
-		return constraint;
+		return SymbolicFalseConstraint.instance;
 	}
 
 	@Override
@@ -58,9 +54,29 @@ public class UnexploredNode implements SymbolicCountNode {
 	public void setRightChild(SymbolicCountNode right) {
 		throw new RuntimeException("Invalid Operation!");
 	}
-	
+
 	@Override
 	public String toString() {
-		return "[unexplored] count:" + nsolutions + " cons:" + constraint;
+		return " -- PRUNED -- ";
+	}
+
+	@Override
+	public long getNumberChildren() {
+		return 0;
+	}
+
+	@Override
+	public int getNumberVisits() {
+		return 0;
+	}
+
+	@Override
+	public void setNumberChildren(long children) {
+		throw new RuntimeException("Invalid Operation!");
+	}
+
+	@Override
+	public void setNumberVisits(int visits) {
+		throw new RuntimeException("Invalid Operation!");
 	}
 }

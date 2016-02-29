@@ -1,4 +1,4 @@
-package janala.solvers.counters;
+package janala.solvers.counters.trees;
 
 import java.nio.charset.Charset;
 
@@ -17,6 +17,9 @@ public class ConcolicCountNode implements SymbolicCountNode {
 	//private Problem problem;
 	private Integer hashcode = null;
 	
+	private long children;
+	private int visits;
+	
 	private SymbolicCountNode left;
 	private SymbolicCountNode right;
 
@@ -24,6 +27,8 @@ public class ConcolicCountNode implements SymbolicCountNode {
 		this.constraint = cons;
 		probabilityOfSolution = BigRational.MINUS_ONE;
 		hashcode = 0;
+		children = 0;
+		visits = 0;
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class ConcolicCountNode implements SymbolicCountNode {
 
 	@Override
 	public String toString() {
-		return "count: " + probabilityOfSolution + " cons:" + constraint;
+		return "{count: " + probabilityOfSolution.doubleValue() + " visits:" + visits + " cons:" + constraint + "}";
 	}
 	
 	@Override
@@ -98,5 +103,25 @@ public class ConcolicCountNode implements SymbolicCountNode {
 	@Override
 	public void setRightChild(SymbolicCountNode right) {
 		this.right = right;
+	}
+
+	@Override
+	public long getNumberChildren() {
+		return children;
+	}
+
+	@Override
+	public int getNumberVisits() {
+		return visits;
+	}
+
+	@Override
+	public void setNumberChildren(long children) {
+		this.children = children;
+	}
+
+	@Override
+	public void setNumberVisits(int visits) {
+		this.visits = visits;
 	}
 }

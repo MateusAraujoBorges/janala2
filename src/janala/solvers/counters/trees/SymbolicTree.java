@@ -1,4 +1,4 @@
-package janala.solvers.counters;
+package janala.solvers.counters.trees;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +10,7 @@ import java.util.Map;
 import janala.interpreters.Constraint;
 import janala.interpreters.Value;
 import janala.solvers.InputElement;
+import janala.solvers.counters.Counter;
 import name.filieri.antonio.jpf.utils.BigRational;
 
 public interface SymbolicTree extends Serializable {
@@ -71,5 +72,6 @@ public interface SymbolicTree extends Serializable {
 	 */
 	public void writeToDisk(File f) throws FileNotFoundException, IOException;
 
+	public int getNumberOfExploredPaths();
 	
 }

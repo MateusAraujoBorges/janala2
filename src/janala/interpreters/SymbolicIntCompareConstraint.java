@@ -147,7 +147,7 @@ public class SymbolicIntCompareConstraint extends Constraint {
 
 	@Override
 	public String toMathString() {
-		throw new RuntimeException("Not implemented yet");
+		return toString();
 	}
 
 }

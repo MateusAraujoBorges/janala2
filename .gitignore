@@ -14,3 +14,6 @@ hs_err_pid*
 # temporary files and reports
 catg_tmp/
 testdata/
+/results-bench/
+/results-bench-dfs/
+results/

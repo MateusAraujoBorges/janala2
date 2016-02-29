@@ -1,12 +1,7 @@
 package janala.solvers.counters;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +11,6 @@ import java.util.logging.Logger;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import janala.config.Config;
@@ -26,6 +20,11 @@ import janala.solvers.History;
 import janala.solvers.InputElement;
 import janala.solvers.Solver;
 import janala.solvers.Strategy;
+import janala.solvers.counters.trees.ConcolicCountTree;
+import janala.solvers.counters.trees.SymbolicCountNode;
+import janala.solvers.counters.trees.SymbolicTree;
+import janala.solvers.counters.trees.TreePolicy;
+import janala.solvers.counters.util.CountUtils;
 import janala.utils.MyLogger;
 import name.filieri.antonio.jpf.utils.BigRational;
 
@@ -34,12 +33,14 @@ public class QuantolicStrategy extends Strategy {
 	private final Counter counter;
 	private SymbolicTree tree;
 	private RandomGenerator rng;
-
+	private final TreePolicy policy;
+	
 	public QuantolicStrategy() {
 		this.counter = Config.instance.getCounter();
+		this.policy = Config.instance.getPolicy();
 		
 		try {
-			this.rng = readRNGFromFile(Config.instance.rngFile);
+			this.rng = CountUtils.readRNGFromFile(Config.instance.rngFile);
 		} catch (FileNotFoundException e) {
 			rng = new MersenneTwister(Config.instance.seed);
 			logger.log(Level.INFO, "RNG file not found. Creating new RNG from scratch");
@@ -52,7 +53,7 @@ public class QuantolicStrategy extends Strategy {
 		}
 
 		try {
-			tree = readTreeFromFile(Config.instance.symtreeFile);
+			tree = CountUtils.readTreeFromFile(Config.instance.symtreeFile);
 		} catch (FileNotFoundException e) {
 			tree = new ConcolicCountTree();
 			logger.log(Level.INFO, "Tree file not found. Creating new symbolic tree from scratch");
@@ -65,10 +66,11 @@ public class QuantolicStrategy extends Strategy {
 		}
 	}
 	
-	public QuantolicStrategy(Counter counter, SymbolicTree tree, RandomGenerator rng) {
+	public QuantolicStrategy(Counter counter, SymbolicTree tree, TreePolicy policy, RandomGenerator rng) {
 		this.counter = counter;
 		this.rng = rng;
 		this.tree = tree;
+		this.policy = policy;
 	}
 
 	private final static Logger logger = MyLogger.getLogger(QuantolicStrategy.class.getName());
@@ -108,9 +110,10 @@ public class QuantolicStrategy extends Strategy {
 		logger.log(Level.SEVERE,"[quantolic] current cumulative domain coverage (including this path): " + coverage.doubleValue());
 		
 		// select and solve
-		ArrayList<Constraint> nextPath = chooseNextPath();
+		ArrayList<Constraint> nextPath = Lists.newArrayList(policy.chooseNextPath(tree,rng));
 		logger.log(Level.INFO,"[quantolic] next path: {0}", nextPath);
-		while (!nextPath.isEmpty() && !tree.isDone()) {
+		
+		if (!nextPath.isEmpty() && !tree.isDone()) {
 			solver.setInputs(inputs);
 			solver.setPathConstraint(nextPath);
 			solver.setPathConstraintIndex(nextPath.size() - 1);
@@ -119,8 +122,8 @@ public class QuantolicStrategy extends Strategy {
 			if (solved) {
 				// store tree and RNG state on the disk
 				try {
-					writeTreeToFile(Config.instance.symtreeFile);
-					writeRNGToFile(Config.instance.rngFile);
+					CountUtils.writeTreeToFile(tree, Config.instance.symtreeFile);
+					CountUtils.writeRNGToFile(rng, Config.instance.rngFile);
 					counter.shutdown();
 				} catch (FileNotFoundException e) {
 					logger.log(Level.SEVERE, "Problems while opening the file:", e);
@@ -134,8 +137,10 @@ public class QuantolicStrategy extends Strategy {
 
 				return 0;
 			} else {
-				logger.warning("Infeasible path detected with solutions. Something strange is going on, maybe?");
-				nextPath = chooseNextPath();
+				logger.severe("[quantolicStrategy] Infeasible path detected with solutions. Something strange is going on");
+				logger.severe("[quantolicStrategy] Path: " + nextPath);
+				logger.severe("[quantolicStrategy] inputs: " + inputs);
+				throw new RuntimeException("Infeasible path detected with solutions.");
 			}
 		} 
 
@@ -143,95 +148,9 @@ public class QuantolicStrategy extends Strategy {
 		return -1;
 	}
 
-	/**
-	 * Walk through the symbolic tree and select nodes based on their
-	 * probabilities/number of solutions.
-	 * 
-	 * @return ArrayList with the selected path condition. The ArrayList return
-	 *         type is due to the signature of {@code Solver.setPathConstraint}.
-	 */
-
-	public ArrayList<Constraint> chooseNextPath() {
-		SymbolicCountNode current = tree.getRoot();
-		ArrayList<Constraint> nextPath = Lists.newArrayList();
-
-		while (!current.isEmpty() && !(current instanceof PrunedNode || current instanceof UnexploredNode)) {
-			Preconditions.checkState(current.isCounted(), "Current node wasn't counted!");
-
-			SymbolicCountNode left = current.getLeftChild();
-			SymbolicCountNode right = current.getRightChild();
-
-			Preconditions.checkState(!(left instanceof PrunedNode && right instanceof PrunedNode),
-			        "We reached a path already taken previously. This shouldn't happen");
-			Preconditions.checkState(left.isCounted() || right.isCounted(), "Both child nodes are uncounted!");
-			
-			BigRational nSolCurr = current.getProbabilityOfSolution();
-			BigRational nSolLeft = left.getProbabilityOfSolution();
-			BigRational nSolRight = right.getProbabilityOfSolution();
-
-			// left.nsolutions = (current.nsolutions - right.nsolutions)
-			if (!left.isCounted()) {
-				left.setProbabilityOfSolution(nSolCurr.minus(nSolRight));
-				nSolLeft = left.getProbabilityOfSolution();
-			} else if (!right.isCounted()) {
-				right.setProbabilityOfSolution(nSolCurr.minus(nSolLeft));
-				nSolRight = right.getProbabilityOfSolution();
-			}
-			
-			Preconditions.checkState(nSolLeft.isPositive() || nSolRight.isPositive(), "Both child nodes have zero probability!");
-			
-			if (nSolLeft.isZero()) { //prune
-				current.setLeftChild(PrunedNode.INSTANCE);
-			} else if (nSolRight.isZero()) {
-				current.setRightChild(PrunedNode.INSTANCE);
-			}
-			
-			BigRational leftProb = nSolLeft.div(nSolCurr);
-			BigRational randomRoll = BigRational.valueOf(rng.nextDouble());
-
-			if (randomRoll.compareTo(leftProb) < 0) { // leftProb < randomRoll (we use '<' in case leftProb == 0)
-				nextPath.add(left.getConstraint());
-				current = left;
-			} else {
-				nextPath.add(right.getConstraint());
-				current = right;
-			}
-		}
-
-		return nextPath;
-	}
 
 	private List<Constraint> getExecutionPathConstraint(History solver) {
 		return solver.getPathConstraint();
-	}
-
-	private void writeTreeToFile(String symtreeFile) throws FileNotFoundException, IOException {
-		File f = new File(symtreeFile);
-		f.createNewFile(); // create new file if it not exists already
-		tree.writeToDisk(f);
-	}
-
-	private SymbolicTree readTreeFromFile(String symtreeFile)
-	        throws FileNotFoundException, ClassNotFoundException, IOException {
-		return ConcolicCountTree.readFromDisk(new File(symtreeFile));
-	}
-
-	private RandomGenerator readRNGFromFile(String rngFile)
-	        throws FileNotFoundException, IOException, ClassNotFoundException {
-		ObjectInputStream is = new ObjectInputStream(new FileInputStream(new File(rngFile)));
-		Object tmp = is.readObject();
-		is.close();
-		if (tmp instanceof MersenneTwister) {
-			return (MersenneTwister) tmp;
-		} else {
-			throw new RuntimeException("Unexpected rng type! " + tmp.getClass().getName());
-		}
-	}
-
-	private void writeRNGToFile(String rngFile) throws FileNotFoundException, IOException {
-		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(rngFile)));
-		os.writeObject(rng);
-		os.close();
 	}
 
 }

@@ -9,7 +9,7 @@ from subprocess import check_output
 
 #INPUT_FILE="catg_tmp/inputs"
 CMD_RESTART_COUNTING_SERVER="../PathConditionsProbability/PathConditionsProbability/restartServer"
-STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random","DFS":"catg.conf.dfs","QUANTOLIC":"catg.conf.quantolic"}
+STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random","DFS":"catg.conf.dfs","QUANTOLIC":"catg.conf.quantolic","MCTS":"catg.conf.mcts-quantolic"}
 CONFIG_FILE="catg.conf"
 CATG_OUTPUT_FILE="catg_tmp/catg_output"
 CSV_OUTPUT_DIR="results"
@@ -27,7 +27,7 @@ class Enum(set):
             return name
         raise AttributeError
 
-Strategies=Enum(["DFS","RANDOM","QUANTOLIC"])
+Strategies=Enum(STRATEGY_CONFIG_FILES.keys())
 
 
 def gen_input_file(inputvars):
@@ -134,7 +134,7 @@ def main():
     copy(STRATEGY_CONFIG_FILES[strategy],CONFIG_FILE)
 
     #[TCAS,SIENA,JTOPAS,BIN_TREE]
-    for subject_data in [TCAS,SIENA,JTOPAS,BIN_TREE]:
+    for subject_data in [TCAS,SIENA,BIN_TREE,JTOPAS]:
 
         #start new counting server
         print "[benchmark] restarting counting server... (not included in the time!) "

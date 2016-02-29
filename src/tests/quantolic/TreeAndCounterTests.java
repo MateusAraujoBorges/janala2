@@ -22,9 +22,9 @@ import janala.interpreters.IntValue;
 import janala.interpreters.SymbolicInt;
 import janala.interpreters.Value;
 import janala.solvers.InputElement;
-import janala.solvers.counters.ConcolicCountTree;
 import janala.solvers.counters.PCPVersionTwoCounter;
-import janala.solvers.counters.SymbolicCountNode;
+import janala.solvers.counters.trees.ConcolicCountTree;
+import janala.solvers.counters.trees.SymbolicCountNode;
 
 public class TreeAndCounterTests {
 
