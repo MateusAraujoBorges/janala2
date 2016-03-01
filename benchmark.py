@@ -1,6 +1,8 @@
 import concolic
+import random
+import ghalton
+import math
 from sys import argv, exit
-from random import seed, randint
 from collections import namedtuple
 from time import time
 from shutil import copy
@@ -9,7 +11,7 @@ from subprocess import check_output
 
 #INPUT_FILE="catg_tmp/inputs"
 CMD_RESTART_COUNTING_SERVER="../PathConditionsProbability/PathConditionsProbability/restartServer"
-STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random","DFS":"catg.conf.dfs","QUANTOLIC":"catg.conf.quantolic","MCTS":"catg.conf.mcts-quantolic"}
+STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random","DFS":"catg.conf.dfs","QUANTOLIC":"catg.conf.quantolic","MCTS":"catg.conf.mcts-quantolic","QUASIRANDOM":"catg.conf.random"}
 CONFIG_FILE="catg.conf"
 CATG_OUTPUT_FILE="catg_tmp/catg_output"
 CSV_OUTPUT_DIR="results"
@@ -30,20 +32,36 @@ class Enum(set):
 Strategies=Enum(STRATEGY_CONFIG_FILES.keys())
 
 
-def gen_input_file(inputvars):
+def gen_input_file(inputvars,halton_seq):
     data = []
     var_input = None
-    for var in inputvars:
-        if var['type'] == 'int':
-            hi = var['hi']
-            lo = var['lo']
-            var_input = randint(lo,hi)
-        elif var['type'] == 'bool':
-            var_input = randint(0,1)
-        data.append(var_input)
- #   with open(INPUT_FILE,'w') as input_file:
-        text = '\n'.join([str(x) for x in data])
- #       input_file.write(content)
+
+    if halton_seq is None:
+        for var in inputvars:
+            if var['type'] == 'int':
+                hi = var['hi']
+                lo = var['lo']
+                var_input = random.randint(lo,hi)
+            elif var['type'] == 'bool':
+                var_input = random.randint(0,1)
+            else:
+                raise Exception("unknown vartype:",var['type'])
+            data.append(var_input)
+    else:
+        quasirandoms = halton_seq.get(1)[0] #[x1,x2...], 0 <= xN <= 1
+        assert len(quasirandoms) == len(inputvars)
+        for rand,var in zip(quasirandoms,inputvars):
+            if var['type'] == 'int':
+                hi = var['hi']
+                lo = var['lo']
+                var_input =  int(math.floor(rand * (hi - lo + 1)) + lo)
+            elif var['type'] == 'bool':
+                var_input = int(round(rand)) 
+            else:
+                raise Exception("unknown vartype:",var['type'])
+            data.append(var_input)
+ 
+    text = '\n'.join([str(x) for x in data])
     return (data,text)
 
 
@@ -61,7 +79,7 @@ def run_janala_once(classname,first_input):
     return (path,cov)
 
 
-def random_janala(classname,var_data,ntimes,start):
+def random_janala(classname,var_data,ntimes,start,seed,use_quasirandom):
     distinct_path_inputs = []
     distinct_paths = []
 
@@ -72,10 +90,18 @@ def random_janala(classname,var_data,ntimes,start):
     cov_timestamps = []
     
     cumulative_coverage = 0
-#    cumulative_coverage_track = []
+    random.seed(seed)
 
+    if use_quasirandom:
+        print len(var_data)
+        halton_seq = ghalton.Halton(len(var_data))
+        halton_seq.seed(seed)
+    else:
+        halton_seq = None
+
+    sorted_var_data = sorted(var_data)
     for i in range(ntimes):
-        input_data,text_input = gen_input_file(var_data)
+        input_data,text_input = gen_input_file(sorted_var_data,halton_seq)
         path,cov = run_janala_once(classname,text_input)
 
         if path in path_set:
@@ -122,7 +148,7 @@ def dump_csv(name,mode,stats):
 
 def main():
     strategy=argv[1].upper()
-    seed(argv[3])
+    seed = int(argv[3])
     ntimes = int(argv[2])
 
     
@@ -145,8 +171,9 @@ def main():
         stats = {"no":"data"}
         print "[randomcoverage] starting random testing of " + classname
 
-        if strategy == Strategies.RANDOM:
-            stats = random_janala(classname,var_data,ntimes,start)
+        if strategy == Strategies.RANDOM or strategy == Strategies.QUASIRANDOM:
+            use_quasirandom = strategy == Strategies.QUASIRANDOM
+            stats = random_janala(classname,var_data,ntimes,start,seed,use_quasirandom)
         else:
             stats = heuristic_janala(classname,ntimes,start)
 
