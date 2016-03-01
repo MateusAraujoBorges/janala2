@@ -11,7 +11,14 @@ from subprocess import check_output
 
 #INPUT_FILE="catg_tmp/inputs"
 CMD_RESTART_COUNTING_SERVER="../PathConditionsProbability/PathConditionsProbability/restartServer"
-STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random","DFS":"catg.conf.dfs","QUANTOLIC":"catg.conf.quantolic","MCTS":"catg.conf.mcts-quantolic","QUASIRANDOM":"catg.conf.random"}
+STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random",
+                       "DFS":"catg.conf.dfs",
+                       "QUANTOLIC":"catg.conf.quantolic",
+                       "MCTS":"catg.conf.mcts-quantolic",
+                       "MCTS-NONE":"catg.conf.mcts-none",
+                       "MCTS-NOCONST":"catg.conf.mcts-noconst",
+                       "MCTS-PROB":"catg.conf.mcts-prob",
+                       "QUASIRANDOM":"catg.conf.random"}
 CONFIG_FILE="catg.conf"
 CATG_OUTPUT_FILE="catg_tmp/catg_output"
 CSV_OUTPUT_DIR="results"
@@ -22,6 +29,7 @@ JTOPAS=("tests.casestudies.sir.jtopasV0.TestPluginTokenizer",[{'type':'int','lo'
 BIN_TREE=("tests.casestudies.sir.binarytree.BinarySearchTreeTest",[{'type':'int','lo':-100,'hi':100} for i in range(5)])
 
 Arguments = namedtuple('Arguments',['maxIterations','className','offline','verbose','D', 'arguments'])
+SEEDS=(-431209415,942731727) #,299953477,141084159,-968229660)
 
 class Enum(set):
     def __getattr__(self, name):
@@ -95,7 +103,8 @@ def random_janala(classname,var_data,ntimes,start,seed,use_quasirandom):
     if use_quasirandom:
         print len(var_data)
         halton_seq = ghalton.Halton(len(var_data))
-        halton_seq.seed(seed)
+	#ghalton doesn't work with negative seeds 
+        halton_seq.seed(abs(seed))
     else:
         halton_seq = None
 
@@ -135,23 +144,21 @@ def heuristic_janala(classname,ntimes,start):
     return {"coverage":coverage,"timestamps":cov_timestamps,"repeated_paths":0,"inputs":[]}
     
 
-def dump_csv(name,mode,stats):
-    with open("".join([CSV_OUTPUT_DIR,"/",name,".",mode,".csv"]),'w') as csvfile:
-        csvfile.write("name,mode,cov,time\n")
+def dump_csv(name,mode,stats,seed):
+    with open("".join([CSV_OUTPUT_DIR,"/",name,".",mode,".",seed,".csv"]),'w') as csvfile:
+        csvfile.write("name,mode,cov,time,seed\n")
         cov = stats["coverage"]
         timestamps = stats["timestamps"]
         cumulative_cov = 0
         for i in range(len(cov)):
             cumulative_cov += cov[i]
-            line = ",".join([name,mode,str(cumulative_cov),str(timestamps[i])])
+            line = ",".join([name,mode,str(cumulative_cov),str(timestamps[i]),seed])
             csvfile.write(line + "\n")
 
 def main():
     strategy=argv[1].upper()
-    seed = int(argv[3])
     ntimes = int(argv[2])
 
-    
     if strategy not in Strategies:
         print "Unknown strategy: " + strategy
         print "Valid values are: " + str(Strategies)
@@ -161,24 +168,24 @@ def main():
 
     #[TCAS,SIENA,JTOPAS,BIN_TREE]
     for subject_data in [TCAS,SIENA,BIN_TREE,JTOPAS]:
+	for seed in SEEDS:
+            #start new counting server
+	    print "[benchmark] restarting counting server... (not included in the time!) "
+            check_output(CMD_RESTART_COUNTING_SERVER,shell=True)
 
-        #start new counting server
-        print "[benchmark] restarting counting server... (not included in the time!) "
-        check_output(CMD_RESTART_COUNTING_SERVER,shell=True)
+            start = time()
+            classname,var_data = subject_data
+            stats = {"no":"data"}
+            print "[randomcoverage] starting random testing of " + classname
 
-        start = time()
-        classname,var_data = subject_data
-        stats = {"no":"data"}
-        print "[randomcoverage] starting random testing of " + classname
+            if strategy == Strategies.RANDOM or strategy == Strategies.QUASIRANDOM:
+                use_quasirandom = strategy == Strategies.QUASIRANDOM
+                stats = random_janala(classname,var_data,ntimes,start,seed,use_quasirandom)
+            else:
+                stats = heuristic_janala(classname,ntimes,start)
 
-        if strategy == Strategies.RANDOM or strategy == Strategies.QUASIRANDOM:
-            use_quasirandom = strategy == Strategies.QUASIRANDOM
-            stats = random_janala(classname,var_data,ntimes,start,seed,use_quasirandom)
-        else:
-            stats = heuristic_janala(classname,ntimes,start)
-
-        end = time()
-        print "[benchmark] final coverage, max of {} paths ({} distinct) in {} seconds: {}".format(ntimes, len(stats["coverage"]), end - start, sum(stats["coverage"]))
-        dump_csv(classname,strategy,stats)
-
+            end = time()
+            print "[benchmark] final coverage, max of {} paths ({} distinct) in {} seconds: {}".format(ntimes, len(stats["coverage"]), end - start, sum(stats["coverage"]))
+            dump_csv(classname,strategy,stats,str(seed))
+        
 main()
