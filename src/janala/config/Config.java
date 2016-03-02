@@ -45,6 +45,7 @@ import janala.solvers.Strategy;
 import janala.solvers.counters.BoundedDomainSolverWrapper;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.DomainCoverageStrategyWrapper;
+import janala.solvers.counters.FilteredTreeBuilderStrategy;
 import janala.solvers.counters.trees.TreePolicy;
 import janala.solvers.counters.trees.UCB1TreePolicy;
 import janala.solvers.counters.trees.UCB1TreePolicy.FPU_TYPE;
@@ -95,6 +96,7 @@ public class Config {
 	public final boolean printDomainCoverage;
 	public final String bfsFile;
 	private boolean useDomainBoundConstraint;
+	private boolean filterConstraints;
 
 	public final String isccPath;
 	public final String lattePath;
@@ -106,6 +108,8 @@ public class Config {
 	
 	public final boolean ucbUseConstant;
 	public final FPU_TYPE ucbFpuType;
+	public final String setFile;
+	public final String inputElementsFile;
 
 	public Config() {
 		try {
@@ -152,9 +156,9 @@ public class Config {
 					properties.getProperty("catg.testCheckingClass", "janala.config.DefaultTestCheckerImpl"));
 			testChecker = (TestChecker) loadClass(testCheckingClass);
 			printDomainCoverage = properties.getProperty("catg.printDomainCoverage", "false").trim().equals("true");
-			useDomainBoundConstraint = properties.getProperty("catg.solver.useDomainBoundConstraint", "false").trim()
-					.equals("true");
-
+			useDomainBoundConstraint = Boolean.parseBoolean(properties.getProperty("catg.solver.useDomainBoundConstraint", "false").trim());
+			filterConstraints = Boolean.parseBoolean(properties.getProperty("catg.solver.filterConstraints", "false").trim());
+			
 			isccPath = properties.getProperty("counters.isccPath");
 			countersWorkingDirectory = properties.getProperty("counters.counterWorkingDirectory");
 			countersSecondLevelCachePath = properties.getProperty("counters.secondLevelCachePath");
@@ -166,7 +170,8 @@ public class Config {
 
 			ucbUseConstant = Boolean.parseBoolean(properties.getProperty("mcts.ucb1.useConstant","true"));
 			ucbFpuType = FPU_TYPE.valueOf(properties.getProperty("mcts.ucb1.fpu","ONE").toUpperCase().trim());
-			
+			setFile = properties.getProperty("catg.solver.pathfilter.setFile","coveredPaths.ser");
+			inputElementsFile = properties.getProperty("catg.solver.pathfilter.inputElementsFile","inputElements.ser");
 			String rangeStr = properties.getProperty("catg.defaultRange", "-1000,1000");
 			long lo = Long.parseLong(rangeStr.split(",")[0]);
 			long hi = Long.parseLong(rangeStr.split(",")[1]);
@@ -236,7 +241,7 @@ public class Config {
 
 	public Strategy getStrategy() {
 		try {
-			Class solverClass = Class.forName(strategy);
+			Class<?> solverClass = Class.forName(strategy);
 			Strategy ret = (Strategy) solverClass.newInstance();
 			if (printDomainCoverage) {
 				ret = new DomainCoverageStrategyWrapper(ret);

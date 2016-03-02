@@ -19,7 +19,13 @@ catg.yicesCommand=yices
 
 catg.analysisClass=janala.logger.DJVM
 catg.solverClass=janala.solvers.CVC4Solver
-catg.strategyClass=janala.solvers.counters.QuantolicStrategy
+#catg.strategyClass=janala.solvers.AbstractRefineStrategy
+#catg.strategyClass=janala.solvers.DFSStrategy
+#catg.strategyClass=janala.solvers.counters.BFSStrategy
+catg.strategyClass=janala.solvers.counters.FilteredTreeBuilderStrategy
+
+# use if catg.strategyClass != quantolic
+#catg.printDomainCoverage=true
 
 # counter configuration
 
@@ -29,11 +35,15 @@ counters.remotePort = 9991
 counters.isccPath = iscc
 counters.counterWorkingDirectory = /tmp/counters/
 counters.secondLevelCachePath = /tmp/countercache/
+#counters.lattePath = <fillIt>
+#counters.omegaPath = <fillIt>
 
 
 # bound the input domain 
 catg.solver.useDomainBoundConstraint=true
 catg.defaultRange=-100,100
+# filter repeated constraints
+catg.solver.filterConstraints=true
 
 # the following list must be non-empty
 catg.excludeList=janala,gnu/trove,java/util,java/io,java/security,sun/,javax/security,sun/security,sun/reflect,com/apple/java,java/lang,java/sql,java/nio,java/net,java/text,java/beans,dk/brics

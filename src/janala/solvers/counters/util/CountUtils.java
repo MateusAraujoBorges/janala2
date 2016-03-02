@@ -7,10 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.LinkedList;
+import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 
+import janala.solvers.InputElement;
 import janala.solvers.counters.trees.ConcolicCountTree;
 import janala.solvers.counters.trees.SymbolicTree;
 
@@ -44,5 +47,40 @@ public class CountUtils {
 		os.writeObject(rng);
 		os.close();
 	}
+	
 
+	public static Set<?> readSetFromFile(String filename) throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filename)));
+		Object tmp = ois.readObject();
+		ois.close();
+		if (tmp instanceof Set) {
+			return (Set<?>) tmp;
+		} else {
+			throw new RuntimeException(filename + " does not contain a set");
+		}
+	}
+	
+	public static void writeSetToFile(Set<?> set, String filename) throws IOException {
+		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(filename)));
+		os.writeObject(set);
+		os.close();
+	}
+
+	public static void writeInputElementsToFile(LinkedList<InputElement> inputs, String inputElementsFilename) throws IOException {
+		ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(new File(inputElementsFilename)));
+		os.writeObject(inputs);
+		os.close();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static LinkedList<InputElement> readInputElementsFromFile(String filename) throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(filename)));
+		Object tmp = ois.readObject();
+		ois.close();
+		if (tmp instanceof LinkedList) {
+			return (LinkedList<InputElement>) tmp;
+		} else {
+			throw new RuntimeException(filename + " does not contain a set");
+		}
+	}
 }

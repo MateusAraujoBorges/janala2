@@ -24,18 +24,31 @@ def getArguments ():
 catg_tmp_dir = "catg_tmp"
 CONCOLIC_OUTPUT_FILE="catg_output"
 
-def concolic (first_input=None):
+def clean_dir():
+    try:
+        shutil.rmtree(catg_tmp_dir)
+    except: pass
+    os.mkdir(catg_tmp_dir)
+
+def genIntermediateInputs():
+    os.chdir(catg_tmp_dir)
+    cmd1 = "java -Xmx2G -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea janala.solvers.counters.IntermediaryInputGenerator"
+    subprocess.call(cmd1, shell=True)
+    os.chdir('..')
+
+
+def concolic (first_input=None,clean_folder=True):
     cmd1 = "java -Xmx4096M -Xms2048M -Djava.util.logging.manager=janala.utils.MyLogManager -Djanala.loggerClass="+loggerClass+" -Djanala.conf="+catg_home+"catg.conf "+jvmOpts+" -javaagent:\""+catg_home+"lib/iagent.jar\" -cp "+ classpath+" -ea "+yourpgm+" "+arguments
 #    print cmd1
     cmd1List = shlex.split(cmd1)
     if verbose:
         print cmd1
-    try:
-        shutil.rmtree(catg_tmp_dir)
-    except: pass
-    os.mkdir(catg_tmp_dir)
+
+    if clean_folder:
+        clean_dir()
     os.chdir(catg_tmp_dir)
 
+        
     print "[janala] performing concolic execution of "+yourpgm
     if first_input is not None:
         with open("inputs","w") as outfile:

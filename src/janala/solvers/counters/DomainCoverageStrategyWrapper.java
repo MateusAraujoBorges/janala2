@@ -35,6 +35,7 @@ public class DomainCoverageStrategyWrapper extends Strategy {
 		
 		BigRational pathProbability = counter.probabilityOf(path, inputs, solver.getSyntheticVars());
 		long end = System.nanoTime();
+		System.out.println("Path: " + path);
 		System.out.println("[quantolic] domain coverage for this path: " + pathProbability.doubleValue() + " at " + System.currentTimeMillis());
 		System.out.println("[quantolic] time spent calling the counter: " + (end - start) / Math.pow(10, 9));
 		return strategy.solve(history, historySize, solver);

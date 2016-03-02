@@ -108,7 +108,7 @@ public class QuantolicStrategy extends Strategy {
 		BigRational coverage = BigRational.ONE.minus(tree.getRoot().getProbabilityOfSolution());
 		System.out.println("[quantolic] domain coverage for this path: " + probability.doubleValue() + " at " + System.currentTimeMillis());
 		logger.log(Level.SEVERE,"[quantolic] current cumulative domain coverage (including this path): " + coverage.doubleValue());
-		
+
 		// select and solve
 		ArrayList<Constraint> nextPath = Lists.newArrayList(policy.chooseNextPath(tree,rng));
 		logger.log(Level.INFO,"[quantolic] next path: {0}", nextPath);
@@ -148,9 +148,7 @@ public class QuantolicStrategy extends Strategy {
 		return -1;
 	}
 
-
 	private List<Constraint> getExecutionPathConstraint(History solver) {
 		return solver.getPathConstraint();
 	}
-
 }

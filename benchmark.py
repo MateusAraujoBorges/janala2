@@ -5,9 +5,9 @@ import math
 from sys import argv, exit
 from collections import namedtuple
 from time import time
-from shutil import copy
+from shutil import copy,move
 from os import chdir
-from subprocess import check_output
+from subprocess import check_output,CalledProcessError
 
 #INPUT_FILE="catg_tmp/inputs"
 CMD_RESTART_COUNTING_SERVER="../PathConditionsProbability/PathConditionsProbability/restartServer"
@@ -15,10 +15,12 @@ STRATEGY_CONFIG_FILES={"RANDOM":"catg.conf.random",
                        "DFS":"catg.conf.dfs",
                        "QUANTOLIC":"catg.conf.quantolic",
                        "MCTS":"catg.conf.mcts-quantolic",
-                       "MCTS-NONE":"catg.conf.mcts-none",
-                       "MCTS-NOCONST":"catg.conf.mcts-noconst",
-                       "MCTS-PROB":"catg.conf.mcts-prob",
-                       "QUASIRANDOM":"catg.conf.random"}
+                       "MCTS_NONE":"catg.conf.mcts-none",
+                       "MCTS_NOCONST":"catg.conf.mcts-noconst",
+                       "MCTS_PROB":"catg.conf.mcts-prob",
+                       "QUASIRANDOM":"catg.conf.random",
+                       "TREEBUILDING":"catg.conf.treebuilding"}
+
 CONFIG_FILE="catg.conf"
 CATG_OUTPUT_FILE="catg_tmp/catg_output"
 CSV_OUTPUT_DIR="results"
@@ -29,7 +31,7 @@ JTOPAS=("tests.casestudies.sir.jtopasV0.TestPluginTokenizer",[{'type':'int','lo'
 BIN_TREE=("tests.casestudies.sir.binarytree.BinarySearchTreeTest",[{'type':'int','lo':-100,'hi':100} for i in range(5)])
 
 Arguments = namedtuple('Arguments',['maxIterations','className','offline','verbose','D', 'arguments'])
-SEEDS=(-431209415,942731727) #,299953477,141084159,-968229660)
+SEEDS=[-431209415] #,942731727) #,299953477,141084159,-968229660)
 
 class Enum(set):
     def __getattr__(self, name):
@@ -130,11 +132,65 @@ def random_janala(classname,var_data,ntimes,start,seed,use_quasirandom):
     return {"coverage":coverage,"timestamps":cov_timestamps,"repeated_paths":repeated_paths,"inputs":distinct_path_inputs}
 
 
-def heuristic_janala(classname,ntimes,start):
+def random_janala_without_filtering(classname,var_data,ntimes,start,seed,use_quasirandom,clean_dir=True):
+    distinct_path_inputs = []
+    repeated_paths = 0
+    coverage = []
+    cov_timestamps = []
+    cumulative_coverage = 0
+    sorted_var_data = sorted(var_data)
+    random.seed(seed)
+    
+    if use_quasirandom:
+        halton_seq = ghalton.Halton(len(var_data))
+	#ghalton doesn't work with negative seeds 
+        halton_seq.seed(abs(seed))
+    else:
+        halton_seq = None
+    
+    for i in range(ntimes):
+        input_data,text_input = gen_input_file(sorted_var_data,halton_seq)
+
+        #remove/backup old log
+        try:
+            move(CATG_OUTPUT_FILE,CATG_OUTPUT_FILE+".old")
+        except: pass
+        #run janala
+        args = Arguments(maxIterations=1,className=classname,offline=False,verbose=False,D=None,arguments="")
+        concolic.handle_args(args)
+        concolic.concolic(text_input,clean_folder=clean_dir)
+        chdir("..")
+
+        already_covered = True
+        try:
+            check_output("grep -a -F '[pathfilter] Path filtered!' '{}' ".format(CATG_OUTPUT_FILE),shell=True)
+        except CalledProcessError as e:
+            assert e.returncode == 1
+            already_covered = False
+
+            
+        if already_covered:
+            repeated_paths += 1
+        else:
+            cov_string = check_output("grep -a -F 'domain coverage for this path:' '{}' | cut -f 7 -d ' ' ".format(CATG_OUTPUT_FILE),shell=True)
+            cov = float(cov_string)
+            distinct_path_inputs.append(input_data)
+            coverage.append(cov)
+            cov_timestamps.append(time() - start)
+            cumulative_coverage += cov
+            print "[benchmark:random] cumulative coverage: {}".format(cumulative_coverage)
+            if cumulative_coverage >= 1:
+                break
+
+    return {"coverage":coverage,"timestamps":cov_timestamps,"repeated_paths":repeated_paths,"inputs":distinct_path_inputs}
+        
+
+
+def heuristic_janala(classname,ntimes,start,clean_dir=True):
     #run janala, process output
     args = Arguments(maxIterations=ntimes,className=classname,offline=False,verbose=False,D=None,arguments="")
     concolic.handle_args(args)
-    concolic.concolic()
+    concolic.concolic(clean_folder=clean_dir)
     chdir("..")
     cov_string = check_output("grep -a -F '[quantolic] domain coverage for this path:' '{}' | cut -f 7,9 -d ' ' ".format(CATG_OUTPUT_FILE),shell=True)
     cov_string_split = cov_string.strip().split("\n")
@@ -156,18 +212,25 @@ def dump_csv(name,mode,stats,seed):
             csvfile.write(line + "\n")
 
 def main():
-    strategy=argv[1].upper()
+    strategies=argv[1].upper().split(":")
     ntimes = int(argv[2])
 
-    if strategy not in Strategies:
-        print "Unknown strategy: " + strategy
-        print "Valid values are: " + str(Strategies)
-        exit(1)
+    nstrats = len(strategies)
+    assert nstrats == 1 or nstrats == 2
 
-    copy(STRATEGY_CONFIG_FILES[strategy],CONFIG_FILE)
+    for strategy in strategies:
+        if strategy not in Strategies:
+            print "Unknown strategy: " + strategy
+            print "Valid values are: " + str(Strategies)
+            exit(1)
 
+
+    strategy = strategies[0]
+    secondary_strat = strategies[1] if nstrats == 2 else None
+    
     #[TCAS,SIENA,JTOPAS,BIN_TREE]
     for subject_data in [TCAS,SIENA,BIN_TREE,JTOPAS]:
+        copy(STRATEGY_CONFIG_FILES[strategy],CONFIG_FILE)
 	for seed in SEEDS:
             #start new counting server
 	    print "[benchmark] restarting counting server... (not included in the time!) "
@@ -181,6 +244,23 @@ def main():
             if strategy == Strategies.RANDOM or strategy == Strategies.QUASIRANDOM:
                 use_quasirandom = strategy == Strategies.QUASIRANDOM
                 stats = random_janala(classname,var_data,ntimes,start,seed,use_quasirandom)
+            elif strategy == Strategies.TREEBUILDING:
+                assert secondary_strat in [Strategies.QUANTOLIC,Strategies.MCTS,Strategies.MCTS_NONE,Strategies.MCTS_PROB,Strategies.MCTS_NOCONST]
+                concolic.clean_dir()
+                # random first to populate the tree...
+                random_iterations = 50
+                stats_random = random_janala_without_filtering(classname,var_data,random_iterations,start,seed,False,clean_dir=False)
+                # ...then select a unexplored path...
+                copy(STRATEGY_CONFIG_FILES[secondary_strat],CONFIG_FILE)
+                concolic.genIntermediateInputs()
+                # ...and finally run quantolic/mcts 
+                remaining_iterations = ntimes - random_iterations
+                print "[benchmark:treebuilding] Random stage is finished. Starting heuristic search..."
+                stats_heuristic = heuristic_janala(classname,ntimes,start, clean_dir=False)
+                stats = {"coverage": stats_random['coverage'] + stats_heuristic['coverage'],
+                         "timestamps": stats_random['timestamps'] + stats_heuristic['timestamps'],
+                         "repeated_paths": stats_random['repeated_paths'],
+                         "inputs":stats_random['inputs']}
             else:
                 stats = heuristic_janala(classname,ntimes,start)
 
