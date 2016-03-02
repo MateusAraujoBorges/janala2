@@ -17,7 +17,7 @@ private final ExceptionContext context;
  */
 public MathArithmeticException() {
     context = new ExceptionContext(this);
-    context.addMessage(LocalizedFormats.ARITHMETIC_EXCEPTION);
+    context.addMessage(LocalizedFormats.ARITHMETIC_EXCEPTION());
 }
 
 /**
@@ -28,7 +28,7 @@ public MathArithmeticException() {
  * @param args Arguments.
  */
 public MathArithmeticException(Localizable pattern,
-                               Object ... args) {
+                               Object[] args) {
     context = new ExceptionContext(this);
     context.addMessage(pattern, args);
 }

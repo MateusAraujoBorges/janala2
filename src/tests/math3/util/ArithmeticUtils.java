@@ -14,8 +14,8 @@ public class ArithmeticUtils {
 	            b == 0) {
 	            if (a == Integer.MIN_VALUE ||
 	                b == Integer.MIN_VALUE) {
-	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS,
-	                                                  p, q);
+	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
+	                		new Object[]{p, q});
 	            }
 	            return FastMath.abs(a + b);
 	        }
@@ -41,16 +41,16 @@ public class ArithmeticUtils {
 	        }
 	        if (useLong) {
 	            if(al == bl) {
-	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS,
-	                                                  p, q);
+	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
+	                		new Object[]{p, q});
 	            }
 	            long blbu = bl;
 	            bl = al;
 	            al = mod(blbu,  al);
 	            if (al == 0) {
 	                if (bl > Integer.MAX_VALUE) {
-	                    throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS,
-	                                                      p, q);
+	                    throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
+	                    		new Object[]{p, q});
 	                }
 	                return (int) bl;
 	            }
@@ -113,14 +113,14 @@ public class ArithmeticUtils {
 	            throws MathArithmeticException {
 	        long s = (long)x + (long)y;
 	        if (s < Integer.MIN_VALUE || s > Integer.MAX_VALUE) {
-	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_ADDITION, x, y);
+	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_ADDITION(), new Object[]{x, y});
 	        }
 	        return (int)s;
 	    }
 	    public static int subAndCheck(int x, int y) throws MathArithmeticException {
 	        long s = (long)x - (long)y;
 	        if (s < Integer.MIN_VALUE || s > Integer.MAX_VALUE) {
-	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_SUBTRACTION, x, y);
+	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_SUBTRACTION(), new Object[]{x, y});
 	        }
 	        return (int)s;
 	    }

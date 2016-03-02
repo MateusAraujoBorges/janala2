@@ -112,14 +112,14 @@ public class Fraction
      */
     public Fraction(int num, int den) {
         if (den == 0) {
-            throw new MathArithmeticException(LocalizedFormats.ZERO_DENOMINATOR_IN_FRACTION,
-                                              num, den);
+            throw new MathArithmeticException(LocalizedFormats.ZERO_DENOMINATOR_IN_FRACTION(),
+            		new Object[]{num, den});
         }
         if (den < 0) {
             if (num == Integer.MIN_VALUE ||
                 den == Integer.MIN_VALUE) {
-                throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION,
-                                                  num, den);
+                throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION(),
+                		new Object[]{num, den});
             }
             num = -num;
             den = -den;
@@ -159,7 +159,7 @@ public class Fraction
      */
     public Fraction negate() {
         if (numerator==Integer.MIN_VALUE) {
-            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION, numerator, denominator);
+            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION(), new Object[]{numerator, denominator});
         }
         return new Fraction(-numerator, denominator);
     }
@@ -184,7 +184,7 @@ public class Fraction
     
     private Fraction addSub(Fraction fraction, boolean isAdd) {
         if (fraction == null) {
-            throw new NullArgumentException(LocalizedFormats.FRACTION);
+            throw new NullArgumentException(LocalizedFormats.FRACTION());
         }
         // zero is identity for addition.
         if (numerator == 0) {
@@ -221,8 +221,8 @@ public class Fraction
         // result is (t/d2) / (u'/d1)(v'/d2)
         BigInteger w = t.divide(BigInteger.valueOf(d2));
         if (w.bitLength() > 31) {
-            throw new MathArithmeticException(LocalizedFormats.NUMERATOR_OVERFLOW_AFTER_MULTIPLY,
-                                              w);
+            throw new MathArithmeticException(LocalizedFormats.NUMERATOR_OVERFLOW_AFTER_MULTIPLY(),
+                                              new Object[]{w});
         }
         return new Fraction (w.intValue(),
                 ArithmeticUtils.mulAndCheck(denominator/d1,
@@ -231,11 +231,11 @@ public class Fraction
 
     public Fraction divide(Fraction fraction) {
         if (fraction == null) {
-            throw new NullArgumentException(LocalizedFormats.FRACTION);
+            throw new NullArgumentException(LocalizedFormats.FRACTION());
         }
         if (fraction.numerator == 0) {
-            throw new MathArithmeticException(LocalizedFormats.ZERO_FRACTION_TO_DIVIDE_BY,
-                                              fraction.numerator, fraction.denominator);
+            throw new MathArithmeticException(LocalizedFormats.ZERO_FRACTION_TO_DIVIDE_BY(),
+            		new Object[]{fraction.numerator, fraction.denominator});
         }
         return multiply(fraction.reciprocal());
     }
@@ -246,7 +246,7 @@ public class Fraction
     
     public Fraction multiply(Fraction fraction) {
         if (fraction == null) {
-            throw new NullArgumentException(LocalizedFormats.FRACTION);
+            throw new NullArgumentException(LocalizedFormats.FRACTION());
         }
         if (numerator == 0 || fraction.numerator == 0) {
             return ZERO;
@@ -271,8 +271,8 @@ public class Fraction
     }
     public static Fraction getReducedFraction(int numerator, int denominator) {
         if (denominator == 0) {
-            throw new MathArithmeticException(LocalizedFormats.ZERO_DENOMINATOR_IN_FRACTION,
-                                              numerator, denominator);
+            throw new MathArithmeticException(LocalizedFormats.ZERO_DENOMINATOR_IN_FRACTION(),
+            		new Object[]{numerator, denominator});
         }
         if (numerator==0) {
             return ZERO; // normalize zero.
@@ -284,8 +284,8 @@ public class Fraction
         if (denominator < 0) {
             if (numerator==Integer.MIN_VALUE ||
                     denominator==Integer.MIN_VALUE) {
-                throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION,
-                                                  numerator, denominator);
+                throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION(),
+                		new Object[]{numerator, denominator});
             }
             numerator = -numerator;
             denominator = -denominator;
