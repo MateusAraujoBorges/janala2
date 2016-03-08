@@ -143,6 +143,7 @@ public class Main {
     public static void MakeSymbolic(int x) {    }
     public static void MakeSymbolic(int x, int lo, int hi) {}
     public static void MakeSymbolic(long x) {    }
+    public static void MakeSymbolicLong(long x, long lo, long hi) {}
     public static void MakeSymbolic(char x) {    }
     public static void MakeSymbolic(char x, int lo, int hi) {}
     public static void MakeSymbolic(byte x) {    }
