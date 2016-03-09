@@ -1,8 +1,8 @@
-package tests.math3.exception;
+package tests.casestudies.math3.exception;
 
-import tests.math3.exception.MathIllegalArgumentException;
-import tests.math3.exception.util.Localizable;
-import tests.math3.exception.util.LocalizedFormats;
+import tests.casestudies.math3.exception.MathIllegalArgumentException;
+import tests.casestudies.math3.exception.util.Localizable;
+import tests.casestudies.math3.exception.util.LocalizedFormats;
 
 public class NullArgumentException extends MathIllegalArgumentException {
     /** Serializable version Id. */

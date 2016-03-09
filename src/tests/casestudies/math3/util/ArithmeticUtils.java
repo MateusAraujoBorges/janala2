@@ -1,30 +1,35 @@
-package tests.math3.util;
+package tests.casestudies.math3.util;
 
-import tests.math3.util.FastMath;
-
-import tests.math3.exception.MathArithmeticException;
-import tests.math3.exception.util.LocalizedFormats;
+import tests.casestudies.math3.exception.MathArithmeticException;
+import tests.casestudies.math3.exception.util.LocalizedFormats;
+import tests.casestudies.math3.util.FastMath;
 
 
 public class ArithmeticUtils {
+	
+	private static int min = -2147483647;
+	private static int max =2147483646;
+	
 	 public static int gcd(int p, int q) throws MathArithmeticException {
+		 System.out.println("gcd "+p + " "+q);
 	        int a = p;
 	        int b = q;
+	        
 	        if (a == 0 ||
 	            b == 0) {
-	            if (a == Integer.MIN_VALUE ||
-	                b == Integer.MIN_VALUE) {
+	            if (a <= min ||
+	                b <= min) {
 	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
 	                		new Object[]{p, q});
 	            }
 	            return FastMath.abs(a + b);
 	        }
 
-	        long al = a;
-	        long bl = b;
+	        int al = a;
+	        int bl = b;
 	        boolean useLong = false;
 	        if (a < 0) {
-	            if(Integer.MIN_VALUE == a) {
+	            if(min >= a) {
 	                useLong = true;
 	            } else {
 	                a = -a;
@@ -32,7 +37,7 @@ public class ArithmeticUtils {
 	            al = -al;
 	        }
 	        if (b < 0) {
-	            if (Integer.MIN_VALUE == b) {
+	            if (min >= b) {
 	                useLong = true;
 	            } else {
 	                b = -b;
@@ -44,11 +49,11 @@ public class ArithmeticUtils {
 	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
 	                		new Object[]{p, q});
 	            }
-	            long blbu = bl;
+	            int blbu = bl;
 	            bl = al;
 	            al = mod(blbu,  al);
 	            if (al == 0) {
-	                if (bl > Integer.MAX_VALUE) {
+	                if (bl > max) {
 	                    throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
 	                    		new Object[]{p, q});
 	                }
@@ -63,14 +68,17 @@ public class ArithmeticUtils {
 
 	        return gcdPositive(a, b);
 	    }
-	 private static long mod(long a,long b)
+	 private static int mod(int a,int b)
 	 {
-		 long c =  (int) (a / b);
+		 int c =  (int) (a / b);
 				 return(  a - b * c);
 	 }
 	 
-	    private static int gcdPositive(int a, int b) {
-	        if (a == 0) {
+	    public static int gcdPositive(int a, int b) {
+	       
+	    	
+	    	
+	    	if (a == 0) {
 	            return b;
 	        }
 	        else if (b == 0) {
@@ -78,9 +86,9 @@ public class ArithmeticUtils {
 	        }
 
 	        // Make "a" and "b" odd, keeping track of common power of 2.
-	        final int aTwos = Integer.numberOfTrailingZeros(a);
+	        final int aTwos =1;// Integer.numberOfTrailingZeros(a);
 	        a >>= aTwos;
-	        final int bTwos = Integer.numberOfTrailingZeros(b);
+	        final int bTwos =1;// Integer.numberOfTrailingZeros(b);
 	        b >>= bTwos;
 	        final int shift = FastMath.min(aTwos, bTwos);
 
@@ -96,7 +104,7 @@ public class ArithmeticUtils {
 	            a = Math.abs(delta);
 
 	            // Remove any power of 2 in "a" ("b" is guaranteed to be odd).
-	            a >>= Integer.numberOfTrailingZeros(a);
+	            a >>= 1;//Integer.numberOfTrailingZeros(a);
 	        }
 
 	        // Recover the common power of 2.
@@ -104,7 +112,7 @@ public class ArithmeticUtils {
 	    }
 	    public static int mulAndCheck(int x, int y) throws MathArithmeticException {
 	        long m = ((long)x) * ((long)y);
-	        if (m < Integer.MIN_VALUE || m > Integer.MAX_VALUE) {
+	        if (m < min || m > max) {
 	            throw new MathArithmeticException();
 	        }
 	        return (int)m;
@@ -112,14 +120,14 @@ public class ArithmeticUtils {
 	    public static int addAndCheck(int x, int y)
 	            throws MathArithmeticException {
 	        long s = (long)x + (long)y;
-	        if (s < Integer.MIN_VALUE || s > Integer.MAX_VALUE) {
+	        if (s < min || s > max) {
 	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_ADDITION(), new Object[]{x, y});
 	        }
 	        return (int)s;
 	    }
 	    public static int subAndCheck(int x, int y) throws MathArithmeticException {
 	        long s = (long)x - (long)y;
-	        if (s < Integer.MIN_VALUE || s > Integer.MAX_VALUE) {
+	        if (s < min || s > max) {
 	            throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_SUBTRACTION(), new Object[]{x, y});
 	        }
 	        return (int)s;

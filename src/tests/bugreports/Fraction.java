@@ -1,4 +1,4 @@
-package tests.math3.trimmed;
+package tests.bugreports;
 
 public class Fraction {
 	public static void main(String[] args) {

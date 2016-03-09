@@ -1,9 +1,9 @@
-package tests.math3.exception;
+package tests.casestudies.math3.exception;
 
-import tests.math3.exception.util.ExceptionContext;
-import tests.math3.exception.util.ExceptionContextProvider;
-import tests.math3.exception.util.Localizable;
-import tests.math3.exception.util.LocalizedFormats;
+import tests.casestudies.math3.exception.util.ExceptionContext;
+import tests.casestudies.math3.exception.util.ExceptionContextProvider;
+import tests.casestudies.math3.exception.util.Localizable;
+import tests.casestudies.math3.exception.util.LocalizedFormats;
 
 public class MathArithmeticException extends ArithmeticException
 implements ExceptionContextProvider {

@@ -1,4 +1,4 @@
-package tests.math3.exception.util;
+package tests.casestudies.math3.exception.util;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import tests.casestudies.math3.exception.util.ArgUtils;
+import tests.casestudies.math3.exception.util.Localizable;
 
 
 /**

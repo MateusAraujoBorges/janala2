@@ -1,4 +1,4 @@
-package tests.math3.exception.util;
+package tests.casestudies.math3.exception.util;
 
 import java.util.ArrayList;
 import java.util.List;

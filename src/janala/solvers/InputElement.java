@@ -63,6 +63,11 @@ public class InputElement implements Serializable {
     	this(symbol,value,Range.closed((long) lo, (long) hi));
     }
     
+    
+    public InputElement(Integer symbol, Value value, long lo, long hi) {
+    	this(symbol,value,Range.closed( lo,  hi));
+    }
+    
     public InputElement(Integer symbol, Value value, Range<Long> range) {
     	this.symbol = symbol;
         this.value = value;

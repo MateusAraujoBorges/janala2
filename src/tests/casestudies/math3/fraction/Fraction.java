@@ -1,4 +1,4 @@
-package tests.math3.fraction;
+package tests.casestudies.math3.fraction;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,10 +20,10 @@ package tests.math3.fraction;
 
 import java.math.BigInteger;
 
-import tests.math3.exception.util.LocalizedFormats;
-import tests.math3.exception.NullArgumentException;
-import tests.math3.exception.MathArithmeticException;
-import tests.math3.util.ArithmeticUtils;
+import tests.casestudies.math3.exception.MathArithmeticException;
+import tests.casestudies.math3.exception.NullArgumentException;
+import tests.casestudies.math3.exception.util.LocalizedFormats;
+import tests.casestudies.math3.util.ArithmeticUtils;
 
 /**
  * Representation of a rational number.
@@ -89,8 +89,9 @@ public class Fraction
 
     /** The numerator. */
     private final int numerator;
-
-
+    //TODO this is just a ugly fix - If problem with Integer.MAX_VALUE/MIN_VALUE is fixed please replace
+    private static int min = -2147483647;
+    private static int max =2147483646;
 
 
     
@@ -111,28 +112,38 @@ public class Fraction
      * @throws MathArithmeticException if the denominator is {@code zero}
      */
     public Fraction(int num, int den) {
+   // 	System.out.println(num +"" + den);
         if (den == 0) {
+        	System.out.println("den==0");
             throw new MathArithmeticException(LocalizedFormats.ZERO_DENOMINATOR_IN_FRACTION(),
             		new Object[]{num, den});
+            
         }
         if (den < 0) {
-            if (num == Integer.MIN_VALUE ||
-                den == Integer.MIN_VALUE) {
+        	System.out.println("den<0");
+
+            if (num >= max ||
+                den <= -min) {
+
                 throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION(),
                 		new Object[]{num, den});
             }
             num = -num;
-            den = -den;
+           den = -den;
         }
         // reduce numerator and denominator by greatest common denominator.
         final int d = ArithmeticUtils.gcd(num, den);
         if (d > 1) {
+        	System.out.println("d<1");
+
             num /= d;
             den /= d;
         }
 
         // move sign to numerator.
         if (den < 0) {
+        	System.out.println("d<0");
+
             num = -num;
             den = -den;
         }
@@ -158,7 +169,9 @@ public class Fraction
      * @return the negation of this fraction.
      */
     public Fraction negate() {
-        if (numerator==Integer.MIN_VALUE) {
+        if (numerator<=min) {
+        	System.out.println("neg");
+
             throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION(), new Object[]{numerator, denominator});
         }
         return new Fraction(-numerator, denominator);
@@ -187,6 +200,7 @@ public class Fraction
             throw new NullArgumentException(LocalizedFormats.FRACTION());
         }
         // zero is identity for addition.
+        System.out.println("sub");
         if (numerator == 0) {
             return isAdd ? fraction : fraction.negate();
         }
@@ -278,12 +292,12 @@ public class Fraction
             return ZERO; // normalize zero.
         }
         // allow 2^k/-2^31 as a valid fraction (where k>0)
-        if (denominator==Integer.MIN_VALUE && (numerator&1)==0) {
+        if (denominator<=min && (numerator&1)==0) {
             numerator/=2; denominator/=2;
         }
         if (denominator < 0) {
-            if (numerator==Integer.MIN_VALUE ||
-                    denominator==Integer.MIN_VALUE) {
+            if (numerator<=min ||
+                    denominator<=min) {
                 throw new MathArithmeticException(LocalizedFormats.OVERFLOW_IN_FRACTION(),
                 		new Object[]{numerator, denominator});
             }

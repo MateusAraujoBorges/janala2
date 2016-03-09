@@ -1,10 +1,10 @@
-package tests.math3.exception.util;
+package tests.casestudies.math3.exception.util;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import tests.math3.exception.util.Localizable;
+import tests.casestudies.math3.exception.util.Localizable;
 
 public class LocalizedFormats implements Localizable {
 
