@@ -25,11 +25,12 @@ public class ArithmeticUtils {
 	            return FastMath.abs(a + b);
 	        }
 
-	        int al = a;
-	        int bl = b;
+
+	        long al = a;
+	        long bl = b;
 	        boolean useLong = false;
 	        if (a < 0) {
-	            if(min >= a) {
+	            if( a<=min) {
 	                useLong = true;
 	            } else {
 	                a = -a;
@@ -37,7 +38,7 @@ public class ArithmeticUtils {
 	            al = -al;
 	        }
 	        if (b < 0) {
-	            if (min >= b) {
+	            if ( b<=min) {
 	                useLong = true;
 	            } else {
 	                b = -b;
@@ -49,7 +50,7 @@ public class ArithmeticUtils {
 	                throw new MathArithmeticException(LocalizedFormats.GCD_OVERFLOW_32_BITS(),
 	                		new Object[]{p, q});
 	            }
-	            int blbu = bl;
+	            long blbu = bl;
 	            bl = al;
 	            al = mod(blbu,  al);
 	            if (al == 0) {
@@ -68,10 +69,10 @@ public class ArithmeticUtils {
 
 	        return gcdPositive(a, b);
 	    }
-	 private static int mod(int a,int b)
+	 private static long mod(long a,long b)
 	 {
 		 int c =  (int) (a / b);
-				 return(  a - b * c);
+				 return((  a - b * c));
 	 }
 	 
 	    public static int gcdPositive(int a, int b) {
@@ -86,9 +87,9 @@ public class ArithmeticUtils {
 	        }
 
 	        // Make "a" and "b" odd, keeping track of common power of 2.
-	        final int aTwos =1;// Integer.numberOfTrailingZeros(a);
+	        final int aTwos = Integer.numberOfTrailingZeros(a);
 	        a >>= aTwos;
-	        final int bTwos =1;// Integer.numberOfTrailingZeros(b);
+	        final int bTwos = Integer.numberOfTrailingZeros(b);
 	        b >>= bTwos;
 	        final int shift = FastMath.min(aTwos, bTwos);
 

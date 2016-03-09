@@ -35,7 +35,7 @@ public static void main(String[] args) {
   //  System.out.println (first.getDenominator());
   // 
   // first.getNumerator();
-   System.out.println (first.subtract(second));
+ System.out.println (first.subtract(second).intValue());
   //  first.multiply(second);
   //  first.divide(second);
   //  first.add(second);
