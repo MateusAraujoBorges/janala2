@@ -2,8 +2,9 @@ import concolic
 import random
 import ghalton
 import math
+import numpy 
 from sys import argv, exit
-from collections import namedtuple
+from collections import namedtuple,Counter
 from time import time
 from shutil import copy,move
 from os import chdir
@@ -74,6 +75,22 @@ def gen_input_file(inputvars,halton_seq):
     text = '\n'.join([str(x) for x in data])
     return (data,text)
 
+def entropy(path_bag,iteration):
+    #compute histogram of frequencies
+    histogram = Counter(path_bag.values())
+    numTests = float(iteration)
+    
+    naiveEstimator = 0.0
+    sumFi = 0.0
+    numTests = float(numTests)
+    for i, count in histogram.items():
+        naiveEstimator += 1*count * ((i+1.0)/numTests) * numpy.abs(numpy.log2((i+1.0)/numTests))
+        sumFi += count
+
+    millerMadow = naiveEstimator +(sumFi-1.0)/(2*numTests)
+    return (naiveEstimator,millerMadow)
+
+
 
 def run_janala_once(classname,first_input):
     args = Arguments(maxIterations=1,className=classname,offline=False,verbose=False,D=None,arguments="")
@@ -93,7 +110,7 @@ def random_janala(classname,var_data,ntimes,start,seed,use_quasirandom):
     distinct_path_inputs = []
     distinct_paths = []
 
-    path_set = set()
+    path_counter = Counter()
     repeated_paths = 0
 
     coverage = []
@@ -114,11 +131,11 @@ def random_janala(classname,var_data,ntimes,start,seed,use_quasirandom):
     for i in range(ntimes):
         input_data,text_input = gen_input_file(sorted_var_data,halton_seq)
         path,cov = run_janala_once(classname,text_input)
-
-        if path in path_set:
+        path_counter[path] += 1
+        
+        if path_counter[path] > 1: # we already saw this one
             repeated_paths += 1
         else:
-            path_set.add(path)
             distinct_path_inputs.append(input_data)
             distinct_paths.append(path)
             coverage.append(cov)
@@ -127,6 +144,12 @@ def random_janala(classname,var_data,ntimes,start,seed,use_quasirandom):
             print "[benchmark:random] cumulative coverage: {}".format(cumulative_coverage)
             if cumulative_coverage >= 1:
                 break
+
+        if i % 10 == 0 and i > 0: # compute entropy
+            naive,miller = entropy(path_counter,i)
+            distinct = len(distinct_paths)
+            print "[entropy]: " + ",".join([str(x) for x in [i,distinct,cumulative_coverage,naive,miller]])
+            
 #        cumulative_coverage_track.append(cumulative_coverage)
 
     return {"coverage":coverage,"timestamps":cov_timestamps,"repeated_paths":repeated_paths,"inputs":distinct_path_inputs}

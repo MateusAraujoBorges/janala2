@@ -19,7 +19,7 @@ catg.yicesCommand=yices
 
 catg.analysisClass=janala.logger.DJVM
 catg.solverClass=janala.solvers.CVC4Solver
-catg.strategyClass=janala.solvers.counters.QuantolicStrategy
+catg.strategyClass=janala.solvers.counters.DomainCoverageWithoutSolvingStrategy
 
 # counter configuration
 
