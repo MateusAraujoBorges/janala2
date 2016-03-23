@@ -1,0 +1,218 @@
+package tests.casestudies.tcas.mutants;
+
+public class Snippet {
+	1:LVR:POS:0:tests.casestudies.tcas.TCAS_v0:27:4 |==> 0
+	2:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0:27:4 |==> -4
+	3:LVR:0:POS:tests.casestudies.tcas.TCAS_v0@initialize:54:0 |==> 1
+	4:LVR:0:NEG:tests.casestudies.tcas.TCAS_v0@initialize:54:0 |==> -1
+	5:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:54:400 |==> 0
+	6:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:54:400 |==> -400
+	7:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:55:1 |==> 0
+	8:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:55:1 |==> -1
+	9:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:55:500 |==> 0
+	10:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:55:500 |==> -500
+	11:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:56:2 |==> 0
+	12:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:56:2 |==> -2
+	13:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:56:640 |==> 0
+	14:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:56:640 |==> -640
+	15:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:57:3 |==> 0
+	16:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:57:3 |==> -3
+	17:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@initialize:57:740 |==> 0
+	18:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@initialize:57:740 |==> -740
+	19:AOR:+(int,int):%(int,int):tests.casestudies.tcas.TCAS_v0@Inhibit_Biased_Climb:65:Up_Separation + NOZCROSS |==> Up_Separation % NOZCROSS
+	20:AOR:+(int,int):*(int,int):tests.casestudies.tcas.TCAS_v0@Inhibit_Biased_Climb:65:Up_Separation + NOZCROSS |==> Up_Separation * NOZCROSS
+	21:AOR:+(int,int):-(int,int):tests.casestudies.tcas.TCAS_v0@Inhibit_Biased_Climb:65:Up_Separation + NOZCROSS |==> Up_Separation - NOZCROSS
+	22:AOR:+(int,int):/(int,int):tests.casestudies.tcas.TCAS_v0@Inhibit_Biased_Climb:65:Up_Separation + NOZCROSS |==> Up_Separation / NOZCROSS
+	23:ROR:>(int,int):!=(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:73:Inhibit_Biased_Climb() > Down_Separation |==> Inhibit_Biased_Climb() != Down_Separation
+	24:ROR:>(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:73:Inhibit_Biased_Climb() > Down_Separation |==> Inhibit_Biased_Climb() >= Down_Separation
+	25:ROR:>(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:73:Inhibit_Biased_Climb() > Down_Separation |==> false
+	26:COR:upward_preferred:TRUE:tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:74:upward_preferred |==> false
+	27:COR:upward_preferred:FALSE:tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:74:upward_preferred |==> true
+	28:ROR:>=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:Down_Separation >= ALIM() |==> Down_Separation == ALIM()
+	29:ROR:>=(int,int):>(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:Down_Separation >= ALIM() |==> Down_Separation > ALIM()
+	30:ROR:>=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:Down_Separation >= ALIM() |==> true
+	31:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:(Own_Below_Threat()) && (!(Down_Separation >= ALIM())) |==> (Own_Below_Threat()) == (!(Down_Separation >= ALIM()))
+	32:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:(Own_Below_Threat()) && (!(Down_Separation >= ALIM())) |==> false
+	33:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:(Own_Below_Threat()) && (!(Down_Separation >= ALIM())) |==> (Own_Below_Threat())
+	34:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:(Own_Below_Threat()) && (!(Down_Separation >= ALIM())) |==> (!(Down_Separation >= ALIM()))
+	35:COR:||(boolean,boolean):!=(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:!(Own_Below_Threat()) || ((Own_Below_Threat()) && (!(Down_Separation >= ALIM()))) |==> !(Own_Below_Threat()) != ((Own_Below_Threat()) && (!(Down_Separation >= ALIM())))
+	36:COR:||(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:!(Own_Below_Threat()) || ((Own_Below_Threat()) && (!(Down_Separation >= ALIM()))) |==> !(Own_Below_Threat())
+	37:COR:||(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:!(Own_Below_Threat()) || ((Own_Below_Threat()) && (!(Down_Separation >= ALIM()))) |==> ((Own_Below_Threat()) && (!(Down_Separation >= ALIM())))
+	38:COR:||(boolean,boolean):TRUE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:75:!(Own_Below_Threat()) || ((Own_Below_Threat()) && (!(Down_Separation >= ALIM()))) |==> true
+	39:ROR:>=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Cur_Vertical_Sep >= MINSEP |==> Cur_Vertical_Sep == MINSEP
+	40:ROR:>=(int,int):>(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Cur_Vertical_Sep >= MINSEP |==> Cur_Vertical_Sep > MINSEP
+	41:ROR:>=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Cur_Vertical_Sep >= MINSEP |==> true
+	42:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> Own_Above_Threat() == (Cur_Vertical_Sep >= MINSEP)
+	43:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> false
+	44:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> Own_Above_Threat()
+	45:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> (Cur_Vertical_Sep >= MINSEP)
+	46:ROR:>=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Up_Separation >= ALIM() |==> Up_Separation == ALIM()
+	47:ROR:>=(int,int):>(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Up_Separation >= ALIM() |==> Up_Separation > ALIM()
+	48:ROR:>=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Up_Separation >= ALIM() |==> true
+	49:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Up_Separation >= ALIM()) |==> (Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP)) == (Up_Separation >= ALIM())
+	50:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Up_Separation >= ALIM()) |==> false
+	51:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Up_Separation >= ALIM()) |==> Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP)
+	52:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Climb:77:Own_Above_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Up_Separation >= ALIM()) |==> (Up_Separation >= ALIM())
+	53:ROR:>(int,int):!=(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:96:Inhibit_Biased_Climb() > Down_Separation |==> Inhibit_Biased_Climb() != Down_Separation
+	54:ROR:>(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:96:Inhibit_Biased_Climb() > Down_Separation |==> Inhibit_Biased_Climb() >= Down_Separation
+	55:ROR:>(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:96:Inhibit_Biased_Climb() > Down_Separation |==> false
+	56:COR:upward_preferred:TRUE:tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:97:upward_preferred |==> false
+	57:COR:upward_preferred:FALSE:tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:97:upward_preferred |==> true
+	58:ROR:>=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Cur_Vertical_Sep >= MINSEP |==> Cur_Vertical_Sep == MINSEP
+	59:ROR:>=(int,int):>(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Cur_Vertical_Sep >= MINSEP |==> Cur_Vertical_Sep > MINSEP
+	60:ROR:>=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Cur_Vertical_Sep >= MINSEP |==> true
+	61:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> Own_Below_Threat() == (Cur_Vertical_Sep >= MINSEP)
+	62:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> false
+	63:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> Own_Below_Threat()
+	64:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) |==> (Cur_Vertical_Sep >= MINSEP)
+	65:ROR:>=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Down_Separation >= ALIM() |==> Down_Separation == ALIM()
+	66:ROR:>=(int,int):>(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Down_Separation >= ALIM() |==> Down_Separation > ALIM()
+	67:ROR:>=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Down_Separation >= ALIM() |==> true
+	68:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Down_Separation >= ALIM()) |==> (Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP)) == (Down_Separation >= ALIM())
+	69:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Down_Separation >= ALIM()) |==> false
+	70:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Down_Separation >= ALIM()) |==> Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP)
+	71:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:98:Own_Below_Threat() && (Cur_Vertical_Sep >= MINSEP) && (Down_Separation >= ALIM()) |==> (Down_Separation >= ALIM())
+	72:ROR:>=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:Up_Separation >= ALIM() |==> Up_Separation == ALIM()
+	73:ROR:>=(int,int):>(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:Up_Separation >= ALIM() |==> Up_Separation > ALIM()
+	74:ROR:>=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:Up_Separation >= ALIM() |==> true
+	75:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:(Own_Above_Threat()) && (Up_Separation >= ALIM()) |==> (Own_Above_Threat()) == (Up_Separation >= ALIM())
+	76:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:(Own_Above_Threat()) && (Up_Separation >= ALIM()) |==> false
+	77:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:(Own_Above_Threat()) && (Up_Separation >= ALIM()) |==> (Own_Above_Threat())
+	78:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:(Own_Above_Threat()) && (Up_Separation >= ALIM()) |==> (Up_Separation >= ALIM())
+	79:COR:||(boolean,boolean):!=(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:!(Own_Above_Threat()) || ((Own_Above_Threat()) && (Up_Separation >= ALIM())) |==> !(Own_Above_Threat()) != ((Own_Above_Threat()) && (Up_Separation >= ALIM()))
+	80:COR:||(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:!(Own_Above_Threat()) || ((Own_Above_Threat()) && (Up_Separation >= ALIM())) |==> !(Own_Above_Threat())
+	81:COR:||(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:!(Own_Above_Threat()) || ((Own_Above_Threat()) && (Up_Separation >= ALIM())) |==> ((Own_Above_Threat()) && (Up_Separation >= ALIM()))
+	82:COR:||(boolean,boolean):TRUE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@Non_Crossing_Biased_Descend:100:!(Own_Above_Threat()) || ((Own_Above_Threat()) && (Up_Separation >= ALIM())) |==> true
+	83:ROR:<(int,int):!=(int,int):tests.casestudies.tcas.TCAS_v0@Own_Below_Threat:106:Own_Tracked_Alt < Other_Tracked_Alt |==> Own_Tracked_Alt != Other_Tracked_Alt
+	84:ROR:<(int,int):<=(int,int):tests.casestudies.tcas.TCAS_v0@Own_Below_Threat:106:Own_Tracked_Alt < Other_Tracked_Alt |==> Own_Tracked_Alt <= Other_Tracked_Alt
+	85:ROR:<(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@Own_Below_Threat:106:Own_Tracked_Alt < Other_Tracked_Alt |==> false
+	86:ROR:<(int,int):!=(int,int):tests.casestudies.tcas.TCAS_v0@Own_Above_Threat:110:Other_Tracked_Alt < Own_Tracked_Alt |==> Other_Tracked_Alt != Own_Tracked_Alt
+	87:ROR:<(int,int):<=(int,int):tests.casestudies.tcas.TCAS_v0@Own_Above_Threat:110:Other_Tracked_Alt < Own_Tracked_Alt |==> Other_Tracked_Alt <= Own_Tracked_Alt
+	88:ROR:<(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@Own_Above_Threat:110:Other_Tracked_Alt < Own_Tracked_Alt |==> false
+	89:ROR:<=(int,int):<(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:Own_Tracked_Alt_Rate <= OLEV |==> Own_Tracked_Alt_Rate < OLEV
+	90:ROR:<=(int,int):==(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:Own_Tracked_Alt_Rate <= OLEV |==> Own_Tracked_Alt_Rate == OLEV
+	91:ROR:<=(int,int):TRUE(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:Own_Tracked_Alt_Rate <= OLEV |==> true
+	92:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) |==> High_Confidence == (Own_Tracked_Alt_Rate <= OLEV)
+	93:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) |==> false
+	94:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) |==> High_Confidence
+	95:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) |==> (Own_Tracked_Alt_Rate <= OLEV)
+	96:ROR:>(int,int):!=(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:Cur_Vertical_Sep > MAXALTDIFF |==> Cur_Vertical_Sep != MAXALTDIFF
+	97:ROR:>(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:Cur_Vertical_Sep > MAXALTDIFF |==> Cur_Vertical_Sep >= MAXALTDIFF
+	98:ROR:>(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:Cur_Vertical_Sep > MAXALTDIFF |==> false
+	99:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF) |==> (High_Confidence && (Own_Tracked_Alt_Rate <= OLEV)) == (Cur_Vertical_Sep > MAXALTDIFF)
+	100:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF) |==> false
+	101:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF) |==> High_Confidence && (Own_Tracked_Alt_Rate <= OLEV)
+	102:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:118:High_Confidence && (Own_Tracked_Alt_Rate <= OLEV) && (Cur_Vertical_Sep > MAXALTDIFF) |==> (Cur_Vertical_Sep > MAXALTDIFF)
+	103:ROR:==(int,int):<=(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:119:Other_Capability == TCAS_TA |==> Other_Capability <= TCAS_TA
+	104:ROR:==(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:119:Other_Capability == TCAS_TA |==> Other_Capability >= TCAS_TA
+	105:ROR:==(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:119:Other_Capability == TCAS_TA |==> false
+	106:ROR:==(int,int):<=(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Other_RAC == NO_INTENT |==> Other_RAC <= NO_INTENT
+	107:ROR:==(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Other_RAC == NO_INTENT |==> Other_RAC >= NO_INTENT
+	108:ROR:==(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Other_RAC == NO_INTENT |==> false
+	109:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT |==> Two_of_Three_Reports_Valid == (Other_RAC == NO_INTENT)
+	110:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT |==> false
+	111:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT |==> Two_of_Three_Reports_Valid
+	112:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:120:Two_of_Three_Reports_Valid && Other_RAC == NO_INTENT |==> Other_RAC == NO_INTENT
+	113:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:tcas_equipped && intent_not_known |==> tcas_equipped == intent_not_known
+	114:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:tcas_equipped && intent_not_known |==> false
+	115:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:tcas_equipped && intent_not_known |==> tcas_equipped
+	116:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:tcas_equipped && intent_not_known |==> intent_not_known
+	117:COR:||(boolean,boolean):!=(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:(tcas_equipped && intent_not_known) || !tcas_equipped |==> (tcas_equipped && intent_not_known) != !tcas_equipped
+	118:COR:||(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:(tcas_equipped && intent_not_known) || !tcas_equipped |==> (tcas_equipped && intent_not_known)
+	119:COR:||(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:(tcas_equipped && intent_not_known) || !tcas_equipped |==> !tcas_equipped
+	120:COR:||(boolean,boolean):TRUE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:(tcas_equipped && intent_not_known) || !tcas_equipped |==> true
+	121:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped) |==> enabled == ((tcas_equipped && intent_not_known) || !tcas_equipped)
+	122:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped) |==> false
+	123:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped) |==> enabled
+	124:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:124:enabled && ((tcas_equipped && intent_not_known) || !tcas_equipped) |==> ((tcas_equipped && intent_not_known) || !tcas_equipped)
+	125:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:125:Non_Crossing_Biased_Climb() && Own_Below_Threat() |==> Non_Crossing_Biased_Climb() == Own_Below_Threat()
+	126:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:125:Non_Crossing_Biased_Climb() && Own_Below_Threat() |==> false
+	127:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:125:Non_Crossing_Biased_Climb() && Own_Below_Threat() |==> Non_Crossing_Biased_Climb()
+	128:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:125:Non_Crossing_Biased_Climb() && Own_Below_Threat() |==> Own_Below_Threat()
+	129:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:126:Non_Crossing_Biased_Descend() && Own_Above_Threat() |==> Non_Crossing_Biased_Descend() == Own_Above_Threat()
+	130:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:126:Non_Crossing_Biased_Descend() && Own_Above_Threat() |==> false
+	131:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:126:Non_Crossing_Biased_Descend() && Own_Above_Threat() |==> Non_Crossing_Biased_Descend()
+	132:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:126:Non_Crossing_Biased_Descend() && Own_Above_Threat() |==> Own_Above_Threat()
+	133:COR:&&(boolean,boolean):==(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:127:need_upward_RA && need_downward_RA |==> need_upward_RA == need_downward_RA
+	134:COR:&&(boolean,boolean):FALSE(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:127:need_upward_RA && need_downward_RA |==> false
+	135:COR:&&(boolean,boolean):LHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:127:need_upward_RA && need_downward_RA |==> need_upward_RA
+	136:COR:&&(boolean,boolean):RHS(boolean,boolean):tests.casestudies.tcas.TCAS_v0@alt_sep_test:127:need_upward_RA && need_downward_RA |==> need_downward_RA
+	137:COR:need_upward_RA:TRUE:tests.casestudies.tcas.TCAS_v0@alt_sep_test:132:need_upward_RA |==> false
+	138:COR:need_upward_RA:FALSE:tests.casestudies.tcas.TCAS_v0@alt_sep_test:132:need_upward_RA |==> true
+	139:COR:need_downward_RA:TRUE:tests.casestudies.tcas.TCAS_v0@alt_sep_test:134:need_downward_RA |==> false
+	140:COR:need_downward_RA:FALSE:tests.casestudies.tcas.TCAS_v0@alt_sep_test:134:need_downward_RA |==> true
+	141:STD:<CALL>:<NO-OP>:tests.casestudies.tcas.TCAS_v0@startTcas:158:initialize() |==> <NO-OP>
+	142:LVR:0:POS:tests.casestudies.tcas.TCAS_v0@main:163:0 |==> 1
+	143:LVR:0:NEG:tests.casestudies.tcas.TCAS_v0@main:163:0 |==> -1
+	144:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:165:12 |==> 0
+	145:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:165:12 |==> -12
+	146:ROR:==(int,int):<=(int,int):tests.casestudies.tcas.TCAS_v0@main:165:args.length == 12 |==> args.length <= 12
+	147:ROR:==(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@main:165:args.length == 12 |==> args.length >= 12
+	148:ROR:==(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@main:165:args.length == 12 |==> false
+	149:LVR:0:POS:tests.casestudies.tcas.TCAS_v0@main:166:0 |==> 1
+	150:LVR:0:NEG:tests.casestudies.tcas.TCAS_v0@main:166:0 |==> -1
+	151:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:167:1 |==> 0
+	152:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:167:1 |==> -1
+	153:COR:args[1].equalsIgnoreCase("0"):TRUE:tests.casestudies.tcas.TCAS_v0@main:167:args[1].equalsIgnoreCase("0") |==> false
+	154:COR:args[1].equalsIgnoreCase("0"):FALSE:tests.casestudies.tcas.TCAS_v0@main:167:args[1].equalsIgnoreCase("0") |==> true
+	155:LVR:FALSE:TRUE:tests.casestudies.tcas.TCAS_v0@main:168:false |==> true
+	156:LVR:TRUE:FALSE:tests.casestudies.tcas.TCAS_v0@main:170:true |==> false
+	157:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:171:2 |==> 0
+	158:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:171:2 |==> -2
+	159:COR:args[2].equalsIgnoreCase("0"):TRUE:tests.casestudies.tcas.TCAS_v0@main:171:args[2].equalsIgnoreCase("0") |==> false
+	160:COR:args[2].equalsIgnoreCase("0"):FALSE:tests.casestudies.tcas.TCAS_v0@main:171:args[2].equalsIgnoreCase("0") |==> true
+	161:LVR:FALSE:TRUE:tests.casestudies.tcas.TCAS_v0@main:172:false |==> true
+	162:LVR:TRUE:FALSE:tests.casestudies.tcas.TCAS_v0@main:174:true |==> false
+	163:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:175:3 |==> 0
+	164:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:175:3 |==> -3
+	165:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:176:4 |==> 0
+	166:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:176:4 |==> -4
+	167:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:177:5 |==> 0
+	168:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:177:5 |==> -5
+	169:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:178:6 |==> 0
+	170:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:178:6 |==> -6
+	171:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:179:7 |==> 0
+	172:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:179:7 |==> -7
+	173:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:180:8 |==> 0
+	174:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:180:8 |==> -8
+	175:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:181:9 |==> 0
+	176:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:181:9 |==> -9
+	177:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:182:10 |==> 0
+	178:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:182:10 |==> -10
+	179:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:183:11 |==> 0
+	180:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:183:11 |==> -11
+	181:COR:args[11].equalsIgnoreCase("0"):TRUE:tests.casestudies.tcas.TCAS_v0@main:183:args[11].equalsIgnoreCase("0") |==> false
+	182:COR:args[11].equalsIgnoreCase("0"):FALSE:tests.casestudies.tcas.TCAS_v0@main:183:args[11].equalsIgnoreCase("0") |==> true
+	183:LVR:FALSE:TRUE:tests.casestudies.tcas.TCAS_v0@main:184:false |==> true
+	184:LVR:TRUE:FALSE:tests.casestudies.tcas.TCAS_v0@main:186:true |==> false
+	185:STD:<CALL>:<NO-OP>:tests.casestudies.tcas.TCAS_v0@main:187:tcas.initialize() |==> <NO-OP>
+	186:LVR:0:POS:tests.casestudies.tcas.TCAS_v0@main:189:0 |==> 1
+	187:LVR:0:NEG:tests.casestudies.tcas.TCAS_v0@main:189:0 |==> -1
+	188:ROR:==(int,int):<=(int,int):tests.casestudies.tcas.TCAS_v0@main:189:args.length == 0 |==> args.length <= 0
+	189:ROR:==(int,int):>=(int,int):tests.casestudies.tcas.TCAS_v0@main:189:args.length == 0 |==> args.length >= 0
+	190:ROR:==(int,int):FALSE(int,int):tests.casestudies.tcas.TCAS_v0@main:189:args.length == 0 |==> false
+	191:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	192:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	193:LVR:TRUE:FALSE:tests.casestudies.tcas.TCAS_v0@main:190:true |==> false
+	194:LVR:TRUE:FALSE:tests.casestudies.tcas.TCAS_v0@main:190:true |==> false
+	195:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	196:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	197:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	198:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	199:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	200:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	201:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	202:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	203:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	204:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	205:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	206:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	207:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	208:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	209:LVR:POS:0:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> 0
+	210:LVR:POS:NEG:tests.casestudies.tcas.TCAS_v0@main:190:1 |==> -1
+	211:LVR:TRUE:FALSE:tests.casestudies.tcas.TCAS_v0@main:190:true |==> false
+	212:STD:<CALL>:<NO-OP>:tests.casestudies.tcas.TCAS_v0@main:192:System.out.println("Invalid number of args") |==> <NO-OP>
+	213:STD:<CALL>:<NO-OP>:tests.casestudies.tcas.TCAS_v0@main:194:System.out.println(">>>>>>results: " + res) |==> <NO-OP>
+}
+
