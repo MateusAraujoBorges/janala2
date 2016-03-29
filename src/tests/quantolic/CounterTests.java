@@ -17,7 +17,7 @@ import janala.interpreters.Value;
 import janala.solvers.InputElement;
 import janala.solvers.counters.Counter;
 import janala.solvers.counters.PCPCounter;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class CounterTests {
 

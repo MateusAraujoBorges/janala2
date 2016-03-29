@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 
 import janala.interpreters.Constraint;
 import janala.utils.MyLogger;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class UCB1TreePolicy implements TreePolicy {
 

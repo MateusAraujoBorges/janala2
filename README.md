@@ -46,3 +46,13 @@ optional arguments:
     -c, --coverage  Compute detailed coverage by rerunning tests.
     -D D            JVM options
 =======
+
+
+(Mateus) How to use it
+
+ - Download/compile the counting library   
+ - run 'gradle build integrationTest copyDependencies'
+   - build -> compiles janala, integrationTest -> compiles tests, copyDependencies -> copy deps. to a folder
+   - some tests require a running instance of the counting server or they will fail
+
+ - use concolic.py or benchmarks.py (recommended) to run the symbolic execution

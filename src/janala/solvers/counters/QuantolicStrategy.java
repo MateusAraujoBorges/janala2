@@ -26,7 +26,7 @@ import janala.solvers.counters.trees.SymbolicTree;
 import janala.solvers.counters.trees.TreePolicy;
 import janala.solvers.counters.util.CountUtils;
 import janala.utils.MyLogger;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class QuantolicStrategy extends Strategy {
 

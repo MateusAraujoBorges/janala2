@@ -6,7 +6,7 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 
 import janala.interpreters.Constraint;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class ConcolicCountNode implements SymbolicCountNode {
 

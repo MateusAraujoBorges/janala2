@@ -9,7 +9,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import janala.interpreters.Constraint;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 /**
  * This class chooses the next path by performing a random walk in the symbolic

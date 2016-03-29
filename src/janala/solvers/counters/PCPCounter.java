@@ -27,7 +27,7 @@ import name.filieri.antonio.jpf.domain.UsageProfile;
 import name.filieri.antonio.jpf.domain.exceptions.InvalidUsageProfileException;
 import name.filieri.antonio.jpf.latte.LatteException;
 import name.filieri.antonio.jpf.omega.exceptions.OmegaException;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class PCPCounter implements Counter {
 

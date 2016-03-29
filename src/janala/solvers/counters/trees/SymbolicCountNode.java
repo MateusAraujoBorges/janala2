@@ -3,7 +3,7 @@ package janala.solvers.counters.trees;
 import java.io.Serializable;
 
 import janala.interpreters.Constraint;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public interface SymbolicCountNode extends Serializable {
 

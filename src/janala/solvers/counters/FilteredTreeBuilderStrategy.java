@@ -19,7 +19,7 @@ import janala.solvers.counters.trees.SymbolicCountNode;
 import janala.solvers.counters.trees.SymbolicTree;
 import janala.solvers.counters.util.CountUtils;
 import janala.utils.MyLogger;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 /**
  * Do not solve anything; just add new paths to the tree

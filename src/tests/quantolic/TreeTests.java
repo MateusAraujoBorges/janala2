@@ -29,7 +29,7 @@ import janala.solvers.counters.trees.QuantolicTreePolicy;
 import janala.solvers.counters.trees.SymbolicCountNode;
 import janala.solvers.counters.trees.SymbolicTree;
 import janala.solvers.counters.trees.UnexploredNode;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class TreeTests {
 

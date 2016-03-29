@@ -1,7 +1,7 @@
 package janala.solvers.counters.trees;
 
 import janala.interpreters.Constraint;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class UnexploredNode implements SymbolicCountNode {
 

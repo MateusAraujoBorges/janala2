@@ -9,7 +9,7 @@ import janala.solvers.Element;
 import janala.solvers.History;
 import janala.solvers.InputElement;
 import janala.solvers.Strategy;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public class DomainCoverageWithoutSolvingStrategy extends Strategy {
 

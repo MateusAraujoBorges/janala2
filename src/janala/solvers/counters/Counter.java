@@ -6,7 +6,7 @@ import java.util.Map;
 import janala.interpreters.Constraint;
 import janala.interpreters.Value;
 import janala.solvers.InputElement;
-import name.filieri.antonio.jpf.utils.BigRational;
+import janala.solvers.counters.util.BigRational;
 
 public interface Counter{
 
